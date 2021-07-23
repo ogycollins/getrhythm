@@ -1,37 +1,65 @@
-// for legacy browsers
-const AudioContext = window.AudioContext || window.webkitAudioContext;
+// create a bass drum synth
 
-const audioContext = new AudioContext();
+	const synth = new Tone.MembraneSynth().toDestination();
 
-// get the audio element
-const audioElement = document.querySelector('audio');
+// create a sample player
+//	const sampler = new Tone.Sampler({
+//		urls: {
+//			"C4": "C4.mp3"
+//
+//		},
+//		release: 1,
+//		baseUrl: "https://tonejs.github.io/audio/salamander/",
+//	}).toDestination();
+	
+	
 
-// pass it into the audio context
-const track = audioContext.createMediaElementSource(audioElement);
+// play a note every quarter-note on the bass drum synth
+	
+	const loop = new Tone.Loop(time => {
+	synth.triggerAttackRelease("C2", "8n", time);
+	
+	// Draw.schedule takes a callback and a time to invoke the callback
+			Tone.Draw.schedule(() => {
+				const noteElement = document.getElementById("square");
+				noteElement.classList.remove("squareOff");
+				noteElement.classList.add("squareOn");
+				setTimeout(() => {
+					noteElement.classList.remove("squareOn");
+					noteElement.classList.add("squareOff");
+				}, 100);
+			}, time);
 
-track.connect(audioContext.destination);
+		
+	}, "4n").start(0);
+	
+// play a note every quarter-note on the sampler
+	
+//	const loop = new Tone.Loop(time => {
+//	Tone.loaded().then(() => {
+//		sampler.triggerAttackRelease(["Eb4", "G4", "Bb4"], 4);
+//	})
+//	}, "4n").start(0);
 
-// select our play button
-const playButton = document.getElementById("soundOnOff");
+	
+// the loop starts when the Transport is started. Transport is controlled by html button element.
+ 
+ 	let playing = false;
+  	
+  	document.querySelector("#soundOnOff").addEventListener("click", function() {
+    	
+		if (!playing) {
+ 			Tone.Transport.start();
+ 			Tone.start();
+  			playing = true;
+  			Tone.Transport.bpm.value = 120;
+  		
+		} else {
+  			Tone.Transport.stop();
+  			playing = false;
+		}
+	})
+	
+	
 
-playButton.addEventListener('click', function() {
 
-    // check if context is in suspended state (autoplay policy)
-    if (audioContext.state === 'suspended') {
-        audioContext.resume();
-    }
-
-    // play or pause track depending on state
-    if (this.dataset.playing === 'false') {
-        audioElement.play();
-        this.dataset.playing = 'true';
-    } else if (this.dataset.playing === 'true') {
-        audioElement.pause();
-        this.dataset.playing = 'false';
-    }
-
-}, false);
-
-audioElement.addEventListener('ended', () => {
-	playButton.dataset.playing = 'false';
-}, false);

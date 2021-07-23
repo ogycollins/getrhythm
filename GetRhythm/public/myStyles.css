@@ -1,0 +1,14 @@
+@charset "UTF-8";
+.squareOff {
+  height: 50px;
+  width: 50px;
+  background-color: #555;
+  opacity: 0;
+}
+
+.squareOn {
+  height: 50px;
+  width: 50px;
+  background-color: #555;
+  opacity: 1;
+}
