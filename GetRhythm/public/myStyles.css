@@ -5,19 +5,20 @@
   src: url(Musisync-KVLZ.ttf);
 }
 
-#square {
-	height: 100px;
-	width: 100px; 
+#square1 {
+	height: 150px;
+	width: 150px; 
   	background-color: #FF5733;
 }
 
 #square2 {
-	height: 100px;
-	width: 100px; 
+	height: 150px;
+	width: 150px; 
   	background-color: #03fc77;
 }
 
 .notation {
 	font-family: notation;
+	font-size: 80px;
 }
 

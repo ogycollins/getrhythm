@@ -35,48 +35,83 @@
 	
 		</div>
 	
-		<div id= "rhythmRow1" class="row p-5 invisible d-flex align-items-center">
-			<div class="col-4 mx-auto "><p class="display-5 text-center notation">q q</p></div>
-			<div class="d-grid gap-2 col-4 ">
-			<div id="square" class="mx-auto rounded-circle"></div>
+		<div class="row p-5  d-flex align-items-center ">
+			<div class="col-4 mx-auto note1 invisible"><p class="display-5 text-center "><span class="note1 invisible notation">q</span> <span class="note2 invisible notation">q</span></p></div>
+			<div class="d-grid gap-2 col-4 rhythmRow1 invisible ">
+			<div id="square1" class="mx-auto rounded-circle"></div>
 			</div>
-			<div class="col-4 mx-auto"><p class="display-5 text-center">ta ta</p></div>
+			<div class="col-4 mx-auto"><p class="display-5 text-center note1 invisible"><span class="note1 invisible">ta</span> <span class="note2 invisible">ta</span></p></div>
 	
 		</div>
 	</div>
 	
+	<h1>Contents of loopTime: <span id="loopTimeSpan"></span></h1>
 <!-- 	Javascript for Rhythm 1 -->	
 		<script>
 	
 		// Create synth
 		const synth = new Tone.MembraneSynth().toDestination();
+		var tempo = 80;
 		
 	 	// Rhythm Patter 1 Implementation
-
+		var noteCounter = 1;	
 	 	// Part describes sound pattern to be played and includes visual sync
 		const part1 = new Tone.Part(function(time, pitch){
 		synth.triggerAttackRelease(pitch, "8n", time); // play an 8th note at the pitch and time passed in
-		
-		
+		const loopTime = Tone.Time(part1.loopEnd).toMilliseconds()-(600000/(tempo*8));
+	    document.getElementById("loopTimeSpan").innerHTML = loopTime;
+	    
 		// Callback to create animation in time with sound
 				Tone.Draw.schedule(() => {
-					const noteElement = document.getElementById("rhythmRow1");
-					noteElement.classList.remove("invisible");
-					noteElement.classList.add("visible");
+					const noteElement = document.getElementsByClassName("note"+noteCounter);
+/* 					const beat2 = document.getElementsByClassName("beat2");
+ */					const circle = document.getElementById("square1");
+					
+					// 1st Beat Animation
+					for(var i = 0; i < noteElement.length; i++)
+					{
+						noteElement[i].classList.remove("invisible");
+						noteElement[i].classList.add("visible");
+					}
+					
+					if (noteCounter < part1.length){
+						noteCounter += 1;
+					}
+					else {
+						noteCounter = 1;
+						
+						
+					    setTimeout(() => {
+							for (var i = 1; i <= noteElement.length; i++){
+								const noteOff = document.getElementsByClassName("note"+i);
+								for(var j = 0; j < noteOff.length; j++)
+								{
+									noteOff[j].classList.remove("visible");
+									noteOff[j].classList.add("invisible");
+								}
+							}			
+						},loopTime ); 	
+					}
+					
+					// Circle Animation
+					circle.classList.add("visible");
+					circle.classList.remove("invisible");
+					
 					setTimeout(() => {
-						noteElement.classList.remove("visible");
-						noteElement.classList.add("invisible");
-					}, 150);
-				}, time);
+						circle.classList.add("invisible");
+						circle.classList.remove("visible");
+					}, loopTime);
+				}, time, noteCounter);
+				
 
 			
-		}, [["0", "C2"], ["4n", "C2"]]); // pitch and time of rhythm pattern notes
-		
-		//set the pattern to loop every half measure
-		part1.set({
+		}, [["0", "C2"], ["0:1", "C2"]]); // pitch and time of rhythm pattern notes
+		//set the pattern to loop every 2 beats
+ 		part1.set({
 			"loop" : true,
 			"loopEnd" : "2n"
-		});
+			
+		}); 
 		
 		// HTML Sound On/Off Button
 	 	let playing1 = false; // boolean to track whether playing or not. sound not playing when page loads
@@ -87,10 +122,11 @@
 	  		
 	  		if (!playing1) {
 	  			part1.start(0);
+
 	 			Tone.start();
-	 			Tone.Transport.start();
+	 			Tone.Transport.start(("+0.1"));
 	  			playing1 = true;
-	  			Tone.Transport.bpm.value = 80;
+	  			Tone.Transport.bpm.value = tempo;
 	  		
 			} else {
 	  			Tone.Transport.stop();
@@ -168,7 +204,7 @@
 			if (!playing2) {
 				part2.start(0);
 	 			Tone.start();
-	 			Tone.Transport.start();
+	 			Tone.Transport.start(("+0.1"));
 	  			playing2 = true;
 	  			Tone.Transport.bpm.value = 80;
 	  		
@@ -247,7 +283,7 @@
 			if (!playing3) {
 				part3.start(0);
 	 			Tone.start();
-	 			Tone.Transport.start();
+	 			Tone.Transport.start(("+0.1"));
 	  			playing3 = true;
 	  			Tone.Transport.bpm.value = 80;
 	  		
