@@ -1,114 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<!-- Required meta tags -->
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	<!-- Bootstrap CSS -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-	
-	<!-- Tone.js CDN -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js" integrity="sha512-+esjJ8NSEfoB5Sr8R7jTcYxCR1Bd6q9C+WQC0JA2UXVPT8Mlo/TJqqyp0qeeoxFzkAaa8t6tZCHLGmw3oNI2Qg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-		
-	<title>Performance Activities</title>
-	<style>
-		@charset "UTF-8";
-		
-		@font-face {
-		  font-family: notation;
-		  src: url(Musisync-KVLZ.ttf);
-		}
-		
-		#circle {
-			height: 150px;
-			width: 150px; 
-		  	background-color: #FF5733;
-		}
-		
-		.notation {
-			font-family: notation;
-			font-size: 80px;
-		}
-			
-	</style>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+
+<!-- Tone.js CDN -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"
+	integrity="sha512-+esjJ8NSEfoB5Sr8R7jTcYxCR1Bd6q9C+WQC0JA2UXVPT8Mlo/TJqqyp0qeeoxFzkAaa8t6tZCHLGmw3oNI2Qg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<title>Performance Activities</title>
+<style>
+@charset "UTF-8";
+
+@font-face {
+	font-family: notation;
+	src: url(Musisync-KVLZ.ttf);
+}
+
+#circle {
+	height: 150px;
+	width: 150px;
+	background-color: #FF5733;
+}
+
+.notation {
+	font-family: notation;
+	font-size: 80px;
+}
+</style>
 </head>
 <body>
-	
+
 	<h1 class="display-4 text-center">Performance Activity</h1>
-	
+
 	<!-- Rhythm Pattern Implementation -->
 
-	 <div class="container">	
-	 
-	 <!-- Rhythm 1 On/Off Button --> 
+	<div class="container">
+
+		<!-- Rhythm 1 On/Off Button -->
 		<div class="row p-3">
-		
+
 			<div class="d-grid col-1 mx-auto ">
-				<button id= "rhythm1" role="switch" aria-checked="false" type="button" class="btn btn-primary"><span>Rhythm 1</span></button>	
+				<button id="startStop" role="switch" aria-checked="false"
+					type="button" class="btn btn-primary">
+					<span>Start</span>
+				</button>
+			</div>
+			<!-- <div class="d-grid col-1 mx-auto ">
+				<button id="rhythm2" role="switch" aria-checked="false"
+					type="button" class="btn btn-primary">
+					<span>Rhythm 2</span>
+				</button>
+			</div> -->
+			<!-- <div class="d-grid col-1 mx-auto ">
+				<button id="rhythm3" role="switch" aria-checked="false"
+					type="button" class="btn btn-primary">
+					<span>Rhythm 3</span>
+				</button>
 			</div>
 			<div class="d-grid col-1 mx-auto ">
-				<button id= "rhythm2" role="switch" aria-checked="false" type="button" class="btn btn-primary"><span>Rhythm 2</span></button>	
+				<button id="rhythm4" role="switch" aria-checked="false"
+					type="button" class="btn btn-primary">
+					<span>Rhythm 4</span>
+				</button>
 			</div>
 			<div class="d-grid col-1 mx-auto ">
-				<button id= "rhythm3" role="switch" aria-checked="false" type="button" class="btn btn-primary"><span>Rhythm 3</span></button>	
+				<button id="rhythm5" role="switch" aria-checked="false"
+					type="button" class="btn btn-primary">
+					<span>Rhythm 5</span>
+				</button>
 			</div>
 			<div class="d-grid col-1 mx-auto ">
-				<button id= "rhythm4" role="switch" aria-checked="false" type="button" class="btn btn-primary"><span>Rhythm 4</span></button>	
+				<button id="rhythm6" role="switch" aria-checked="false"
+					type="button" class="btn btn-primary">
+					<span>Rhythm 6</span>
+				</button>
 			</div>
 			<div class="d-grid col-1 mx-auto ">
-				<button id= "rhythm5" role="switch" aria-checked="false" type="button" class="btn btn-primary"><span>Rhythm 5</span></button>	
-			</div>
-			<div class="d-grid col-1 mx-auto ">
-				<button id= "rhythm6" role="switch" aria-checked="false" type="button" class="btn btn-primary"><span>Rhythm 6</span></button>	
-			</div>
-			<div class="d-grid col-1 mx-auto ">
-				<button id= "rhythm7" role="switch" aria-checked="false" type="button" class="btn btn-primary"><span>Rhythm 7</span></button>	
-			</div>
-			
+				<button id="rhythm7" role="switch" aria-checked="false"
+					type="button" class="btn btn-primary">
+					<span>Rhythm 7</span>
+				</button>
+			</div> -->
 		</div>
-	
+
 		<div class="row p-5  d-flex align-items-center ">
-			<div class="col-4 mx-auto note1 invisible"><p id="symbols" class="display-5 text-center "><span class="note1 invisible notation">q</span> <span class="note2 invisible notation">q</span></p></div>
-			<div class="d-grid gap-2 col-4 rhythmRow1 invisible ">
-			<div id="circle" class="mx-auto rounded-circle"></div>
+			<div class="col-4 mx-auto note1 invisible">
+				<p id="symbols" class="display-5 text-center ">
+					<span class="note1 invisible notation">q</span> <span
+						class="note2 invisible notation">q</span>
+				</p>
 			</div>
-			<div class="col-4 mx-auto"><p id="syllables" class="display-5 text-center note1 invisible "><span class="note1 invisible">ta</span> <span class="note2 invisible">ta</span></p></div>
-	
+			<div class="d-grid gap-2 col-4 rhythmRow1 invisible ">
+				<div id="circle" class="mx-auto rounded-circle"></div>
+			</div>
+			<div class="col-4 mx-auto">
+				<p id="syllables" class="display-5 text-center note1 invisible ">
+					<span class="note1 invisible">ta</span> <span
+						class="note2 invisible">ta</span>
+				</p>
+			</div>
+
+		</div>
+		<div class="row p-3">
+
+
+			<div class="d-grid col mx-auto">
+				<div class="form-check form-switch">
+					<input class="form-check-input rhythm1" type="checkbox"
+						id="flexSwitchCheckChecked" checked> <label
+						class="form-check-label" for="flexSwitchCheckChecked">Rhythm
+						1</label>
+				</div>
+			</div>
+
+			<div class="d-grid col mx-auto">
+				<div class="form-check form-switch">
+					<input class="form-check-input rhythm2" type="checkbox"
+						id="flexSwitchCheckDefault" > <label
+						class="form-check-label" for="flexSwitchCheckDefault">
+						Rhythm 2</label>
+				</div>
+			</div>
+
+			<div class="d-grid col mx-auto">
+				<div class="form-check form-switch">
+					<input class="form-check-input rhythm3" type="checkbox"
+						id="flexSwitchCheckDefault"> <label
+						class="form-check-label" for="flexSwitchCheckDefault">
+						Rhythm 3</label>
+				</div>
+			</div>
+			<div class="d-grid col mx-auto">
+				<div class="form-check form-switch">
+					<input class="form-check-input rhythm4" type="checkbox"
+						id="flexSwitchCheckDefault"> <label
+						class="form-check-label" for="flexSwitchCheckDefault">
+						Rhythm 4</label>
+				</div>
+			</div>
+			<div class="d-grid col mx-auto">
+				<div class="form-check form-switch">
+					<input class="form-check-input rhythm5" type="checkbox"
+						id="flexSwitchCheckDefault"> <label
+						class="form-check-label" for="flexSwitchCheckDefault">Rhythm
+						5</label>
+				</div>
+			</div>
+
+			<div class="d-grid col mx-auto">
+				<div class="form-check form-switch">
+					<input class="form-check-input rhythm6" type="checkbox"
+						id="flexSwitchCheckDefault"> <label
+						class="form-check-label" for="flexSwitchCheckDefault">
+						Rhythm 6</label>
+				</div>
+			</div>
+
+			<div class="d-grid col mx-auto ">
+				<div class="form-check form-switch ">
+					<input class="form-check-input rhythm7 " type="checkbox"
+						id="flexSwitchCheckDefault"> <label
+						class="form-check-label" for="flexSwitchCheckDefault">
+						Rhythm 7</label>
+				</div>
+			</div>
 		</div>
 	</div>
-	
-	<h1>Debugging: <span id="loopTimeSpan"></span></h1>
-<!-- 	Javascript for Rhythms -->	
-		<script>
-		var ID = "123";
-		var rhythmID = 1;
+
+	<h1>
+		Debugging: <span id="loopTimeSpan"></span>
+	</h1>
+	<!-- 	Javascript for Rhythms -->
+	<script>
+		var rhythms = [rhythm1];
+
+
+		var startStopButton = document.querySelector("#startStop");
+		var rhythm1switch = document.querySelector(".rhythm1");
+		var rhythm2switch = document.querySelector(".rhythm2");
+		var rhythm3switch = document.querySelector(".rhythm3");
+		var rhythm4switch = document.querySelector(".rhythm4");
+		var rhythm5switch = document.querySelector(".rhythm5");
+		var rhythm6switch = document.querySelector(".rhythm6");
+		var rhythm7switch = document.querySelector(".rhythm7");
 		
-		// Listener on #rhythm1 button
-	  	document.querySelector("#rhythm1").addEventListener("click", function() {  		
-	  		document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>q</span> <span class='note2 invisible notation'>q</span><span class='note3 invisible notation'></span>";
+		function rhythm1(){
+			document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>q</span> <span class='note2 invisible notation'>q</span><span class='note3 invisible notation'></span>";
 	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>ta</span> <span class='note2 invisible'>ta</span><span class='note3 invisible'></span>";
 	  		part.clear();
   			part.add("0", "C2");
   			part.add("4n", "C2");
   			part.add("4n.", "C20");
-	  		startTransport();	
-	  	})
-	
-		// Listener on #rhythm2 button
-	  	document.querySelector("#rhythm2").addEventListener("click", function() {  		
-	  		document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>q</span> <span class='note2 invisible notation'>n</span><span class='note3 invisible notation'></span>";
+		}
+		
+		function rhythm2(){
+			document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>q</span> <span class='note2 invisible notation'>n</span><span class='note3 invisible notation'></span>";
 	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>ta</span> <span class='note2 invisible'>ti-ti</span><span class='note3 invisible'></span>";
 	  		part.clear();
   			part.add("0", "C2");
   			part.add("4n", "C2");
   			part.add("4n.", "C2");
- 	  		startTransport();
-
-		})
+		}
 		
-		// Listener on #rhythm3 button
-	  	document.querySelector("#rhythm3").addEventListener("click", function() { 
+		function rhythm3(){
 	  		document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>n</span> <span class='note2 invisible notation'></span><span class='note3 invisible notation'>q</span>";
 	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>ti-ti</span> <span class='note2 invisible'></span><span class='note3 invisible'>ta</span>";
 			part.clear();
@@ -116,11 +221,9 @@
 			part.add("8n", "C2");
 			part.add("4n", "C2");
 			part.add("4n.", "C20");
- 	  		startTransport();
-		})
+		}
 		
-		// Listener on #rhythm4 button
-	  	document.querySelector("#rhythm4").addEventListener("click", function() {
+		function rhythm4(){
 	  		document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>n</span> <span class='note2 invisible notation'></span><span class='note3 invisible notation'>n</span>";
 	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>ti-ti</span> <span class='note2 invisible'></span><span class='note3 invisible'>ti-ti</span>";
 	  		part.clear();
@@ -128,42 +231,119 @@
 			part.add("8n", "C2");
 			part.add("4n", "C2");
 			part.add("4n.", "C2");
-	  		startTransport();
-		})
+		}
 		
-		// Listener on #rhythm5 button
-	  	document.querySelector("#rhythm5").addEventListener("click", function() { 
+		function rhythm5(){
 	  		document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>h</span> <span class='note2 invisible notation'></span><span class='note3 invisible notation'></span>";
 	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>ta</span> <span class='note2 invisible'>- a</span><span class='note3 invisible'></span>";
-	  		rhythmPattern = [["0", "C2"]];
 	  		part.clear();
 			part.add("0", "C2");
 			part.add("4n", "C20");
 			part.add("4n.", "C20");
-	  		startTransport();
-		})
+		}
 		
-		// Listener on #rhythm6 button
-	  	document.querySelector("#rhythm6").addEventListener("click", function() { 
+		function rhythm6(){
 	  		document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>j</span> <span class='note2 invisible notation'></span><span class='note3 invisible notation'>e</span>";
 	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>ta</span><span class='note2 invisible'>-i</span> <span class='note3 invisible'>ti</span>";
 	  		part.clear();
 			part.add("0", "C2");
 			part.add("4n", "C20");
 			part.add("4n.", "C2");
-	  		startTransport();
-		})
+		}
 		
-		// Listener on #rhythm7 button
-	  	document.querySelector("#rhythm7").addEventListener("click", function() { 
+		function rhythm7(){
 	  		document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>e</span> <span class='note2 invisible notation'>q</span><span class='note3 invisible notation'>e</span>";
 	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>syn</span> <span class='note2 invisible'> - co </span><span class='note3 invisible'> - pa </span>";
 	  		part.clear();
 			part.add("0", "C2");
 			part.add("8n", "C2");
 			part.add("4n.", "C2");
-	  		startTransport();
+		}
+		
+		rhythm1switch.addEventListener("click", function() {  
+			if (rhythm1switch.checked){
+				rhythms.push(rhythm1);
+			} else {
+				var index = rhythms.indexOf(rhythm1);
+				if (index !== -1) {
+					rhythms.splice(index, 1);
+				}	
+			}
 		})
+		
+		rhythm2switch.addEventListener("click", function() {  
+			if (rhythm2switch.checked){
+				rhythms.push(rhythm2);
+			} else {
+				var index = rhythms.indexOf(rhythm2);
+				if (index !== -1) {
+					rhythms.splice(index, 1);
+				}	
+			}
+		})
+		
+		rhythm3switch.addEventListener("click", function() {  
+			if (rhythm3switch.checked){
+				rhythms.push(rhythm3);
+			} else {
+				var index = rhythms.indexOf(rhythm3);
+				if (index !== -1) {
+					rhythms.splice(index, 1);
+				}		
+			}
+		})
+		
+		rhythm4switch.addEventListener("click", function() {  
+			if (rhythm4switch.checked){
+				rhythms.push(rhythm4);
+			} else {
+				var index = rhythms.indexOf(rhythm4);
+				if (index !== -1) {
+					rhythms.splice(index, 1);
+				}	
+			}
+		})
+	
+		rhythm5switch.addEventListener("click", function() {  
+			if (rhythm5switch.checked){
+				rhythms.push(rhythm5);
+			} else {
+				var index = rhythms.indexOf(rhythm5);
+				if (index !== -1) {
+					rhythms.splice(index, 1);
+				}	
+			}
+		})
+		
+		
+		rhythm6switch.addEventListener("click", function() {  
+			if (rhythm6switch.checked){
+				rhythms.push(rhythm6);
+			} else {
+				var index = rhythms.indexOf(rhythm6);
+				if (index !== -1) {
+					rhythms.splice(index, 1);
+				}	
+			}
+		})
+		
+		rhythm7switch.addEventListener("click", function() {  
+			if (rhythm7switch.checked){
+				rhythms.push(rhythm7);
+			} else {
+				var index = rhythms.indexOf(rhythm7);
+				if (index !== -1) {
+					rhythms.splice(index, 1);
+				}	
+			}
+		})
+		
+		// Listener on #startStop button
+	  	startStopButton.addEventListener("click", function() {  
+	  		rhythms[rhythmNo]();
+	  		startTransport();	
+	  	})
+	
 	
 		// Create synth
 		const synth = new Tone.MembraneSynth().toDestination();
@@ -171,14 +351,21 @@
 		
 	 	// Rhythm Pattern 1 Implementation
 		var noteCounter = 1;	
+		var rhythmNo = 0;
 
 	 	// Part describes sound pattern to be played and includes visual sync
 		const part = new Tone.Part(function(time, pitch, velocity){
+			
+		if (noteCounter == part.length){
+	  		rhythms[rhythmNo]();
+		}	
+	   	
+		document.getElementById("loopTimeSpan").innerHTML = part.length;
+
 		synth.triggerAttackRelease(pitch, "8n", time); // play an 8th note at the pitch and time passed in
 		const loopTime = (Tone.Time(part.loopEnd).toMilliseconds())-(600000/(tempo*6.5));
 		
-  	    document.getElementById("loopTimeSpan").innerHTML = loopTime;
-	    
+    
 		// Callback to create animation in time with sound
 				Tone.Draw.schedule(() => {
 					const noteElement = document.getElementsByClassName("note"+noteCounter);
@@ -205,7 +392,16 @@
 									noteOff[j].classList.add("invisible");
 								}
 							}			
-						},loopTime ); 
+						},loopTime );
+						
+						if (rhythmNo == rhythms.length-1){
+							rhythmNo = 0;
+
+						} else {
+							rhythmNo += 1;
+						}
+						
+
 					}
 					
 					if (pitch=="C2"){
@@ -221,7 +417,7 @@
 				}, time, noteCounter);
 				
 
-			
+
 		}, [["0", "C2"], ["4n", "C2"]]); // pitch and time of rhythm pattern notes
 		//set the pattern to loop every 2 beats
  		part.set({
@@ -236,27 +432,31 @@
 	 	
 		
 		function startTransport() {
-	  		if (!playing) {			
+	  		if (!playing) {		
 	 			playing = true;
 	  			Tone.Transport.bpm.value = tempo;
+	  		    Tone.Transport.timeSignature = "2";
 	 			Tone.start();
 	  			part.start(("+0.1"));
 	 			Tone.Transport.start(("+0.1"));
-
-	  		
 			} else {
 				noteCounter = 1;
 	  			playing = false;
 	  			Tone.Transport.stop();
+
+
  			}
 	 	}
 	
 	</script>
-	
+
 	<!-- End of Rhythm 1 Implementation -->
-	
-	<!-- Bootstrap JavaScript -->	
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-		
+
+	<!-- Bootstrap JavaScript -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+		crossorigin="anonymous"></script>
+
 </body>
 </html>
