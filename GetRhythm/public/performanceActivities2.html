@@ -82,6 +82,7 @@
 <!-- 	Javascript for Rhythms -->	
 		<script>
 		var ID = "123";
+		var rhythmID = 1;
 		
 		// Listener on #rhythm1 button
 	  	document.querySelector("#rhythm1").addEventListener("click", function() {  		
@@ -144,10 +145,11 @@
 		
 		// Listener on #rhythm6 button
 	  	document.querySelector("#rhythm6").addEventListener("click", function() { 
-	  		document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>j</span> <span class='note2 invisible notation'>e	</span><span class='note3 invisible notation'></span>";
-	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>ta</span> <span class='note2 invisible'>-i</span><span class='note3 invisible'>ti</span>";
+	  		document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>j</span> <span class='note2 invisible notation'></span><span class='note3 invisible notation'>e</span>";
+	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>ta</span><span class='note2 invisible'>-i</span> <span class='note3 invisible'>ti</span>";
 	  		part.clear();
 			part.add("0", "C2");
+			part.add("4n", "C20");
 			part.add("4n.", "C2");
 	  		startTransport();
 		})
