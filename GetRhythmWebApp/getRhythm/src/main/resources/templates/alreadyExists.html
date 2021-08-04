@@ -51,71 +51,22 @@
 			</div>
 		</div>
 	</nav>
-	
-	
-	
+
+
+
 	<div class="container text-center">
 		<div>
 			<h1>User Registration - Sign Up</h1>
 		</div>
-		<form th:action="@{/process_register}" th:object="${user}"
-			method="post" style="max-width: 600px; margin: 0 auto;">
-			
-			
-			<div class="m-3">
 
-<div th:if="${#fields.hasAnyErrors()}">
-    <ul>
-        <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />
-    </ul>
-</div>
-
-
-				<div class="form-group row">
-					<label class="col-4 col-form-label">Username: </label>
-					<div class="col-8">
-						<input type="text" th:field="*{username}" class="form-control"
-							required minlength="2" maxlength="20" />
-					</div>
-				</div>
-
-				<div class="form-group row">
-					<label class="col-4 col-form-label">Name: </label>
-					<div class="col-8">
-						<input type="text" th:field="*{name}" class="form-control"
-							required minlength="2" maxlength="20" />
-					</div>
-				</div>
-
-				<div class="form-group row">
-					<label class="col-4 col-form-label">E-mail: </label>
-					<div class="col-8">
-						<input type="email" th:field="*{email}" class="form-control"
-							required />
-					</div>
-				</div>
-
-				<div class="form-group row">
-					<label class="col-4 col-form-label">Date of Birth: </label>
-					<div class="col-8">
-						<input type="date" th:field="*{DOB}" class="form-control" required />
-					</div>
-				</div>
-
-				<div class="form-group row">
-					<label class="col-4 col-form-label">Password: </label>
-					<div class="col-8">
-						<input type="password" th:field="*{password}" class="form-control"
-							required minlength="6" maxlength="20" />
-					</div>
-				</div>
-
-				<div>
-					<button type="submit" class="btn btn-primary">Sign Up</button>
-				</div>
-			</div>
-		</form>
+	<div class="container text-center">
+		<h3>Username or email address already exists</h3>
+		<h4>
+			<a th:href="@{/createAccount}">Click here to try again.</a>
+		</h4>
 	</div>
+
+
 </body>
 </html>
 

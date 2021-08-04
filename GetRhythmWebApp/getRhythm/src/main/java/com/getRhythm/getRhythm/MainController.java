@@ -1,15 +1,17 @@
 package com.getRhythm.getRhythm;
 
-import java.util.Optional;  
+import java.util.Optional; 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller // This means that this class is a Controller
@@ -20,32 +22,11 @@ public class MainController {
   @Autowired 
   private RhythmPatternsRepository rhythmsRepository;
 
-
-//  @PostMapping(path="/add") // Map ONLY POST Requests
-//  public @ResponseBody String addNewUser (@RequestParam String name
-//      , @RequestParam String email) {
-//    // @ResponseBody means the returned String is the response, not a view name
-//    // @RequestParam means it is a parameter from the GET or POST request
-//
-//    User n = new User();
-//    n.setName(name);
-//    n.setEmail(email);
-//    userRepository.save(n);
-//    return "Saved";
-//  }
-
   @GetMapping(path="/all")
   public @ResponseBody Iterable<User> getAllUsers() {
     // This returns a JSON or XML with the users
     return userRepository.findAll();
   }
-  
-
-  
-//  @GetMapping(path="/rhythm2")
-//  public @ResponseBody Iterable<RhythmPatterns> getRhythm2() {
-//    return rhythmsRepository.findAll() ;
-//  }
   
   @GetMapping(path="/lessons/{id}")
   public String getRhythmSyllables(@PathVariable("id") Integer id, Model model) {
@@ -62,13 +43,23 @@ public class MainController {
   }
   
   @PostMapping("/process_register")
-  public String processRegister(User user) {
-      BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); //BCryptPasswordEncoder so only a hash of the password is stored in database
-      String encodedPassword = passwordEncoder.encode(user.getPassword());
-      user.setPassword(encodedPassword);
-      userRepository.save(user);  
-      return "accountCreated";
+  public String processRegister(@Valid User user, BindingResult result) {
+
+	  
+	  if (userRepository.existsUserByUsername(user.getUsername())|| userRepository.existsUserByEmail(user.getEmail())){
+		  return "alreadyExists";
+	  } else {
+	      BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); //BCryptPasswordEncoder so only a hash of the password is stored in database
+	      String encodedPassword = passwordEncoder.encode(user.getPassword());
+	      user.setPassword(encodedPassword);
+	      userRepository.save(user);  
+	      return "accountCreated";	  
+	  }
   }
+  
+  
+  
+
  
   
 }
