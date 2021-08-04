@@ -26,7 +26,7 @@
 
 @font-face {
 	font-family: notation;
-	src: url('Musisync-KVLZ.ttf');
+	src: url('fonts/Musisync-KVLZ.ttf');
 }
 
 #circle {
@@ -66,13 +66,11 @@
 			</div>
 		</div>
 	</nav>
-			<h6 th:inline="text">Logged in as: [[${#httpServletRequest.remoteUser}]]</h1>
+			<h6 th:inline="text">Logged in as: <span sec:authentication="principal.name">Name</span></h6>
 	
 	<h1 class="display-4 text-center">Performance Activity</h1>
 
-
 	<!-- Rhythm Pattern Implementation -->
-
 	<div class="container">
 
 		<div class="row p-3">
@@ -85,11 +83,12 @@
 			</div>
 		</div>
 
+<!-- th:utext="${rhythmSyllables}" --> <!--  this is the code that goes in the relevant p to get the rhythms etc. from the database -->
+
 		<div class="row p-5  d-flex align-items-center ">
 			<div class="col-4 mx-auto note1 invisible">
 				<p id="symbols" class="display-5 text-center ">
-					<span class="note1 invisible notation">q</span> <span
-						class="note2 invisible notation">q</span>
+
 				</p>
 			</div>
 			<div class="d-grid gap-2 col-4 rhythmRow1 invisible ">
@@ -97,8 +96,7 @@
 			</div>
 			<div class="col-4 mx-auto">
 				<p id="syllables" class="display-5 text-center note1 invisible ">
-					<span class="note1 invisible">ta</span> <span
-						class="note2 invisible">ta</span>
+
 				</p>
 			</div>
 
@@ -200,8 +198,8 @@
 		}
 		
 		function rhythm2(){
-			document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>q</span> <span class='note2 invisible notation'>n</span><span class='note3 invisible notation'></span>";
-	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>ta</span> <span class='note2 invisible'>ti-ti</span><span class='note3 invisible'></span>";
+		/* 	document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>q</span> <span class='note2 invisible notation'>n</span><span class='note3 invisible notation'></span>";
+	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>ta</span> <span class='note2 invisible'>ti-ti</span><span class='note3 invisible'></span>"; */
 	  		part.clear();
   			part.add("0", "C2");
   			part.add("4n", "C2");
