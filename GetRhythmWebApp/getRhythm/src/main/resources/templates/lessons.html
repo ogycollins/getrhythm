@@ -123,7 +123,7 @@
 
 			<!-- Notation Display -->
 			<div class="col-4 mx-auto ">
-				<p id="symbols" class="display-5 text-center"><span id='symbol1' class='invisible notation hideAll'></span> <span id='symbol2' class='invisible notation hideAll'></span><span id='symbol3' class='invisible notation hideAll'></span></p>
+				<p id="symbols" class="display-5 text-center"><span id='symbol1' class='invisible notation hideAll'></span> <span id='symbol2' class='invisible notation hideAll'></span><span id='symbol3' class='invisible notation hideAll'></span><span id='symbol4' class='invisible notation hideAll'></span></p>
 			</div>
 
 			<!-- Animation Display -->
@@ -133,7 +133,7 @@
 
 			<!-- Rhythm Syllable Display -->
 			<div class="col-4 mx-auto invisible">
-				<p id="syllables" class="display-5 text-center "><span id='syllable1' class='invisible hideAll'></span> <span id='syllable2' class='invisible hideAll'></span> <span id='syllable3' class='invisible hideAll'></span></p>
+				<p id="syllables" class="display-5 text-center "><span id='syllable1' class='invisible hideAll'></span><span id='syllable2' class='invisible hideAll'></span><span id='syllable3' class='invisible hideAll'></span><span id='syllable4' class='invisible hideAll'></span></p>
 			</div>
 
 		</div>
@@ -142,19 +142,33 @@
 		<div class="row">
 
 			<!-- Signout Button -->
-			<div class="col-3 lead" th:inline="text">
+			<div class="col-4 lead" th:inline="text">
 				<form th:action="@{/logout}" method="post">
 					<input type="submit" value="Sign Out" />
 				</form>
 			</div>
+			
+			<div class="col-4" >
+			</div>
+			
+			<div class="d-grid col-2 mx-auto">
+				<a id="continue" href="/improvisation"  role="button" aria-checked="false"
+					class="btn btn-primary text-center ">
+					<span>Continue</span>
+				</a>
+			</div>
+			
+			
 
 		</div>
 
 	</div>
 
-	<h1>
-		Debugging: <span id="debug"></span>
-	</h1>
+		<p>Debugging: <span id="debug"></span></p>
+		<p>Loop Counter: <span id="loopCounter"></span></p>
+		<p>Note Counter: <span id="noteCounter"></span></p>
+		<p>Rhythm Track: <span id="rhythmTracker"></span></p>
+	
 	<!-- Javascript -->
 	<script>
 	
@@ -165,6 +179,8 @@
  		var loopCounter = 1; // count the loops
  		var rhythmTracker = 1; // keep track of which rhythm is being played currently
  		var changeRhythmAfter = 2; // a variable to set how often the rhythm changes
+ 		var showSymbols = true;
+ 		var showSyllables = true;
 
 		/* Listener for start stop button */
 		var startStopButton = document.querySelector("#startStop");
@@ -180,10 +196,10 @@
 		function rhythm1setup(){
 			document.querySelector("#symbol1").innerHTML = "q";
 			document.querySelector("#symbol2").innerHTML = "q";
-		  	document.querySelector("#syllable1").innerHTML = "ta"; 	
-		  	document.querySelector("#syllable2").innerHTML = "ta"; 	
 		  	document.querySelector("#symbol3").innerHTML = "";
-			document.querySelector("#symbol3").innerHTML = "";
+		  	document.querySelector("#syllable1").innerHTML = "ta "; 	
+		  	document.querySelector("#syllable2").innerHTML = "ta"; 	
+			document.querySelector("#syllable3").innerHTML = "";
 		  	part.clear();
 	  		part.add("0", "C2");
   			part.add("4n", "C2");
@@ -194,16 +210,86 @@
 		function rhythm2setup(){
 			document.querySelector("#symbol1").innerHTML = "q";
 			document.querySelector("#symbol2").innerHTML = "n";
-		  	document.querySelector("#syllable1").innerHTML = "ta"; 	
-		  	document.querySelector("#syllable2").innerHTML = "ti-ti"; 	
 		  	document.querySelector("#symbol3").innerHTML = "";
-			document.querySelector("#symbol3").innerHTML = "";
+		  	document.querySelector("#syllable1").innerHTML = "ta "; 	
+		  	document.querySelector("#syllable2").innerHTML = "ti-"; 	
+		  	document.querySelector("#syllable3").innerHTML = "ti"; 	
 		  	part.clear();
 	  		part.add("0", "C2");
   			part.add("4n", "C2");
   			part.add("4n.", "C2");
 			rhythmTracker = 2;
-
+		}
+		
+		function rhythm3setup(){
+			document.querySelector("#symbol1").innerHTML = "n";
+			document.querySelector("#symbol2").innerHTML = "";
+			document.querySelector("#symbol3").innerHTML = "q";
+		  	document.querySelector("#syllable1").innerHTML = "ti-"; 	
+		  	document.querySelector("#syllable2").innerHTML = "ti "; 	
+		  	document.querySelector("#syllable3").innerHTML = "ta"; 	
+		  	part.clear();
+			part.add("0", "C2");
+			part.add("8n", "C2");
+			part.add("4n", "C2");
+			rhythmTracker = 3;
+		}
+		
+		function rhythm4setup(){
+			document.querySelector("#symbol1").innerHTML = "n";
+		  	document.querySelector("#symbol2").innerHTML = "";
+			document.querySelector("#symbol3").innerHTML = "n";
+		  	document.querySelector("#syllable1").innerHTML = "ti-ti "; 	
+			document.querySelector("#syllable2").innerHTML = "";
+		  	document.querySelector("#syllable3").innerHTML = "ti-ti"; 	
+		  	part.clear();
+			part.add("0", "C2");
+			part.add("8n", "C2");
+			part.add("4n", "C2");
+			part.add("4n.", "C2");
+			rhythmTracker = 4;
+		}
+		
+		function rhythm5setup(){
+			document.querySelector("#symbol1").innerHTML = "h";
+			document.querySelector("#symbol2").innerHTML = "";
+		  	document.querySelector("#symbol3").innerHTML = "";
+		  	document.querySelector("#syllable1").innerHTML = "ta-"; 	
+		  	document.querySelector("#syllable2").innerHTML = "a"; 	
+			document.querySelector("#syllable3").innerHTML = "";
+		  	part.clear();
+			part.add("0", "C2");
+			part.add("4n", null);
+			part.add("4n.", null);
+			rhythmTracker = 5;
+		}
+		
+		function rhythm6setup(){
+			document.querySelector("#symbol1").innerHTML = "j";
+			document.querySelector("#symbol2").innerHTML = "";
+		  	document.querySelector("#symbol3").innerHTML = "e";
+		  	document.querySelector("#syllable1").innerHTML = "ta-"; 	
+		  	document.querySelector("#syllable2").innerHTML = "i "; 	
+			document.querySelector("#syllable3").innerHTML = "ti";
+		  	part.clear();
+			part.add("0", "C2");
+			part.add("4n", null);
+			part.add("4n.", "C2");
+			rhythmTracker = 6;
+		}
+		
+		function rhythm7setup(){
+			document.querySelector("#symbol1").innerHTML = "e";
+			document.querySelector("#symbol2").innerHTML = "q";
+		  	document.querySelector("#symbol3").innerHTML = "e";
+		  	document.querySelector("#syllable1").innerHTML = "syn-"; 	
+		  	document.querySelector("#syllable2").innerHTML = "co-"; 	
+		  	document.querySelector("#syllable3").innerHTML = "pa";
+		  	part.clear();
+		  	part.add("0", "C2"); 
+		  	part.add("8n", "C2"); 
+		  	part.add("4n.", "C2");
+			rhythmTracker = 7;
 		}
 		
 		
@@ -230,19 +316,28 @@
 		}
 		
 		function updatePart(time){
+			noteCounter =1;
+			loopCounter = 1;
 				if (rhythmTracker == 1){
-					rhythm2setup();
+					rhythm2setup();	
 				} else if (rhythmTracker == 2){
+					rhythm3setup();
+				}else if (rhythmTracker == 3){
+					rhythm4setup();
+				}else if (rhythmTracker == 4){
+					rhythm5setup();
+				}else if (rhythmTracker == 5){
+					rhythm6setup();
+				}else if (rhythmTracker == 6){
+					rhythm7setup();
+				}else if (rhythmTracker == 7){
 					rhythm1setup();
 				}
 		}
 
 	 	// Part sets up sound pattern to be played and includes visual sync
 		const part = new Tone.Part(function(time, pitch){	
-			// update debugging output
-			document.getElementById("debug").innerHTML = noteCounter;	
-
-
+			
 			// if we're on the first loop and the first note, schedule a rhythm update in 4 bars
 			var rhythmUpdateTime = ("+"+changeRhythmAfter+"m");
 			if (loopCounter == 1 && noteCounter == 1){
@@ -251,64 +346,71 @@
 			// variable that calculates when to remove symbols based on tempo
 			const loopTime = (Tone.Time(part.loopEnd).toMilliseconds())-(600000/(tempo*6.5));
 			
-			
-			
 			// play the note
 			synth.triggerAttackRelease(pitch, "8n", time); // play an 8th note at the pitch and time passed in
 			
+			// select the elements to be animated
 			var syllable = document.getElementById("syllable"+noteCounter);
 			var symbol = document.getElementById("symbol"+noteCounter); 
 			var circle = document.getElementById("circle"); 
 			
-			// Callback to create animation in time with sound
-			Tone.Draw.schedule(() => {		
-				// Rhythm Syllable Animation
-				// Select all elements related to the current note	
-				syllable.classList.remove("invisible");
-				syllable.classList.add("visible");
-			}, "+8m");
-			
-			Tone.Draw.schedule(() => {					
-				// Rhythm Symbol Animation
-				// Select all elements related to the current note
-				symbol.classList.remove("invisible");
-				symbol.classList.add("visible");
-			}, "+16m");
+			if (showSyllables){
+				// Callback to create animation in time with sound
+				Tone.Draw.schedule(() => {		
+					// Rhythm Syllable Animation
+					// Select all elements related to the current note	
+					syllable.classList.remove("invisible");
+					syllable.classList.add("visible");
+				}, time);	
+			}
+		
+			if (showSymbols){
+				Tone.Draw.schedule(() => {					
+					// Rhythm Symbol Animation
+					// Select all elements related to the current note
+					symbol.classList.remove("invisible");
+					symbol.classList.add("visible");
+				}, time);
+			}
 		
 			Tone.Draw.schedule(() => {	
+				// update debugging output
+				document.getElementById("debug").innerHTML = rhythmUpdateTime;	
+				// update debugging output
+				document.getElementById("noteCounter").innerHTML = noteCounter;	
+				// update debugging output
+				document.getElementById("loopCounter").innerHTML = loopCounter;	
+				// update debugging output
+				document.getElementById("rhythmTracker").innerHTML = rhythmTracker;	
 			
-				// select the circle
 				
 				// flash the circle if the note is not 'null'
 				circleFlash(pitch);
 				
 				// if we are not on the last note increment the note counter
-				if (noteCounter >= part.length){
+				if (noteCounter == part.length){
 					// reset the note counter
 					noteCounter = 1; 
 					
 					// Time out the symbols and syllabes
 				 	setTimeout(() => {
 						hideAll();
-					}, 200); 
+					}, 100); 
 				 	
 				// check increment or reset the loopCounter
 					if (loopCounter >= changeRhythmAfter){
-						loopCounter = 1;
-					
-
-						
+						loopCounter = 1;	
 					} else {
 						loopCounter += 1;
 					} 
-				
-					
-					
+							
 				} else if (noteCounter < part.length){
 					noteCounter += 1;
 				} 
 						
 			}, time);
+			
+			
 			
 			// if its the first note update the part to the correct rhythm pattern
 			
@@ -347,8 +449,8 @@
 				
 			} else {
 				Tone.Transport.stop(); // Stop the transport
-				Tone.Draw.cancel();
-				Tone.Transport.cancel();
+				Tone.Draw.cancel(); // cancel all transport events
+				Tone.Transport.cancel(); // cancel all transport events
 				playing = false; // Set playing boolean to false
 				hideAll(); // hide all symbols
 				noteCounter = 1; // reset the note counter

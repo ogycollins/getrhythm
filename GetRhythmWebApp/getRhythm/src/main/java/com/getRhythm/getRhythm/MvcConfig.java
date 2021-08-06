@@ -21,6 +21,7 @@ public class MvcConfig implements WebMvcConfigurer {
 		registry.addViewController("/createAccount").setViewName("createAccount");
 		registry.addViewController("/aboutLoggedOut").setViewName("aboutLoggedOut");
 		registry.addViewController("/alreadyExists").setViewName("alreadyExists");
+		registry.addViewController("/improvisation").setViewName("improvisation");
 
 
 
