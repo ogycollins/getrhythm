@@ -1,7 +1,9 @@
 <!DOCTYPE html>
+<!-- html tag with attributes for thymeleaf -->
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="https://www.thymeleaf.org"
 	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <head>
 <!-- Required meta tags -->
 <meta charset="utf-8">
@@ -20,7 +22,9 @@
 	integrity="sha512-+esjJ8NSEfoB5Sr8R7jTcYxCR1Bd6q9C+WQC0JA2UXVPT8Mlo/TJqqyp0qeeoxFzkAaa8t6tZCHLGmw3oNI2Qg=="
 	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<title>Performance Activities</title>
+<title>Lessons</title>
+
+<!-- CSS -->
 <style>
 @charset "UTF-8";
 
@@ -40,9 +44,12 @@
 	font-size: 80px;
 }
 </style>
+
 </head>
+
 <body>
-<!-- Navbar -->
+
+	<!-- Navbar -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#">Get Rhythm!</a>
@@ -57,399 +64,351 @@
 				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="#">Lessons</a></li>
-					<li class="nav-item"><a th:href="@{/exercises}" class="nav-link">Exercises</a></li>
-					<li class="nav-item"><a th:href="@{/resources}" class="nav-link">Resources</a></li>
+					<li class="nav-item"><a th:href="@{/exercises}"
+						class="nav-link">Exercises</a></li>
+					<li class="nav-item"><a th:href="@{/resources}"
+						class="nav-link">Resources</a></li>
 					<li class="nav-item"><a th:href="@{/about}" class="nav-link">About</a></li>
-					<li class="nav-item"><a th:href="@{/account}" class="nav-link">My Account</a></li>
+					<li class="nav-item"><a th:href="@{/account}" class="nav-link">My
+							Account</a></li>
 				</ul>
 
 			</div>
 		</div>
 	</nav>
-			<h6 th:inline="text">Logged in as: <span sec:authentication="principal.name">Name</span></h6>
-	
-	<h1 class="display-4 text-center">Performance Activity</h1>
 
-	<!-- Rhythm Pattern Implementation -->
 	<div class="container">
 
-		<div class="row p-3">
+		<!-- Row1 -->
+		<div class="row">
 
-			<div class="d-grid col-1 mx-auto ">
+			<!-- Greeting logged in user -->
+			<div class="col-3 lead" th:inline="text">
+				Logged in as: <span sec:authentication="principal.name">Name</span>
+			</div>
+
+			<!-- Heading and instructions -->
+			<div class="col-6">
+				<h1 class="display-4 text-center">Performance Activity</h1>
+				<h1 class="display-6 text-center">Clap what you hear!</h1>
+			</div>
+
+		</div>
+
+
+		<!-- Row2 -->
+		<div class="row p-3  d-flex align-items-center ">
+
+			<!-- Rhythm Symbols heading -->
+			<div class="d-grid col-4 mx-auto ">
+				<p class="display-6 text-center ">Symbols:</p>
+			</div>
+
+			<!-- Start/Stop Button -->
+			<div class="d-grid col-3 mx-auto ">
 				<button id="startStop" role="switch" aria-checked="false"
-					type="button" class="btn btn-primary">
-					<span>Start</span>
+					type="button" class="btn btn-primary text-center ">
+					<span>Start!</span>
 				</button>
 			</div>
-		</div>
 
-<!-- th:utext="${rhythmSyllables}" --> <!--  this is the code that goes in the relevant p to get the rhythms etc. from the database -->
-
-		<div class="row p-5  d-flex align-items-center ">
-			<div class="col-4 mx-auto note1 invisible">
-				<p id="symbols" class="display-5 text-center ">
-
-				</p>
-			</div>
-			<div class="d-grid gap-2 col-4 rhythmRow1 invisible ">
-				<div id="circle" class="mx-auto rounded-circle"></div>
-			</div>
-			<div class="col-4 mx-auto">
-				<p id="syllables" class="display-5 text-center note1 invisible ">
-
-				</p>
-			</div>
-
-		</div>
-		<div class="row p-3">
-
-
-			<div class="d-grid col mx-auto">
-				<div class="form-check form-switch">
-					<input class="form-check-input rhythm1" type="checkbox"
-						id="flexSwitchCheckChecked" checked> <label
-						class="form-check-label" for="flexSwitchCheckChecked">Rhythm
-						1</label>
-				</div>
-			</div>
-
-			<div class="d-grid col mx-auto">
-				<div class="form-check form-switch">
-					<input class="form-check-input rhythm2" type="checkbox"
-						id="flexSwitchCheckDefault"> <label
-						class="form-check-label" for="flexSwitchCheckDefault">
-						Rhythm 2</label>
-				</div>
-			</div>
-
-			<div class="d-grid col mx-auto">
-				<div class="form-check form-switch">
-					<input class="form-check-input rhythm3" type="checkbox"
-						id="flexSwitchCheckDefault"> <label
-						class="form-check-label" for="flexSwitchCheckDefault">
-						Rhythm 3</label>
-				</div>
-			</div>
-			<div class="d-grid col mx-auto">
-				<div class="form-check form-switch">
-					<input class="form-check-input rhythm4" type="checkbox"
-						id="flexSwitchCheckDefault"> <label
-						class="form-check-label" for="flexSwitchCheckDefault">
-						Rhythm 4</label>
-				</div>
-			</div>
-			<div class="d-grid col mx-auto">
-				<div class="form-check form-switch">
-					<input class="form-check-input rhythm5" type="checkbox"
-						id="flexSwitchCheckDefault"> <label
-						class="form-check-label" for="flexSwitchCheckDefault">Rhythm
-						5</label>
-				</div>
-			</div>
-
-			<div class="d-grid col mx-auto">
-				<div class="form-check form-switch">
-					<input class="form-check-input rhythm6" type="checkbox"
-						id="flexSwitchCheckDefault"> <label
-						class="form-check-label" for="flexSwitchCheckDefault">
-						Rhythm 6</label>
-				</div>
-			</div>
-
-			<div class="d-grid col mx-auto ">
-				<div class="form-check form-switch ">
-					<input class="form-check-input rhythm7 " type="checkbox"
-						id="flexSwitchCheckDefault"> <label
-						class="form-check-label" for="flexSwitchCheckDefault">
-						Rhythm 7</label>
-				</div>
+			<!-- Rhythm Syllables Heading -->
+			<div class="d-grid col-4 mx-auto ">
+				<p class="display-6 text-center ">Say this:</p>
 			</div>
 		</div>
+
+		<!-- Row3 -->
+		<div class="row p-5 d-flex align-items-center ">
+
+			<!-- Notation Display -->
+			<div class="col-4 mx-auto ">
+				<p id="symbols" class="display-5 text-center"></p>
+			</div>
+
+			<!-- Animation Display -->
+			<div class="d-grid gap-2 col-4 ">
+				<div id="circle" class="mx-auto rounded-circle invisible"></div>
+			</div>
+
+			<!-- Rhythm Syllable Display -->
+			<div class="col-4 mx-auto invisible">
+				<p id="syllables" class="display-5 text-center "></p>
+			</div>
+
+		</div>
+
+		<!-- Row4 -->
+		<div class="row">
+
+			<!-- Signout Button -->
+			<div class="col-3 lead" th:inline="text">
+				<form th:action="@{/logout}" method="post">
+					<input type="submit" value="Sign Out" />
+				</form>
+			</div>
+
+		</div>
+
 	</div>
 
-	<form th:action="@{/logout}" method="post">
-		<input type="submit" value="Sign Out" />
-	</form>
-
 	<h1>
-		Debugging: <span id="loopTimeSpan"></span>
+		Debugging: <span id="debug"></span>
 	</h1>
-	<!-- 	Javascript for Rhythms -->
+	<!-- Javascript -->
 	<script>
-		var rhythms = [rhythm1];
+		/* variables */
+		var tempo = 80; // default tempo
+		var playing = false; // boolean to track whether transport playing or not. 
+/* 		var rhythmNo = 1; // keeping track of which rhythm is playing
+ */		var noteCounter = 1;
 
-
+		/* Listener for start stop button */
 		var startStopButton = document.querySelector("#startStop");
-		var rhythm1switch = document.querySelector(".rhythm1");
-		var rhythm2switch = document.querySelector(".rhythm2");
-		var rhythm3switch = document.querySelector(".rhythm3");
-		var rhythm4switch = document.querySelector(".rhythm4");
-		var rhythm5switch = document.querySelector(".rhythm5");
-		var rhythm6switch = document.querySelector(".rhythm6");
-		var rhythm7switch = document.querySelector(".rhythm7");
 		
-		function rhythm1(){
-			document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>q</span> <span class='note2 invisible notation'>q</span><span class='note3 invisible notation'></span>";
-	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>ta</span> <span class='note2 invisible'>ta</span><span class='note3 invisible'></span>";
+		startStopButton.addEventListener("click", function() {
+			startTransport(); // Start the transport control
+		})
+
+		// Create synth to play sound
+		const synth = new Tone.MembraneSynth().toDestination(); //Membrane drum synthesizer
+		
+		// Function to set up rhythm pattern 1
+		function rhythm1setup(){
+			document.querySelector("#symbols").innerHTML = "<span id='symbol1' class='note1 invisible notation'>q</span> <span id='symbol2' class='note2 invisible notation'>q</span> <span id='symbol3' class='note3 invisible notation'></span>";
+		  	document.querySelector("#syllables").innerHTML = "<span id='syllable1' class='note1 invisible'>ta</span> <span id='syllable2' class='note2 invisible'>ta</span> 	<span id='syllable3' class='note3 invisible'></span>"; 	
 	  		part.clear();
-  			part.add("0", "C2");
+	  		part.add("0", "C2");
   			part.add("4n", "C2");
-  			part.add("4n.", "C20");
+  			part.add("4n.", null); // null note to help sync animation but makes no sound
+		}
+		
+		function hideAll(){
+			var note1 = document.getElementsByClassName("note1"); // select all elements related to the current note
+			var note2 = document.getElementsByClassName("note2"); // select all elements related to the current note
+			var note3 = document.getElementsByClassName("note3"); // select all elements related to the current note
+			for(var i = 0; i < note1.length; i++)
+			{
+				note1[i].classList.add("invisible");
+			}
+			
+			for(var i = 0; i < note2.length; i++)
+			{
+				note2[i].classList.add("invisible");
+			}
+			
+			for(var i = 0; i < note3.length; i++)
+			{
+				note3[i].classList.add("invisible");
+			}
+		}
+		
+		
+		function circleFlash(pitch){
+			if (pitch=="C2"){
+				// Circle Animation
+				circle.classList.add("visible");
+				circle.classList.remove("invisible");
+				
+				setTimeout(() => {
+					circle.classList.add("invisible");
+					circle.classList.remove("visible");
+				}, 50);
+			}
+		}
+	 	// Part sets up sound pattern to be played and includes visual sync
+		const part = new Tone.Part(function(time, pitch){	
+			// variable that calculates when to remove symbols based on tempo
+			const loopTime = (Tone.Time(part.loopEnd).toMilliseconds())-(600000/(tempo*6.5));
+			
+			// update debugging output
+			document.getElementById("debug").innerHTML = noteCounter;	
+			
+			// play the note
+			synth.triggerAttackRelease(pitch, "8n", time); // play an 8th note at the pitch and time passed in
+			
+			var syllable = document.getElementById("syllable"+noteCounter);
+			var symbol = document.getElementById("symbol"+noteCounter); 
+			var circle = document.getElementById("circle"); 
+			
+			// Callback to create animation in time with sound
+			Tone.Draw.schedule(() => {		
+				// Rhythm Syllable Animation
+				// select all elements related to the current note
+				
+				syllable.classList.remove("invisible");
+				syllable.classList.add("visible");
+			}, "+8m");
+			
+			Tone.Draw.schedule(() => {					
+				// Rhythm Symbol Animation
+				// select all elements related to the current note
+				symbol.classList.remove("invisible");
+				symbol.classList.add("visible");
+			}, "+16m");
+		
+			Tone.Draw.schedule(() => {	
+			
+				// select the circle
+				
+				// flash the circle if the note is not 'null'
+				circleFlash(pitch);
+				
+				
+				
+				
+				// if we are not on the last note increment the note counter
+				if (noteCounter == part.length){
+					noteCounter = 1;
+				 	setTimeout(() => {
+						hideAll();
+					}, loopTime); 
+				} else if (noteCounter < part.length){
+					noteCounter += 1;
+				} 
+				
+				
+				
+			}, time);
+			
+
+			
+		}, [ ["0", "C2"], ["4n", "C2"] ["4n.", null] ]); // Pass in default note values
+			
+		// Set up the rhythm
+		rhythm1setup();
+		
+		// Set the time signature
+		Tone.Transport.set({
+			"timeSignature" : "2", 
+		});
+		
+		//set the part to loop every 2 beats
+ 		part.set({
+			"loop" : true,
+			"loopEnd" : "1m"			
+		}); 
+			
+		// start the part
+		part.start();		
+
+ 		/* Start Transport Function */
+		function startTransport() {
+			
+			/* If transport is not playing, start it, otherwise stop it */
+			if (!playing) {
+				hideAll(); // hide all symbols
+				noteCounter = 1; // reset the note counter
+	 			Tone.start(); // Start Tone.js - required by browser before allowing audio to play
+				playing = true; // Set playing boolean to true
+				Tone.Transport.bpm.value = tempo; // Set the bpm to the current tempo
+				Tone.Transport.start("+0.1"); // Start the transport 100ms in the future to help with audio latency
+				
+			} else {
+				Tone.Transport.stop(); // Stop the transport
+				Tone.Draw.cancel();
+				playing = false; // Set playing boolean to false
+				hideAll(); // hide all symbols
+				noteCounter = 1; // reset the note counter
+			}
+			
+		}
+
+		// function to play a note
+	/* 	function playNote(time, pitch) {
+			synth.triggerAttackRelease(pitch, "8n", time); // play an 8th note at the pitch and time passed in
+		}	 */
+		
+		// Function to clear part and add new rhythms
+/* 		function rhythm1(){
+			part.clear();
+			part.add("0", "C2");
+  			part.add("4n", "C2");
+  			part.add("4n.", null);
 		}
 		
 		function rhythm2(){
-		/* 	document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>q</span> <span class='note2 invisible notation'>n</span><span class='note3 invisible notation'></span>";
-	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>ta</span> <span class='note2 invisible'>ti-ti</span><span class='note3 invisible'></span>"; */
-	  		part.clear();
+			part.clear();
   			part.add("0", "C2");
   			part.add("4n", "C2");
   			part.add("4n.", "C2");
-		}
+		} */
 		
-		function rhythm3(){
-	  		document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>n</span> <span class='note2 invisible notation'></span><span class='note3 invisible notation'>q</span>";
-	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>ti-ti</span> <span class='note2 invisible'></span><span class='note3 invisible'>ta</span>";
-			part.clear();
-			part.add("0", "C2");
-			part.add("8n", "C2");
-			part.add("4n", "C2");
-			part.add("4n.", "C20");
-		}
-		
-		function rhythm4(){
-	  		document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>n</span> <span class='note2 invisible notation'></span><span class='note3 invisible notation'>n</span>";
-	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>ti-ti</span> <span class='note2 invisible'></span><span class='note3 invisible'>ti-ti</span>";
-	  		part.clear();
-			part.add("0", "C2");
-			part.add("8n", "C2");
-			part.add("4n", "C2");
-			part.add("4n.", "C2");
-		}
-		
-		function rhythm5(){
-	  		document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>h</span> <span class='note2 invisible notation'></span><span class='note3 invisible notation'></span>";
-	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>ta</span> <span class='note2 invisible'>- a</span><span class='note3 invisible'></span>";
-	  		part.clear();
-			part.add("0", "C2");
-			part.add("4n", "C20");
-			part.add("4n.", "C20");
-		}
-		
-		function rhythm6(){
-	  		document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>j</span> <span class='note2 invisible notation'></span><span class='note3 invisible notation'>e</span>";
-	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>ta</span><span class='note2 invisible'>-i</span> <span class='note3 invisible'>ti</span>";
-	  		part.clear();
-			part.add("0", "C2");
-			part.add("4n", "C20");
-			part.add("4n.", "C2");
-		}
-		
-		function rhythm7(){
-	  		document.querySelector("#symbols").innerHTML = "<span class='note1 invisible notation'>e</span> <span class='note2 invisible notation'>q</span><span class='note3 invisible notation'>e</span>";
-	  		document.querySelector("#syllables").innerHTML = "<span class='note1 invisible'>syn</span> <span class='note2 invisible'> - co </span><span class='note3 invisible'> - pa </span>";
-	  		part.clear();
-			part.add("0", "C2");
-			part.add("8n", "C2");
-			part.add("4n.", "C2");
-		}
-		
-		rhythm1switch.addEventListener("click", function() {  
-			if (rhythm1switch.checked){
-				rhythms.push(rhythm1);
-			} else {
-				var index = rhythms.indexOf(rhythm1);
-				if (index !== -1) {
-					rhythms.splice(index, 1);
-				}	
-			}
-		})
-		
-		rhythm2switch.addEventListener("click", function() {  
-			if (rhythm2switch.checked){
-				rhythms.push(rhythm2);
-			} else {
-				var index = rhythms.indexOf(rhythm2);
-				if (index !== -1) {
-					rhythms.splice(index, 1);
-				}	
-			}
-		})
-		
-		rhythm3switch.addEventListener("click", function() {  
-			if (rhythm3switch.checked){
-				rhythms.push(rhythm3);
-			} else {
-				var index = rhythms.indexOf(rhythm3);
-				if (index !== -1) {
-					rhythms.splice(index, 1);
-				}		
-			}
-		})
-		
-		rhythm4switch.addEventListener("click", function() {  
-			if (rhythm4switch.checked){
-				rhythms.push(rhythm4);
-			} else {
-				var index = rhythms.indexOf(rhythm4);
-				if (index !== -1) {
-					rhythms.splice(index, 1);
-				}	
-			}
-		})
-	
-		rhythm5switch.addEventListener("click", function() {  
-			if (rhythm5switch.checked){
-				rhythms.push(rhythm5);
-			} else {
-				var index = rhythms.indexOf(rhythm5);
-				if (index !== -1) {
-					rhythms.splice(index, 1);
-				}	
-			}
-		})
-		
-		
-		rhythm6switch.addEventListener("click", function() {  
-			if (rhythm6switch.checked){
-				rhythms.push(rhythm6);
-			} else {
-				var index = rhythms.indexOf(rhythm6);
-				if (index !== -1) {
-					rhythms.splice(index, 1);
-				}	
-			}
-		})
-		
-		rhythm7switch.addEventListener("click", function() {  
-			if (rhythm7switch.checked){
-				rhythms.push(rhythm7);
-			} else {
-				var index = rhythms.indexOf(rhythm7);
-				if (index !== -1) {
-					rhythms.splice(index, 1);
-				}	
-			}
-		})
-		
-		// Listener on #startStop button
-	  	startStopButton.addEventListener("click", function() {  
-	  		rhythms[rhythmNo]();
-	  		startTransport();	
-	  	})
-	
-	
-		// Create synth
-		const synth = new Tone.MembraneSynth().toDestination();
-		var tempo = 80;
-		
-	 	// Rhythm Pattern 1 Implementation
-		var noteCounter = 1;	
-		var rhythmNo = 0;
-
-	 	// Part describes sound pattern to be played and includes visual sync
-		const part = new Tone.Part(function(time, pitch, velocity){
-			
-		if (noteCounter == part.length){
-	  		rhythms[rhythmNo]();
-		}	
-	   	
-		document.getElementById("loopTimeSpan").innerHTML = part.length;
-
-		synth.triggerAttackRelease(pitch, "8n", time); // play an 8th note at the pitch and time passed in
-		const loopTime = (Tone.Time(part.loopEnd).toMilliseconds())-(600000/(tempo*6.5));
-		
-    
-		// Callback to create animation in time with sound
-				Tone.Draw.schedule(() => {
-					const noteElement = document.getElementsByClassName("note"+noteCounter);
-					const circle = document.getElementById("circle");
-					
-					// 1st Beat Animation
-					for(var i = 0; i < noteElement.length; i++)
-					{
-						noteElement[i].classList.remove("invisible");
-						noteElement[i].classList.add("visible");
-					}
-					
-					if (noteCounter < part.length){
-						noteCounter += 1;
-					}
-					else {
-						noteCounter = 1;
-						setTimeout(() => {
-							for (var i = 1; i <= part.length; i++){
-								const noteOff = document.getElementsByClassName("note"+i);
-								for(var j = 0; j < noteOff.length; j++)
-								{
-									noteOff[j].classList.remove("visible");
-									noteOff[j].classList.add("invisible");
-								}
-							}			
-						},loopTime );
-						
-						if (rhythmNo == rhythms.length-1){
-							rhythmNo = 0;
-
-						} else {
-							rhythmNo += 1;
-						}
-						
-
-					}
-					
-					if (pitch=="C2"){
-						// Circle Animation
-						circle.classList.add("visible");
-						circle.classList.remove("invisible");
-						
-						setTimeout(() => {
-							circle.classList.add("invisible");
-							circle.classList.remove("visible");
-						}, 100);
-					}
-				}, time, noteCounter);
-				
-
-
-		}, [ ["0", "C2"], ["4n", "C2"] ]); // pitch and time of rhythm pattern notes
-		//set the pattern to loop every 2 beats
- 		part.set({
+		// Create a part that plays a note in specific pattern, loop every 2 beats.
+	/* 	const part = new Tone.Part(playNote, [ [ "0", "C2" ], [ "4n", "C2" ] ])
+		.set({
 			"loop" : true,
 			"loopEnd" : "2n"
-			
-		}); 
+		})
+		.start(); // pitch and time of rhythm pattern notes */
+
+
 		
-		// HTML Sound On/Off Button
-	 	let playing = false; // boolean to track whether playing or not. sound not playing when page loads
-	  	
-	 	
 		
-		function startTransport() {
-	  		if (!playing) {		
-	 			playing = true;
-	  			Tone.Transport.bpm.value = tempo;
-	  		    Tone.Transport.timeSignature = "2";
-	 			Tone.start();
-	  			part.start(("+0.1"));
-	 			Tone.Transport.start(("+0.1"));
+ 
+		
+		/* function rhythmCheck(){
+			syllableAnimation1();
+
+
+			if (rhythmNo == 1){
+				rhythmNo = 2;
+				rhythm2();
+
 			} else {
-				noteCounter = 1;
-	  			playing = false;
-	  			Tone.Transport.stop();
+				rhythmNo = 1;
+				rhythm1();
 
 
- 			}
-	 	}
-	
+			}
+			document.getElementById("debug").innerHTML = rhythmNo;
+
+				
+		} */
+		
+/* 		Tone.Transport.scheduleRepeat(rhythmCheck, "1m", "16n");
+ */		
+		/* function syllableAnimation1(time){
+			document.querySelector("#symbols").innerHTML = "<span id='symbol1' class='invisible notation'>q</span> <span id='symbol2' class='invisible notation'>q</span>";
+		  	document.querySelector("#syllables").innerHTML = "<span id='syllable1' class='invisible'>ta</span> <span id='syllable2' class='invisible'>ta</span>"; 	
+			var symbol1 = document.getElementById("symbol1");
+			var symbol2 = document.getElementById("symbol2");
+			var syllable1 = document.getElementById("syllable1");
+			var syllable2 = document.getElementById("syllable2");
+
+			Tone.Transport.scheduleOnce((time)=>{
+				Tone.Draw.schedule(()=>
+					
+					{
+						symbol1.classList.remove("invisible");
+						symbol1.classList.add("visible");
+					}
+				), time;
+			}, time);
+					
+			Tone.Transport.schedule((time)=>{
+				Tone.Draw.schedule(()=>	
+					{
+						symbol2.classList.remove("invisible");
+						symbol2.classList.add("visible");				
+					}
+				), time;
+			}, "+4n"); */
+			
+			
+ 			
+		
+		
+		
 	</script>
-
-	<!-- End of Rhythm 1 Implementation -->
 
 	<!-- Bootstrap JavaScript -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 		crossorigin="anonymous"></script>
+
+
 
 </body>
 </html>

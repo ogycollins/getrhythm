@@ -23,6 +23,7 @@ public class MvcConfig implements WebMvcConfigurer {
 		registry.addViewController("/alreadyExists").setViewName("alreadyExists");
 
 
+
 	}
 
 }
