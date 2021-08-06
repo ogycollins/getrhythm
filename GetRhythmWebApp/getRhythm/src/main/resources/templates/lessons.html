@@ -123,7 +123,7 @@
 
 			<!-- Notation Display -->
 			<div class="col-4 mx-auto ">
-				<p id="symbols" class="display-5 text-center"></p>
+				<p id="symbols" class="display-5 text-center"><span id='symbol1' class='invisible notation hideAll'></span> <span id='symbol2' class='invisible notation hideAll'></span><span id='symbol3' class='invisible notation hideAll'></span></p>
 			</div>
 
 			<!-- Animation Display -->
@@ -133,7 +133,7 @@
 
 			<!-- Rhythm Syllable Display -->
 			<div class="col-4 mx-auto invisible">
-				<p id="syllables" class="display-5 text-center "></p>
+				<p id="syllables" class="display-5 text-center "><span id='syllable1' class='invisible hideAll'></span> <span id='syllable2' class='invisible hideAll'></span> <span id='syllable3' class='invisible hideAll'></span></p>
 			</div>
 
 		</div>
@@ -157,11 +157,14 @@
 	</h1>
 	<!-- Javascript -->
 	<script>
+	
 		/* variables */
 		var tempo = 80; // default tempo
 		var playing = false; // boolean to track whether transport playing or not. 
-/* 		var rhythmNo = 1; // keeping track of which rhythm is playing
- */		var noteCounter = 1;
+		var noteCounter = 1; // count the notes
+ 		var loopCounter = 1; // count the loops
+ 		var rhythmTracker = 1; // keep track of which rhythm is being played currently
+ 		var changeRhythmAfter = 2; // a variable to set how often the rhythm changes
 
 		/* Listener for start stop button */
 		var startStopButton = document.querySelector("#startStop");
@@ -175,31 +178,40 @@
 		
 		// Function to set up rhythm pattern 1
 		function rhythm1setup(){
-			document.querySelector("#symbols").innerHTML = "<span id='symbol1' class='note1 invisible notation'>q</span> <span id='symbol2' class='note2 invisible notation'>q</span> <span id='symbol3' class='note3 invisible notation'></span>";
-		  	document.querySelector("#syllables").innerHTML = "<span id='syllable1' class='note1 invisible'>ta</span> <span id='syllable2' class='note2 invisible'>ta</span> 	<span id='syllable3' class='note3 invisible'></span>"; 	
-	  		part.clear();
+			document.querySelector("#symbol1").innerHTML = "q";
+			document.querySelector("#symbol2").innerHTML = "q";
+		  	document.querySelector("#syllable1").innerHTML = "ta"; 	
+		  	document.querySelector("#syllable2").innerHTML = "ta"; 	
+		  	document.querySelector("#symbol3").innerHTML = "";
+			document.querySelector("#symbol3").innerHTML = "";
+		  	part.clear();
 	  		part.add("0", "C2");
   			part.add("4n", "C2");
-  			part.add("4n.", null); // null note to help sync animation but makes no sound
+			rhythmTracker = 1;
+
 		}
 		
+		function rhythm2setup(){
+			document.querySelector("#symbol1").innerHTML = "q";
+			document.querySelector("#symbol2").innerHTML = "n";
+		  	document.querySelector("#syllable1").innerHTML = "ta"; 	
+		  	document.querySelector("#syllable2").innerHTML = "ti-ti"; 	
+		  	document.querySelector("#symbol3").innerHTML = "";
+			document.querySelector("#symbol3").innerHTML = "";
+		  	part.clear();
+	  		part.add("0", "C2");
+  			part.add("4n", "C2");
+  			part.add("4n.", "C2");
+			rhythmTracker = 2;
+
+		}
+		
+		
 		function hideAll(){
-			var note1 = document.getElementsByClassName("note1"); // select all elements related to the current note
-			var note2 = document.getElementsByClassName("note2"); // select all elements related to the current note
-			var note3 = document.getElementsByClassName("note3"); // select all elements related to the current note
-			for(var i = 0; i < note1.length; i++)
+			var hideElement = document.getElementsByClassName("hideAll"); // select all elements that need to be reset
+			for(var i = 0; i < hideElement.length; i++)
 			{
-				note1[i].classList.add("invisible");
-			}
-			
-			for(var i = 0; i < note2.length; i++)
-			{
-				note2[i].classList.add("invisible");
-			}
-			
-			for(var i = 0; i < note3.length; i++)
-			{
-				note3[i].classList.add("invisible");
+				hideElement[i].classList.add("invisible");
 			}
 		}
 		
@@ -216,13 +228,30 @@
 				}, 50);
 			}
 		}
+		
+		function updatePart(time){
+				if (rhythmTracker == 1){
+					rhythm2setup();
+				} else if (rhythmTracker == 2){
+					rhythm1setup();
+				}
+		}
+
 	 	// Part sets up sound pattern to be played and includes visual sync
 		const part = new Tone.Part(function(time, pitch){	
+			// update debugging output
+			document.getElementById("debug").innerHTML = noteCounter;	
+
+
+			// if we're on the first loop and the first note, schedule a rhythm update in 4 bars
+			var rhythmUpdateTime = ("+"+changeRhythmAfter+"m");
+			if (loopCounter == 1 && noteCounter == 1){
+				Tone.Transport.schedule(updatePart, rhythmUpdateTime);	
+			}
 			// variable that calculates when to remove symbols based on tempo
 			const loopTime = (Tone.Time(part.loopEnd).toMilliseconds())-(600000/(tempo*6.5));
 			
-			// update debugging output
-			document.getElementById("debug").innerHTML = noteCounter;	
+			
 			
 			// play the note
 			synth.triggerAttackRelease(pitch, "8n", time); // play an 8th note at the pitch and time passed in
@@ -234,15 +263,14 @@
 			// Callback to create animation in time with sound
 			Tone.Draw.schedule(() => {		
 				// Rhythm Syllable Animation
-				// select all elements related to the current note
-				
+				// Select all elements related to the current note	
 				syllable.classList.remove("invisible");
 				syllable.classList.add("visible");
 			}, "+8m");
 			
 			Tone.Draw.schedule(() => {					
 				// Rhythm Symbol Animation
-				// select all elements related to the current note
+				// Select all elements related to the current note
 				symbol.classList.remove("invisible");
 				symbol.classList.add("visible");
 			}, "+16m");
@@ -254,29 +282,40 @@
 				// flash the circle if the note is not 'null'
 				circleFlash(pitch);
 				
-				
-				
-				
 				// if we are not on the last note increment the note counter
-				if (noteCounter == part.length){
-					noteCounter = 1;
+				if (noteCounter >= part.length){
+					// reset the note counter
+					noteCounter = 1; 
+					
+					// Time out the symbols and syllabes
 				 	setTimeout(() => {
 						hideAll();
-					}, loopTime); 
+					}, 200); 
+				 	
+				// check increment or reset the loopCounter
+					if (loopCounter >= changeRhythmAfter){
+						loopCounter = 1;
+					
+
+						
+					} else {
+						loopCounter += 1;
+					} 
+				
+					
+					
 				} else if (noteCounter < part.length){
 					noteCounter += 1;
 				} 
-				
-				
-				
+						
 			}, time);
 			
+			// if its the first note update the part to the correct rhythm pattern
+			
+		
+		}, [ ["0", "C2"], ["4n", "C2"] ]); // Pass in default note values
+			
 
-			
-		}, [ ["0", "C2"], ["4n", "C2"] ["4n.", null] ]); // Pass in default note values
-			
-		// Set up the rhythm
-		rhythm1setup();
 		
 		// Set the time signature
 		Tone.Transport.set({
@@ -299,17 +338,23 @@
 			if (!playing) {
 				hideAll(); // hide all symbols
 				noteCounter = 1; // reset the note counter
+				loopCounter = 1; // reset the loop counter
+				rhythm1setup();
 	 			Tone.start(); // Start Tone.js - required by browser before allowing audio to play
 				playing = true; // Set playing boolean to true
 				Tone.Transport.bpm.value = tempo; // Set the bpm to the current tempo
-				Tone.Transport.start("+0.1"); // Start the transport 100ms in the future to help with audio latency
+				Tone.Transport.start("+.3"); // Start the transport 300ms in the future to help with audio latency
 				
 			} else {
 				Tone.Transport.stop(); // Stop the transport
 				Tone.Draw.cancel();
+				Tone.Transport.cancel();
 				playing = false; // Set playing boolean to false
 				hideAll(); // hide all symbols
 				noteCounter = 1; // reset the note counter
+				loopCounter = 1; // reset the loop counter
+				rhythmTracker = 1;// reset rhythm Tracker
+				
 			}
 			
 		}
