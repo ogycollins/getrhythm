@@ -1,9 +1,13 @@
 package com.getRhythm.getRhythm;
 
-import java.util.Optional; 
+import java.security.Principal;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +26,8 @@ public class MainController {
   @Autowired 
   private RhythmPatternsRepository rhythmsRepository;
 
+  
+  
   @GetMapping(path="/all")
   public @ResponseBody Iterable<User> getAllUsers() {
     // This returns a JSON or XML with the users
@@ -44,8 +50,6 @@ public class MainController {
   
   @PostMapping("/process_register")
   public String processRegister(@Valid User user, BindingResult result) {
-
-	  
 	  if (userRepository.existsUserByUsername(user.getUsername())|| userRepository.existsUserByEmail(user.getEmail())){
 		  return "alreadyExists";
 	  } else {
@@ -55,6 +59,16 @@ public class MainController {
 	      userRepository.save(user);  
 	      return "accountCreated";	  
 	  }
+  }
+
+ // gets user progress  
+  @GetMapping("/lessons")
+  String getUserProgress(Model model, HttpServletRequest request) {
+	  Principal user = request.getUserPrincipal();
+	  String name = user.getName();
+	  Integer progress = userRepository.findByName(name).getProgress();
+	  model.addAttribute("progress", progress);
+	  return "lessons";
   }
   
   
