@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+@font-face {
+	font-family: notation;
+	src: url('fonts/Musisync-KVLZ.ttf');
+}
+
+#circle {
+	height: 150px;
+	width: 150px;
+	background-color: #FF5733;
+}
+
+.notation {
+	font-family: notation;
+	font-size: 80px;
+}

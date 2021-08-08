@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<!-- html tag with attributes for thymeleaf -->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+
+<!-- Tone.js CDN -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"
+	integrity="sha512-+esjJ8NSEfoB5Sr8R7jTcYxCR1Bd6q9C+WQC0JA2UXVPT8Mlo/TJqqyp0qeeoxFzkAaa8t6tZCHLGmw3oNI2Qg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<title>Lessons - Improvisation</title>
+
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" media="all" href="/getRhythmStyles.css" />
+
+
+
+</head>
+
+<body>
+
+	<div th:replace="layoutElements :: authenticatedNavbar"></div>
+
+	<div class="container">
+
+		<!-- Row1 -->
+		<div class="row">
+
+			<div th:replace="layoutElements :: greeting"></div>
+
+			<!-- Heading and instructions -->
+			<div class="col-6">
+				<h1 class="display-4 text-center">Improvisation</h1>
+			</div>
+
+		</div>
+
+		<!-- Row2 -->
+
+		<div class="row">
+
+
+
+			<!-- Instructions -->
+			<div class="col">
+				<h1 class="display-6 text-center">Improvise to the beat using
+					rhythms you have learned:</h1>
+			</div>
+
+		</div>
+
+
+		<!-- Row3 -->
+		<div class="row p-3  d-flex align-items-center ">
+
+			<!-- Rhythm Symbols heading -->
+			<div class="d-grid col-4 mx-auto ">
+				<p class="display-6 text-center "></p>
+			</div>
+
+			<!-- Start/Stop Button -->
+			<div class="d-grid col-3 mx-auto ">
+				<button id="startStop" role="switch" aria-checked="false"
+					type="button" class="btn btn-primary text-center ">
+					<span>Start!</span>
+				</button>
+			</div>
+
+			<!-- Rhythm Syllables Heading -->
+			<div class="d-grid col-4 mx-auto ">
+				<p class="display-6 text-center "></p>
+			</div>
+		</div>
+
+		<!-- Row3 -->
+		<div class="row p-5 d-flex align-items-center ">
+			<!-- Animation Display -->
+			<div class="d-grid gap-2 col-2 ">
+				<div id="circle" class="mx-auto rounded-circle invisible"></div>
+			</div>
+			<!-- Rhythms Displayed -->
+			<div class="col">
+				<table class="table notation table-bordered text-center">
+					<tbody>
+						<tr>
+							<td id="rhythm1" class="mx-auto"></td>
+							<td id="rhythm2"></td>
+							<td id="rhythm3"></td>
+							<td id="rhythm4"></td>
+						</tr>
+						<tr>
+
+							<td id="rhythm5"></td>
+							<td id="rhythm6"></td>
+							<td id="rhythm7" colspan="2"></td>
+
+						</tr>
+
+					</tbody>
+				</table>
+
+
+				<span id="rhythm1" class="text-center notation"></span> <span
+					id="rhythm2" class="text-center notation"></span> <span
+					id="rhythm3" class="text-center notation"></span> <span
+					id="rhythm4" class="text-center notation"></span> <span
+					id="rhythm5" class="text-center notation"></span> <span
+					id="rhythm6" class="text-center notation"></span> <span
+					id="rhythm7" class="text-center notation"></span>
+
+
+
+				<!-- Animation Display -->
+				<div class="d-grid gap-2 col-4 ">
+					<div class="mx-auto"></div>
+				</div>
+
+			</div>
+
+			<!-- Row4 -->
+			<div class="row">
+
+				<!-- Signout Button -->
+				<div class="col-4 lead" th:inline="text">
+					<form th:action="@{/logout}" method="post">
+						<input type="submit" value="Sign Out" />
+					</form>
+				</div>
+
+				<div class="col-4"></div>
+
+
+				<div th:replace="layoutElements :: signoutButton"></div>
+				<div class="d-grid col-2 mx-auto">
+					<a id="continue" href="/improvisation" role="button"
+						aria-checked="false" class="btn btn-primary text-center "> <span>Continue</span>
+					</a>
+				</div>
+			</div>
+
+		</div>
+
+		<p>
+			Debugging: <span id="debug"></span>
+		</p>
+
+
+		<!-- Javascript -->
+		<script>
+	
+		/* variables */
+		var tempo = 80; // default tempo
+		var playing = false; // boolean to track whether transport playing or not. 
+
+	
+
+		/* Listener for start stop button */
+		var startStopButton = document.querySelector("#startStop");
+		
+		startStopButton.addEventListener("click", function() {
+			startTransport(); // Start the transport control
+		})
+
+		// Create synth to play sound
+		const synth = new Tone.MembraneSynth().toDestination(); //Membrane drum synthesizer
+		
+		// Function to set up rhythm pattern 1
+		function rhythm1symbols(){
+			document.querySelector("#rhythm1").innerHTML = "q q";
+		}
+		
+		function rhythm2symbols(){
+			document.querySelector("#rhythm2").innerHTML = "q n";
+		}
+		
+		function rhythm3symbols(){
+			document.querySelector("#rhythm3").innerHTML = "n q";
+		}
+		
+		function rhythm4symbols(){
+			document.querySelector("#rhythm4").innerHTML = "n n";
+		}
+		
+		function rhythm5symbols(){
+			document.querySelector("#rhythm5").innerHTML = "h";
+		}
+		
+		function rhythm6symbols(){
+			document.querySelector("#rhythm6").innerHTML = "j e";
+		}
+		
+		function rhythm7symbols(){
+			document.querySelector("#rhythm7").innerHTML = "e q e";
+		}
+		
+		
+		function circleFlash(pitch){
+			if (pitch=="C2"){
+				// Circle Animation
+				circle.classList.add("visible");
+				circle.classList.remove("invisible");
+				
+				setTimeout(() => {
+					circle.classList.add("invisible");
+					circle.classList.remove("visible");
+				}, 50);
+			}
+		}
+
+	 	// Simple Part to keep time
+		const part = new Tone.Part(function(time, pitch){	
+			// play the note
+			synth.triggerAttackRelease(pitch, "8n", time); // play an 8th note at the pitch and time passed in
+			
+		
+			var circle = document.getElementById("circle"); 
+		
+			Tone.Draw.schedule(() => {		
+				
+				// flash the circle in time with metronome
+				circleFlash(pitch);
+						
+			}, time);
+		
+		}, [ ["0", "C2"], ["4n", "C2"] ]); // Pass in simple metronome pattern
+		
+		rhythm1symbols();
+		rhythm2symbols();
+		rhythm3symbols();
+		rhythm4symbols();
+		rhythm5symbols();
+		rhythm6symbols();
+		rhythm7symbols();
+
+		
+		// Set the time signature
+		Tone.Transport.set({
+			"timeSignature" : "2", 
+		});
+		
+		//set the part to loop every 2 beats
+ 		part.set({
+			"loop" : true,
+			"loopEnd" : "1m"			
+		}); 
+			
+		// start the part
+		part.start();		
+
+		
+ 		/* Start Transport Function */
+		function startTransport() {
+			
+			/* If transport is not playing, start it, otherwise stop it */
+			if (!playing) {
+	 			Tone.start(); // Start Tone.js - required by browser before allowing audio to play
+				playing = true; // Set playing boolean to true
+				Tone.Transport.bpm.value = tempo; // Set the bpm to the current tempo
+				Tone.Transport.start("+.3"); // Start the transport 300ms in the future to help with audio latency
+				
+			} else {
+				Tone.Transport.stop(); // Stop the transport
+				playing = false; // Set playing boolean to false			
+			}	
+		}				
+	</script>
+
+		<!-- Bootstrap JavaScript -->
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+			crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
+	<!--   Authenticated Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light"
+		th:fragment="authenticatedNavbar">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">Get Rhythm!</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+					<li class="nav-item"><a th:href="@{/lessons}" class="nav-link">Lessons</a></li>
+					<li class="nav-item"><a th:href="@{/exercises}"
+						class="nav-link">Exercises</a></li>
+					<li class="nav-item"><a th:href="@{/resources}"
+						class="nav-link">Resources</a></li>
+					<li class="nav-item"><a th:href="@{/about}" class="nav-link">About</a></li>
+					<li class="nav-item"><a th:href="@{/account}" class="nav-link">My
+							Account</a></li>
+				</ul>
+
+			</div>
+		</div>
+	</nav>
+
+
+
+
+	<!-- Unauthenticated Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light"
+		th:fragment="unauthenticatedNavbar">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">Get Rhythm!</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+					<li class="nav-item"><a th:href="@{/home}" class="nav-link">Home</a></li>
+					<li class="nav-item"><a th:href="@{/lessons}" class="nav-link">Log-in</a></li>
+					<li class="nav-item"><a th:href="@{/createAccount}"
+						class="nav-link">Create Account</a></li>
+					<li class="nav-item"><a th:href="@{/about}" class="nav-link">About</a></li>
+
+				</ul>
+
+			</div>
+		</div>
+	</nav>
+
+	<!-- Greeting logged in user -->
+	<div class="col-3 lead" th:inline="text" th:fragment="greeting">
+		Logged in as: <span sec:authentication="principal.name">Name</span>
+	</div>
+
+	<!-- Signout Button -->
+	<div class="col-4 lead" th:inline="text" th:fragment="signoutButton">
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Sign Out" />
+		</form>
+	</div>
+
+
+</body>
+</html>
