@@ -25,7 +25,8 @@
 <title>Lessons - Improvisation</title>
 
 <!-- CSS -->
-<link rel="stylesheet" type="text/css" media="all" href="/getRhythmStyles.css" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="/getRhythmStyles.css" />
 
 
 
@@ -93,35 +94,24 @@
 				<div id="circle" class="mx-auto rounded-circle invisible"></div>
 			</div>
 			<!-- Rhythms Displayed -->
-			<div class="col">
+			<div class="col display-2">
 				<table class="table notation table-bordered text-center">
 					<tbody>
 						<tr>
-							<td id="rhythm1" class="mx-auto"></td>
-							<td id="rhythm2"></td>
-							<td id="rhythm3"></td>
-							<td id="rhythm4"></td>
+							<td id="rhythm1">q q</td>
+							<td id="rhythm2">q n</td>
+							<td th:if="${progress}>=2" id="rhythm3">n q</td>
+							<td th:if="${progress}>=3" id="rhythm4">n n</td>
 						</tr>
 						<tr>
-
-							<td id="rhythm5"></td>
-							<td id="rhythm6"></td>
-							<td id="rhythm7" colspan="2"></td>
+							<td th:if="${progress}>=4" id="rhythm5">h</td>
+							<td th:if="${progress}>=5" id="rhythm6">j e</td>
+							<td th:if="${progress}>=6" id="rhythm7" colspan="2">e q e</td>
 
 						</tr>
 
 					</tbody>
 				</table>
-
-
-				<span id="rhythm1" class="text-center notation"></span> <span
-					id="rhythm2" class="text-center notation"></span> <span
-					id="rhythm3" class="text-center notation"></span> <span
-					id="rhythm4" class="text-center notation"></span> <span
-					id="rhythm5" class="text-center notation"></span> <span
-					id="rhythm6" class="text-center notation"></span> <span
-					id="rhythm7" class="text-center notation"></span>
-
 
 
 				<!-- Animation Display -->
@@ -130,29 +120,31 @@
 				</div>
 
 			</div>
-
-			<!-- Row4 -->
-			<div class="row">
-
-				<!-- Signout Button -->
-				<div class="col-4 lead" th:inline="text">
-					<form th:action="@{/logout}" method="post">
-						<input type="submit" value="Sign Out" />
-					</form>
-				</div>
-
-				<div class="col-4"></div>
+		</div>
 
 
+
+		<!-- Row4 -->
+		<div class="row">
+			<div class="col-4">
 				<div th:replace="layoutElements :: signoutButton"></div>
-				<div class="d-grid col-2 mx-auto">
-					<a id="continue" href="/improvisation" role="button"
-						aria-checked="false" class="btn btn-primary text-center "> <span>Continue</span>
-					</a>
-				</div>
 			</div>
 
+			<div class="d-grid col-4 mx-auto"></div>
+
+			<div class="d-grid col-2 mx-auto">
+				<a id="back" href="/lessons" role="button" aria-checked="false"
+					class="btn btn-primary text-center "> <span>Back</span>
+				</a>
+			</div>
+			<div class="d-grid col-2 mx-auto">
+
+				<a id="continue" href="/composition" role="button"
+					aria-checked="false" class="btn btn-primary text-center "> <span>Continue</span>
+				</a>
+			</div>
 		</div>
+
 
 		<p>
 			Debugging: <span id="debug"></span>
@@ -178,34 +170,7 @@
 		// Create synth to play sound
 		const synth = new Tone.MembraneSynth().toDestination(); //Membrane drum synthesizer
 		
-		// Function to set up rhythm pattern 1
-		function rhythm1symbols(){
-			document.querySelector("#rhythm1").innerHTML = "q q";
-		}
-		
-		function rhythm2symbols(){
-			document.querySelector("#rhythm2").innerHTML = "q n";
-		}
-		
-		function rhythm3symbols(){
-			document.querySelector("#rhythm3").innerHTML = "n q";
-		}
-		
-		function rhythm4symbols(){
-			document.querySelector("#rhythm4").innerHTML = "n n";
-		}
-		
-		function rhythm5symbols(){
-			document.querySelector("#rhythm5").innerHTML = "h";
-		}
-		
-		function rhythm6symbols(){
-			document.querySelector("#rhythm6").innerHTML = "j e";
-		}
-		
-		function rhythm7symbols(){
-			document.querySelector("#rhythm7").innerHTML = "e q e";
-		}
+	
 		
 		
 		function circleFlash(pitch){
@@ -238,14 +203,6 @@
 		
 		}, [ ["0", "C2"], ["4n", "C2"] ]); // Pass in simple metronome pattern
 		
-		rhythm1symbols();
-		rhythm2symbols();
-		rhythm3symbols();
-		rhythm4symbols();
-		rhythm5symbols();
-		rhythm6symbols();
-		rhythm7symbols();
-
 		
 		// Set the time signature
 		Tone.Transport.set({

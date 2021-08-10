@@ -13,5 +13,15 @@
 
 .notation {
 	font-family: notation;
-	font-size: 80px;
 }
+
+.compositionTableRow {
+	font-family: notation;
+	height: 10rem;
+}
+
+.compositionTable {
+		  table-layout: fixed;
+}
+
+

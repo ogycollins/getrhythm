@@ -26,8 +26,6 @@ public class MainController {
   @Autowired 
   private RhythmPatternsRepository rhythmsRepository;
 
-  
-  
   @GetMapping(path="/all")
   public @ResponseBody Iterable<User> getAllUsers() {
     // This returns a JSON or XML with the users
@@ -61,16 +59,33 @@ public class MainController {
 	  }
   }
 
- // gets user progress  
   @GetMapping("/lessons")
   String getUserProgress(Model model, HttpServletRequest request) {
-	  Principal user = request.getUserPrincipal();
-	  String name = user.getName();
-	  Integer progress = userRepository.findByName(name).getProgress();
+	  Integer progress = getProgress(model, request);
 	  model.addAttribute("progress", progress);
 	  return "lessons";
   }
   
+  @ResponseBody Integer getProgress(Model model, HttpServletRequest request) {
+	  Principal user = request.getUserPrincipal();
+	  String name = user.getName();
+	  Integer progress = userRepository.findByName(name).getProgress();
+	  return progress;
+  }
+  
+  @GetMapping("/improvisation")
+  String getProgress2(Model model, HttpServletRequest request) {
+	  Integer progress = getProgress(model, request);
+	  model.addAttribute("progress", progress);
+	  return "improvisation";
+  }
+  
+  @GetMapping("/composition")
+  String getProgress3(Model model, HttpServletRequest request) {
+	  Integer progress = getProgress(model, request);
+	  model.addAttribute("progress", progress);
+	  return "composition";
+  }
   
   
 
