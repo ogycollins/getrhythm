@@ -54,7 +54,7 @@
 
 		<div class="row">
 			<!-- Instructions -->
-			
+
 			<!-- Start/Stop Button -->
 			<div class="d-grid col-1 mx-auto ">
 				<button id="startStop" role="switch" aria-checked="false"
@@ -65,7 +65,8 @@
 			<div class="col-2"></div>
 			<!-- Instructions -->
 			<div class="col-6">
-				<h1 class="display-6 text-center">Instructions go here</h1>
+				<h1 class="fs-2 text-center">Drag And Drop To Create Your Own
+					Rhythms</h1>
 			</div>
 			<!-- Rhythms Heading -->
 			<div class="col-3">
@@ -81,62 +82,81 @@
 			<div class="d-grid col-8 display-2 ">
 				<div
 					class="container table notation table-bordered text-center compositionTable ">
-					<div class="row compositionTableRow " ondrop="drop(event)"
-						ondragover="allowDrop(event)">
-						<div id="box1" class="col-sm border"></div>
-						<div id="box2" class="col-sm border"></div>
-						<div id="box3" class="col-sm border"></div>
-						<div id="box4" class="col-sm border"></div>
+					<div class="row compositionTableRow ">
+						<div id="box1" ondrop="drop(event)" ondragover="allowDrop(event)"
+							class="col-sm border d-flex align-items-center justify-content-center"></div>
+						<div id="box2" ondrop="drop(event)" ondragover="allowDrop(event)"
+							class="col-sm border d-flex align-items-center justify-content-center"></div>
+						<div id="box3" ondrop="drop(event)" ondragover="allowDrop(event)"
+							class="col-sm border d-flex align-items-center justify-content-center"></div>
+						<div id="box4" ondrop="drop(event)" ondragover="allowDrop(event)"
+							class="col-sm border d-flex align-items-center justify-content-center"></div>
 					</div>
-					<div class="row compositionTableRow" ondrop="drop(event)"
-						ondragover="allowDrop(event)">
-						<div id="box5" class="col-sm border"></div>
-						<div id="box6" class="col-sm border"></div>
-						<div id="box7" class="col-sm border"></div>
-						<div id="box8" class="col-sm border"></div>
+					<div class="row compositionTableRow">
+						<div id="box5" ondrop="drop(event)" ondragover="allowDrop(event)"
+							class="col-sm border d-flex align-items-center justify-content-center"></div>
+						<div id="box6" ondrop="drop(event)" ondragover="allowDrop(event)"
+							class="col-sm border d-flex align-items-center justify-content-center"></div>
+						<div id="box7" ondrop="drop(event)" ondragover="allowDrop(event)"
+							class="col-sm border d-flex align-items-center justify-content-center"></div>
+						<div id="box8" ondrop="drop(event)" ondragover="allowDrop(event)"
+							class="col-sm border d-flex align-items-center justify-content-center"></div>
 					</div>
 				</div>
 			</div>
 
 			<!-- AvailableRhythms Grid -->
-			<div class="d-grid col-4 mx-auto display-4">
-				<div class="container notation text-center">
-					<div class="row">
-						<div class="col-sm border">
-							<span id="rhythm1" class="align-middle" draggable="true"
-								ondragstart="drag(event)">q q</span>
+			<div class="d-grid col-4 mx-auto display-4 noSelect"
+				draggable="false">
+				<div class="container notation" draggable="false">
+					<div class="row" draggable="false">
+						<div
+							class="col-sm border d-flex align-items-center justify-content-center">
+							<span id="rhythm1" draggable="true" ondragstart="drag(event)">q
+								q</span>
 						</div>
-						<div class="col-sm border">
-							<span id="rhythm2" class="align-middle" draggable="true"
-								ondragstart="drag(event)">q n</span>
-						</div>
-					</div>
-					<div class="row" th:if="${progress}>=2">
-						<div class="col-sm border" th:if="${progress}>=2">
-							<span id="rhythm3" class="align-middle" draggable="true"
-								ondragstart="drag(event)">n q</span>
-						</div>
-						<div class="col-sm border" th:if="${progress}>=3">
-							<span id="rhythm4" class="align-middle" draggable="true"
-								ondragstart="drag(event)">n n</span>
+						<div
+							class="col-sm border d-flex align-items-center justify-content-center">
+							<span id="rhythm2" draggable="true" ondragstart="drag(event)">q
+								n</span>
 						</div>
 					</div>
-					<div class="row" th:if="${progress}>=4">
-						<div class="col-sm border" th:if="${progress}>=4">
-							<span id="rhythm5" class="align-middle" draggable="true"
-								ondragstart="drag(event)">h</span>
+					<div class="row" th:if="${progress}>=2" draggable="false">
+						<div
+							class="col-sm border d-flex align-items-center justify-content-center"
+							th:if="${progress}>=2">
+							<span id="rhythm3" draggable="true" ondragstart="drag(event)">n
+								q</span>
 						</div>
-						<div class="col-sm border" th:if="${progress}>=5">
-							<span id="rhythm6" class="align-middle" draggable="true"
-								ondragstart="drag(event)">j e</span>
+						<div
+							class="col-sm border d-flex align-items-center justify-content-center"
+							th:if="${progress}>=3">
+							<span id="rhythm4" draggable="true" ondragstart="drag(event)">n
+								n</span>
 						</div>
 					</div>
-					<div class="row" th:if="${progress}>=6">
-						<div class="col-sm border" th:if="${progress}>=6">
-							<span id="rhythm7" class="align-middle" colspan="2"
-								draggable="true" ondragstart="drag(event)">e q e</span>
+					<div class="row" th:if="${progress}>=4" draggable="false">
+						<div
+							class="col-sm border d-flex align-items-center justify-content-center"
+							th:if="${progress}>=4">
+							<span id="rhythm5" draggable="true" ondragstart="drag(event)">h</span>
 						</div>
-						<div class="col-sm border"></div>
+						<div
+							class="col-sm border d-flex align-items-center justify-content-center"
+							th:if="${progress}>=5">
+							<span id="rhythm6" draggable="true" ondragstart="drag(event)">j
+								e</span>
+						</div>
+					</div>
+					<div class="row" th:if="${progress}>=6" draggable="false">
+						<div
+							class="col-sm border d-flex align-items-center justify-content-center"
+							th:if="${progress}>=6">
+							<span id="rhythm7" colspan="2" draggable="true"
+								ondragstart="drag(event)">e q e</span>
+						</div>
+						<div
+							class="col-sm border d-flex align-items-center justify-content-center"></div>
 					</div>
 
 				</div>
@@ -161,7 +181,7 @@
 			</div>
 			<div class="d-grid col-2 mx-auto">
 
-				<a id="continue" href="/composition" role="button"
+				<a id="continue" href="/dictation" role="button"
 					aria-checked="false" class="btn btn-primary text-center "> <span>Continue</span>
 				</a>
 			</div>
@@ -193,7 +213,7 @@
 				var newRhythm = document.getElementById(data).cloneNode(true); // get node by ID, clone it and assign a new variable
 				newRhythm.id = newRhythm.id + "copy"; // create new note name
 				// update debugging output
-				document.getElementById("debug").innerHTML = ev.target.tagName.length;
+				document.getElementById("debug").innerHTML = part.length;
 				// if statement to handle replacing previously dropped rhythms
 				// if target has nodes remove them and append the new rhythm to the div
 				if (ev.target.hasChildNodes()) {
@@ -274,17 +294,7 @@
 				
 				}
 			}
-					
-					
-					
-					
-					
-					
-
-				
-				
-				
-			
+								
 			// Set the time signature
 			Tone.Transport.set({
 				"timeSignature" : "2", 
@@ -301,6 +311,8 @@
 					playing = true; // Set playing boolean to true
 					Tone.Transport.bpm.value = tempo; // Set the bpm to the current tempo
 					Tone.Transport.start("+.3"); // Start the transport 300ms in the future to help with audio latency
+					
+				
 					
 				} else {
 					Tone.Transport.stop(); // Stop the transport

@@ -21,7 +21,9 @@
 }
 
 .compositionTable {
-		  table-layout: fixed;
+	table-layout: fixed;
 }
 
-
+.noSelect {
+	user-select: none;
+}

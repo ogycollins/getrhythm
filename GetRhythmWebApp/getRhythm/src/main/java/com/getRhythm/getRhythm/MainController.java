@@ -87,6 +87,13 @@ public class MainController {
 	  return "composition";
   }
   
+  @GetMapping("/dictation")
+  String getProgress4(Model model, HttpServletRequest request) {
+	  Integer progress = getProgress(model, request);
+	  model.addAttribute("progress", progress);
+	  return "dictation";
+  }
+  
   
 
  

@@ -88,30 +88,31 @@
 		</div>
 
 		<!-- Row3 -->
-		<div class="row p-5 d-flex align-items-center ">
+		<div class="row p-5 d-flex  ">
 			<!-- Animation Display -->
 			<div class="d-grid gap-2 col-2 ">
 				<div id="circle" class="mx-auto rounded-circle invisible"></div>
+			</div>	
+			
+			<div class=" d-grid col-8 display-2  ">
+				<div
+					class="container table notation table-bordered compositionTable ">
+					<div class="row compositionTableRow" ondrop="drop(event)"
+						ondragover="allowDrop(event)">
+						<div id="rhythm1" class="col-sm border d-flex align-items-center justify-content-center">q q</div>
+						<div id="rhythm2" class="col-sm border d-flex align-items-center justify-content-center">q n</div>
+						<div id="rhythm3" th:if="${progress}>=2" class="col-sm border d-flex align-items-center justify-content-center">n q</div>
+						<div id="rhythm4" th:if="${progress}>=3" class="col-sm border d-flex align-items-center justify-content-center">n n</div>
+					</div>
+					<div class="row compositionTableRow" ondrop="drop(event)"
+						ondragover="allowDrop(event)">
+						<div id="rhythm5" th:if="${progress}>=4" class="col-sm border d-flex align-items-center justify-content-center">h</div>
+						<div id="rhythm6" th:if="${progress}>=5" class="col-sm border d-flex align-items-center justify-content-center">j e</div>
+						<div id="rhythm7" th:if="${progress}>=6" class="col-sm border d-flex align-items-center justify-content-center">e q e</div>
+
+					</div>
+				</div>
 			</div>
-			<!-- Rhythms Displayed -->
-			<div class="col display-2">
-				<table class="table notation table-bordered text-center">
-					<tbody>
-						<tr>
-							<td id="rhythm1">q q</td>
-							<td id="rhythm2">q n</td>
-							<td th:if="${progress}>=2" id="rhythm3">n q</td>
-							<td th:if="${progress}>=3" id="rhythm4">n n</td>
-						</tr>
-						<tr>
-							<td th:if="${progress}>=4" id="rhythm5">h</td>
-							<td th:if="${progress}>=5" id="rhythm6">j e</td>
-							<td th:if="${progress}>=6" id="rhythm7" colspan="2">e q e</td>
-
-						</tr>
-
-					</tbody>
-				</table>
 
 
 				<!-- Animation Display -->
