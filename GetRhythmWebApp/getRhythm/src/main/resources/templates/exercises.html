@@ -22,12 +22,158 @@
 </head>
 <body>
 	<div th:replace="layoutElements :: authenticatedNavbar"></div>
+	<div class="containr">
+		<!-- Row1 -->
+		<div class="row">
 
-		<div th:replace="layoutElements :: greeting"></div>
+			<div th:replace="layoutElements :: greeting"></div>
 
-		<h1 class="display-4 text-center">Exercises</h1>
+			<!-- Heading and instructions -->
+			<div class="col-6">
+				<h1 class="display-4 text-center">Exercises</h1>
+			</div>
 
-		<div th:replace="layoutElements :: signoutButton"></div>
+		</div>
+
+
+		<!-- Row2 -->
+
+		<div class="row">
+
+			<div class="col-4"></div>
+
+			<div class="col-4">
+				<form>
+					<div class="mb-3 dropdown">
+						<label for="exerciseType" class="col-form-label fs-4">Exercise
+							Type:</label>
+						<button class="btn btn-secondary dropdown-toggle" type="button"
+							id="exerciseType" data-bs-toggle="dropdown" aria-expanded="false">Exercise
+							Type</button>
+						<ul class="dropdown-menu" aria-labelledby="exerciseType">
+							<li><a class="dropdown-item" href="#">Performance</a></li>
+							<li><a class="dropdown-item" href="#">Improvisation</a></li>
+							<li><a class="dropdown-item" href="#">Composition</a></li>
+							<li><a class="dropdown-item" href="#">Dictation</a></li>
+						</ul>
+					</div>
+
+					<div class="mb-3">
+						<label class="col-form-label fs-4">Rhythms:</label>
+						<div class="container">
+							<div class="row row-cols-md-auto">
+								<div class="col-4 form-check d-flex align-items-center">
+									<input class="form-check-input" type="checkbox" value=""
+										id="rhythm1"> <label
+										class="form-check-label notation display-5 mx-auto"
+										for="rhythm1">q q</label>
+								</div>
+								<div class="col-4 form-check d-flex align-items-center">
+									<input class="form-check-input" type="checkbox" value=""
+										id="rhythm2"> <label
+										class="form-check-label notation display-5 mx-auto"
+										for="rhythm2">q n</label>
+								</div>
+								<div class="col-4 form-check d-flex align-items-center">
+									<input class="form-check-input" type="checkbox" value=""
+										id="rhythm3"> <label
+										class="form-check-label notation display-5 mx-auto"
+										for="rhythm3">n q</label>
+								</div>
+							</div>
+							<div class="row row-cols-md-auto">
+								<div class="col-4 form-check d-flex align-items-center">
+									<input class="form-check-input" type="checkbox" value=""
+										id="rhythm4"> <label
+										class="form-check-label notation display-5 mx-auto"
+										for="rhythm4">n n</label>
+								</div>
+								<div class="col-4 form-check d-flex align-items-center">
+									<input class="form-check-input" type="checkbox" value=""
+										id="rhythm5"> <label
+										class="form-check-label notation display-5 mx-auto"
+										for="rhythm5">h</label>
+								</div>
+								<div class="col-4 form-check d-flex align-items-center">
+									<input class="form-check-input" type="checkbox" value=""
+										id="rhythm6"> <label
+										class="form-check-label notation display-5 mx-auto"
+										for="rhythm6">j e</label>
+								</div>
+							</div>
+								
+							<div class="row row-cols-md-auto">
+								<div class="col-4 form-check d-flex align-items-center">
+									<input class="form-check-input" type="checkbox" value=""
+										id="rhythm7"> <label
+										class="form-check-label notation display-5 mx-auto"
+										for="rhythm7">e q e</label>
+								</div>
+							</div>
+							
+							
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<div class="slidecontainer d-grid mx-auto">
+							<label for="tempoSlider" class="col-form-label fs-4">Tempo:</label><span id="tempoValue"></span>
+							<input type="range" min="60" max="160" value="80" class="slider"
+								id="tempoSlider">
+						</div>
+					</div>
+
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</form>
+			</div>
+
+			<div class="col-4"></div>
+		</div>
+		
+		<!-- Row3 -->
+
+		<div class="row">
+
+			<div class="col-3"></div>
+
+			<div class="col-6"></div>
+
+			<div class="col-3"></div>
+		</div>
+		
+		<!-- Row4 -->
+
+		<div class="row">
+
+			<div class="col-3"></div>
+
+			<div class="col-6"></div>
+
+			<div class="col-3"></div>
+		</div>
+	</div>
+
+		
+
+
+	
+			
+
+
+
+
+	<div th:replace="layoutElements :: signoutButton"></div>
+	
+	<script>
+	var slider = document.getElementById("tempoSlider");
+	var output = document.getElementById("tempoValue");
+	output.innerHTML = slider.value; // Display the default slider value
+
+	// Update the current slider value (each time you drag the slider handle)
+	slider.oninput = function() {
+	  output.innerHTML = this.value;
+	}
+	</script>
 
 		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

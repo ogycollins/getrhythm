@@ -27,3 +27,15 @@
 .noSelect {
 	user-select: none;
 }
+
+.checked {
+  color: orange;
+}
+
+.rating_star {
+   cursor: pointer;
+}
+
+.rating_star:hover {
+   filter: drop-shadow(1px 1px 4px gold);
+}

@@ -1,6 +1,6 @@
 package com.getRhythm.getRhythm;
 
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Configuration; 
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -23,6 +23,8 @@ public class MvcConfig implements WebMvcConfigurer {
 		registry.addViewController("/improvisation").setViewName("improvisation");
 		registry.addViewController("/composition").setViewName("composition");
 		registry.addViewController("/dictation").setViewName("dictation");
+		registry.addViewController("/selfAssessment").setViewName("selfAssessment");
+
 
 
 

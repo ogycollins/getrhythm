@@ -68,23 +68,17 @@
 		<!-- Row3 -->
 		<div class="row p-3  d-flex align-items-center ">
 
-			<!-- Rhythm Symbols heading -->
-			<div class="d-grid col-4 mx-auto ">
-				<p class="display-6 text-center "></p>
-			</div>
+			<div class="d-grid col-5 mx-auto "></div>
 
 			<!-- Start/Stop Button -->
-			<div class="d-grid col-3 mx-auto ">
+			<div class="d-grid col-2 mx-auto ">
 				<button id="startStop" role="switch" aria-checked="false"
 					type="button" class="btn btn-primary text-center ">
 					<span>Start!</span>
 				</button>
 			</div>
 
-			<!-- Rhythm Syllables Heading -->
-			<div class="d-grid col-4 mx-auto ">
-				<p class="display-6 text-center "></p>
-			</div>
+			<div class="d-grid col-5 mx-auto "></div>
 		</div>
 
 		<!-- Row3 -->
@@ -92,68 +86,76 @@
 			<!-- Animation Display -->
 			<div class="d-grid gap-2 col-2 ">
 				<div id="circle" class="mx-auto rounded-circle invisible"></div>
-			</div>	
-			
+			</div>
+
 			<div class=" d-grid col-8 display-2  ">
 				<div
 					class="container table notation table-bordered compositionTable ">
-					<div class="row compositionTableRow" ondrop="drop(event)"
-						ondragover="allowDrop(event)">
-						<div id="rhythm1" class="col-sm border d-flex align-items-center justify-content-center">q q</div>
-						<div id="rhythm2" class="col-sm border d-flex align-items-center justify-content-center">q n</div>
-						<div id="rhythm3" th:if="${progress}>=2" class="col-sm border d-flex align-items-center justify-content-center">n q</div>
-						<div id="rhythm4" th:if="${progress}>=3" class="col-sm border d-flex align-items-center justify-content-center">n n</div>
+					<div class="row compositionTableRow">
+						<div id="rhythm1"
+							class="col-sm border d-flex align-items-center justify-content-center">q
+							q</div>
+						<div id="rhythm2"
+							class="col-sm border d-flex align-items-center justify-content-center">q
+							n</div>
+						<div id="rhythm3" th:if="${progress}>=2"
+							class="col-sm border d-flex align-items-center justify-content-center">n
+							q</div>
+						<div id="rhythm4" th:if="${progress}>=3"
+							class="col-sm border d-flex align-items-center justify-content-center">n
+							n</div>
 					</div>
-					<div class="row compositionTableRow" ondrop="drop(event)"
-						ondragover="allowDrop(event)">
-						<div id="rhythm5" th:if="${progress}>=4" class="col-sm border d-flex align-items-center justify-content-center">h</div>
-						<div id="rhythm6" th:if="${progress}>=5" class="col-sm border d-flex align-items-center justify-content-center">j e</div>
-						<div id="rhythm7" th:if="${progress}>=6" class="col-sm border d-flex align-items-center justify-content-center">e q e</div>
+					<div class="row compositionTableRow" th:if="${progress}>=4">
+						<div id="rhythm5" th:if="${progress}>=4"
+							class="col-sm border d-flex align-items-center justify-content-center">h</div>
+						<div id="rhythm6" th:if="${progress}>=5"
+							class="col-sm border d-flex align-items-center justify-content-center">j
+							e</div>
+						<div id="rhythm7" th:if="${progress}>=6"
+							class="col-sm border d-flex align-items-center justify-content-center">e
+							q e</div>
 
 					</div>
 				</div>
 			</div>
 
 
-				<!-- Animation Display -->
-				<div class="d-grid gap-2 col-4 ">
-					<div class="mx-auto"></div>
-				</div>
+		
 
-			</div>
+		</div>
+	</div>
+
+
+
+	<!-- Row4 -->
+	<div class="row">
+		<div class="col-4">
+			<div th:replace="layoutElements :: signoutButton"></div>
 		</div>
 
+		<div class="d-grid col-4 mx-auto"></div>
 
-
-		<!-- Row4 -->
-		<div class="row">
-			<div class="col-4">
-				<div th:replace="layoutElements :: signoutButton"></div>
-			</div>
-
-			<div class="d-grid col-4 mx-auto"></div>
-
-			<div class="d-grid col-2 mx-auto">
-				<a id="back" href="/lessons" role="button" aria-checked="false"
-					class="btn btn-primary text-center "> <span>Back</span>
-				</a>
-			</div>
-			<div class="d-grid col-2 mx-auto">
-
-				<a id="continue" href="/composition" role="button"
-					aria-checked="false" class="btn btn-primary text-center "> <span>Continue</span>
-				</a>
-			</div>
+		<div class="d-grid col-2 mx-auto">
+			<a id="back" href="/lessons" role="button" aria-checked="false"
+				class="btn btn-primary text-center "> <span>Back</span>
+			</a>
 		</div>
+		<div class="d-grid col-2 mx-auto">
+
+			<a id="continue" href="/composition" role="button"
+				aria-checked="false" class="btn btn-primary text-center "> <span>Continue</span>
+			</a>
+		</div>
+	</div>
 
 
-		<p>
-			Debugging: <span id="debug"></span>
-		</p>
+	<p>
+		Debugging: <span id="debug"></span>
+	</p>
 
 
-		<!-- Javascript -->
-		<script>
+	<!-- Javascript -->
+	<script>
 	
 		/* variables */
 		var tempo = 80; // default tempo
@@ -237,10 +239,10 @@
 		}				
 	</script>
 
-		<!-- Bootstrap JavaScript -->
-		<script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-			crossorigin="anonymous"></script>
+	<!-- Bootstrap JavaScript -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+		crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<!-- html tag with attributes for thymeleaf -->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+
+<!-- Tone.js CDN -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"
+	integrity="sha512-+esjJ8NSEfoB5Sr8R7jTcYxCR1Bd6q9C+WQC0JA2UXVPT8Mlo/TJqqyp0qeeoxFzkAaa8t6tZCHLGmw3oNI2Qg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<title>Lessons - Composition</title>
+
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" media="all"
+	href="/getRhythmStyles.css" />
+
+
+
+</head>
+
+<body>
+
+	<div th:replace="layoutElements :: authenticatedNavbar"></div>
+
+	<div class="container">
+
+		<!-- Row1 -->
+		<div class="row">
+
+			<div th:replace="layoutElements :: greeting"></div>
+
+			<!-- Heading and instructions -->
+			<div class="col-6">
+				<h1 class="display-4 text-center">Dictation</h1>
+			</div>
+
+		</div>
+
+		<!-- Row2 -->
+
+		<div class="row">
+			<!-- Instructions -->
+
+			<!-- Start/Stop Button -->
+			<div class="d-grid col-3 mx-auto "></div>
+			<!-- Instructions -->
+			<div class="col-6 text-center">
+				<h1 class="fs-2 text-center">Try and identify the rhythms being
+					played.</h1>
+				<button id="startStop" role="switch" aria-checked="false"
+					type="button" class="btn btn-primary  ">
+					<span>Click For A Rhythm</span>
+				</button>
+			</div>
+			<!-- Rhythms Heading -->
+			<div class="col-3">
+				<p class="display-6 text-center "></p>
+			</div>
+		</div>
+
+		<!-- Row3 -->
+		<div class="row p-5 d-flex  ">
+			<!-- Animation Display -->
+			<div class="d-grid gap-2 col-2 "></div>
+
+			<div class=" d-grid col-8 display-2  ">
+				<div
+					class="container table notation table-bordered compositionTable ">
+					<div class="row compositionTableRow" ondrop="drop(event)"
+						ondragover="allowDrop(event)">
+						<div id="rhythm1"
+							class="col-sm border d-flex align-items-center justify-content-center">q
+							q</div>
+						<div id="rhythm2"
+							class="col-sm border d-flex align-items-center justify-content-center">q
+							n</div>
+						<div id="rhythm3" th:if="${progress}>=2"
+							class="col-sm border d-flex align-items-center justify-content-center">n
+							q</div>
+						<div id="rhythm4" th:if="${progress}>=3"
+							class="col-sm border d-flex align-items-center justify-content-center">n
+							n</div>
+					</div>
+					<div class="row compositionTableRow" ondrop="drop(event)"
+						ondragover="allowDrop(event)" th:if="${progress}>=4">
+						<div id="rhythm5" th:if="${progress}>=4"
+							class="col-sm border d-flex align-items-center justify-content-center">h</div>
+						<div id="rhythm6" th:if="${progress}>=5"
+							class="col-sm border d-flex align-items-center justify-content-center">j
+							e</div>
+						<div id="rhythm7" th:if="${progress}>=6"
+							class="col-sm border d-flex align-items-center justify-content-center">e
+							q e</div>
+
+					</div>
+				</div>
+			</div>
+
+
+			<div class="d-grid gap-2 col-4 "></div>
+
+		</div>
+	</div>
+
+
+
+	<!-- Row4 -->
+	<div class="row">
+		<div class="col-4">
+			<div th:replace="layoutElements :: signoutButton"></div>
+		</div>
+
+		<div class="d-grid col-4 mx-auto"></div>
+
+		<div class="d-grid col-2 mx-auto">
+			<a id="back" href="/composition" role="button" aria-checked="false"
+				class="btn btn-primary text-center "> <span>Back</span>
+			</a>
+		</div>
+		<div class="d-grid col-2 mx-auto">
+
+			<a id="continue" href="/dictation" role="button" aria-checked="false"
+				class="btn btn-primary text-center "> <span>Continue</span>
+			</a>
+		</div>
+	</div>
+	</div>
+
+
+
+	<p>
+		Debugging: <span id="debug"></span>
+	</p>
+
+	<!-- Javascript -->
+	<script th:inline="javascript">			
+			// tone.js script to play rhythms
+			var tempo = 80; // default tempo
+			var playing = false; // boolean to track whether transport playing or not. 
+	 		var totalNoOfRhythms = 2; // default total number of rhythms if user is on progress level 1
+			var rhythmNo = 1; // Initialise rhythm number
+
+
+	 		/* Set total number of rhythms depending on user progress level  */
+	 		[# th:if="${progress}>1"]
+	 			totalNoOfRhythms = [[${progress}+1]]
+	 		[/]
+	 		
+			/* Listener for start stop button */
+			var startStopButton = document.querySelector("#startStop");
+			startStopButton.addEventListener("click", function() {
+				startTransport(); // Start the transport control
+			})
+			
+
+			
+			document.addEventListener('click', function(e){
+				var guess = e.target.id;
+				if(/^rhythm/.test(guess)){
+					if (guess==rhythmNo){
+						alert('Correct Answer');
+					} else {
+						alert('Incorrect. Try again.');
+					}
+				  }
+				})
+
+			
+			// Create synth to play sound
+			const synth = new Tone.MembraneSynth().toDestination(); //Membrane drum synthesizer
+			
+			// Part sets up sound pattern to be played 
+			const part = new Tone.Part(function(time, pitch){	
+				
+				// play the note
+				synth.triggerAttackRelease(pitch, "8n", time+("0.1")); // play an 8th note at the pitch and time passed in
+			
+			}, );
+			
+			// Set the time signature
+			Tone.Transport.set({
+				"timeSignature" : "2", 
+			});
+			
+			
+			//set the part to loop every 2 beats
+	 		part.set({
+				"loop" : true,
+				"loopEnd" : "1m"			
+			}); 
+			// start the part
+			part.start();	
+			
+			
+
+			// function to add the notes to be played to the part based on the composition created by the user
+			function randomRhythm(){
+				rhythmNo = "rhythm"+(Math.floor((Math.random() * totalNoOfRhythms)+1)); // create a variable called rhythm plus a number between 1 and 7
+// add the correct pattern based on the randomly generated rhythm
+				if (rhythmNo == "rhythm1"){
+			  		part.add("0", "C2");
+		  			part.add("4n", "C2");
+				} else if (rhythmNo == "rhythm2") {
+			  		part.add("0", "C2");
+		  			part.add("4n", "C2");
+		  			part.add("4n.", "C2");
+				} else if (rhythmNo == "rhythm3") {
+					part.add("0", "C2");
+					part.add("8n", "C2");
+					part.add("4n", "C2");
+				} else if (rhythmNo == "rhythm4") {
+					part.add("0", "C2");
+					part.add("8n", "C2");
+					part.add("4n", "C2");
+					part.add("4n.", "C2");
+				} else if (rhythmNo == "rhythm5") {
+					part.add("0", "C2");
+				} else if (rhythmNo == "rhythm6") {
+					part.add("0", "C2");
+					part.add("4n.", "C2");
+				} else if (rhythmNo == "rhythm7") {
+				  	part.add("0", "C2"); 
+				  	part.add("8n", "C2"); 
+				  	part.add("4n.", "C2");
+				}	
+				
+			}
+				
+			// Set the time signature
+			Tone.Transport.set({
+				"timeSignature" : "2", 
+			});
+			
+	 		/* Start Transport Function */
+			function startTransport() {
+				
+				/* If transport is not playing, start it, otherwise stop it */
+				if (!playing) {
+ 					part.clear();
+					randomRhythm(); 
+		 			Tone.start(); // Start Tone.js - required by browser before allowing audio to play
+					playing = true; // Set playing boolean to true
+					Tone.Transport.bpm.value = tempo; // Set the bpm to the current tempo
+					Tone.Transport.start("+.3"); // Start the transport 300ms in the future to help with audio latency
+					
+				
+					
+				} else {
+					Tone.Transport.stop(); // Stop the transport
+					Tone.Transport.cancel(); // cancel all transport events
+					playing = false; // Set playing boolean to false					
+				}
+				
+			}	
+			
+		</script>
+
+
+	<!-- Bootstrap JavaScript -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+		crossorigin="anonymous"></script>
+</body>
+</html>
