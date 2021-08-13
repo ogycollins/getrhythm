@@ -47,11 +47,11 @@
 					<div class="mb-3 dropdown">
 						<label for="exerciseType" class="col-form-label fs-4">Exercise
 							Type:</label>
-						<button class="btn btn-secondary dropdown-toggle" type="button"
+						<button class="btn btn-primary dropdown-toggle " type="button"
 							id="exerciseType" data-bs-toggle="dropdown" aria-expanded="false">Exercise
 							Type</button>
 						<ul class="dropdown-menu" aria-labelledby="exerciseType">
-							<li><a class="dropdown-item" href="#">Performance</a></li>
+							<li><a class="dropdown-item " href="#">Performance</a></li>
 							<li><a class="dropdown-item" href="#">Improvisation</a></li>
 							<li><a class="dropdown-item" href="#">Composition</a></li>
 							<li><a class="dropdown-item" href="#">Dictation</a></li>
@@ -173,6 +173,14 @@
 	slider.oninput = function() {
 	  output.innerHTML = this.value;
 	}
+	
+	// listens to all clicks
+	document.addEventListener('click', function(e){
+		if(e.target.classList.contains("dropdown-item")){
+			document.getElementById("exerciseType").innerHTML = e.target.textContent;
+		  }
+		})
+	
 	</script>
 
 		<script

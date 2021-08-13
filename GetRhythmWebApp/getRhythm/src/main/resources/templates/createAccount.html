@@ -27,24 +27,24 @@
 
 <body>
 	<div th:replace="layoutElements :: unauthenticatedNavbar"></div>
-	
-	
-	
+
+
+
 	<div class="container text-center">
 		<div>
 			<h1>User Registration - Sign Up</h1>
 		</div>
 		<form th:action="@{/process_register}" th:object="${user}"
 			method="post" style="max-width: 600px; margin: 0 auto;">
-			
-			
+
+
 			<div class="m-3">
 
-<div th:if="${#fields.hasAnyErrors()}">
-    <ul>
-        <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />
-    </ul>
-</div>
+				<div th:if="${#fields.hasAnyErrors()}">
+					<ul>
+						<li th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+					</ul>
+				</div>
 
 
 				<div class="form-group row">

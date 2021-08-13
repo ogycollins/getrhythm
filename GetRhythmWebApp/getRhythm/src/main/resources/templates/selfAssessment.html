@@ -54,6 +54,7 @@
 		<div class="row">
 
 			<div class="d-grid col-3 mx-auto "></div>
+
 			<!-- Instructions -->
 			<div class="col-6 text-center">
 				<h1 class="fs-2 text-center">How did you find that activity?</h1>
@@ -63,66 +64,70 @@
 		</div>
 
 		<!-- Row3 -->
+		 
 
 		<div class="row">
 
 			<div class="col-3"></div>
+
+			<div class="col-6 container">
 			
-			<div class="d-grid col-2 rating mx-auto display-3 text-center">
-				<span class="rating_result "></span> 
-			</div>
-		
-			<div class="col-4 display-3 ">
-				<i class="rating_star fa fa-star"></i> 
-				<i class="rating_star fa fa-star"></i> 
-				<i class="rating_star fa fa-star"></i> 
-				<i class="rating_star fa fa-star"></i> 
-				<i class="rating_star fa fa-star"></i>
-			</div>
-
-			<div class="col-3"></div>
-		</div>
-
-		<div class="row">
-
-			<div class="d-grid col-3 mx-auto text-center "></div>
-
-			<div class="col-6 text-center">
-				<form>
-					<div class="mb-3">
-						<label for="comment" class="form-label">Comment</label> 
-						<input type="email" class="form-control" id="comment" aria-describedby="assessmentHelp">
-						<div id="assessmentHelp" class="form-text">How did you find that activity?</div>
-					</div>
+				<form th:action="@{/record_assessment?next={record_assessment}(record_assessment = ${activityDetails.nextActivity})}" th:object="${selfAssessment}" method="post">
+					<div class="row">
+						<div class="d-grid col-4 rating display-3 text-center">
+							<span id="ratingSpan"></span>
+							<input id="ratingField" type="hidden" th:field="*{rating}"/>
+							
+						</div>
 			
-					<div class="mb-3">
-						<label for=activityType class="form-label">Activity Type</label>
-						<input type="text" class="form-control" id="activityType">
+						<div class="col-8 display-3 text-center">
+							<i class="rating_star fa fa-star"></i> <i
+								class="rating_star fa fa-star"></i> <i
+								class="rating_star fa fa-star"></i> <i
+								class="rating_star fa fa-star"></i> <i
+								class="rating_star fa fa-star"></i>
+						</div>
 					</div>
 					
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<div class="row">
+						<div class="col-12 text-center">
+							<label for="comment" class="form-label">Comment: </label> 
+							<input th:field="*{comment}" type="text" class="form-control" id="comment" aria-describedby="assessmentHelp">
+							<div id="assessmentHelp" class="form-text">How did you find	that activity?</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-12 text-center">
+							<label for=activityType class="form-label">Activity Type: </label>
+							<span th:text="${activityDetails.activityName}"></span>
+							<input type="text" th:name="assessmentType" th:value="${activityDetails.activityName}" />
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-12 text-center">
+							<button type="submit" class="btn btn-primary" value="close">Submit</button>
+						</div>
+					</div>
 				</form>
 			</div>
-
+											
 			<div class="col-3"></div>
 		</div>
 
-
-
-
-	<!-- Row4 -->
+		<!-- Row4 -->
 		<div class="row">
-			<div class="col-4">
+			<div class="col-3">
 				<div th:replace="layoutElements :: signoutButton"></div>
 			</div>
 
-			<div class="d-grid col-4 mx-auto"></div>
+			<div class="d-grid col-6 text-center" th:text="${message}"></div>
 
-			<div class="d-grid col-2 mx-auto"></div>
-			<div class="d-grid col-2 mx-auto">
+			<div class="d-grid col-3 mx-auto">
 
-				<a id="continue" href="/dictation" role="button"
-					aria-checked="false" class="btn btn-primary text-center "> <span>Continue</span>
+				<a id="continue" th:href="@{/{next}(next = ${activityDetails.nextActivity})}" role="button"
+					aria-checked="false" class="btn btn-primary text-center col-4"> <span>Continue</span>
 				</a>
 			</div>
 		</div>
@@ -136,12 +141,13 @@
 	<script th:inline="javascript">
 	
 	   const ratingStars = [...document.getElementsByClassName("rating_star")]; // create an array of all rating star items
-	   const ratingResult = document.querySelector(".rating_result"); // select the span where the numerical rating will be updated
-	   
-	   printRatingResult(ratingResult); // print the current ratint (0 by default)
+	   const ratingResult = document.getElementById("ratingSpan"); // select the hidden input field to submit the rating via thymeleaf
+	   const ratingInput = document.getElementById("ratingField"); // select the span where the numerical rating will be dispalyed
+
+	   printRatingResult(ratingResult, ratingInput); // print the current ratint (0 by default)
 	   
 	   // function to update rating on mouse click - takes array of stars and current numerical rating
-	   function executeRating(stars, result) {
+	   function executeRating(stars, result, inputField) {
 		   const starsLength = stars.length; // find length of array of stars
 		   var i; // declare counter variable
 		  
@@ -154,21 +160,22 @@
 		         
 				// if current star is not checked, check all stars up to its index and update numerical rating. If star already checked, remove check.
 		         if (!star.classList.contains("checked")) {
-		            printRatingResult(result, i + 1);
+		            printRatingResult(result, inputField, i + 1);
 		            for (i; i >= 0; --i) stars[i].classList.add("checked");
 		         } else {
-		            printRatingResult(result, i);
+		            printRatingResult(result, inputField, i);
 		            for (i; i < starsLength; ++i) stars[i].classList.remove("checked");
 		         }
 		      };
 		   });
 		}
 
-		function printRatingResult(result, num = 0) {
+		function printRatingResult(result, inputField, num = 0) {
 		   result.textContent = `${num}/5`;
+		   inputField.value = `${num}`;
 		}
 
-		executeRating(ratingStars, ratingResult);
+		executeRating(ratingStars, ratingResult, ratingInput);
 
 		// update debugging output
 		document.getElementById("debug").innerHTML = ratingStars.length;	
@@ -179,6 +186,6 @@
 		<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-		crossorigin="anonymous">
+		crossorigin="anonymous"></script>
 </body>
 </html>

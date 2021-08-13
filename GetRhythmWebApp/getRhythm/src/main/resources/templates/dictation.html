@@ -133,7 +133,7 @@
 		</div>
 		<div class="d-grid col-2 mx-auto">
 
-			<a id="continue" href="/dictation" role="button" aria-checked="false"
+			<a id="continue" href="/selfAssessment?activity=Dictation&next=lessons" role="button" aria-checked="false"
 				class="btn btn-primary text-center "> <span>Continue</span>
 			</a>
 		</div>
@@ -167,7 +167,7 @@
 			})
 			
 
-			
+			// listens to all clicks
 			document.addEventListener('click', function(e){
 				var guess = e.target.id;
 				if(/^rhythm/.test(guess)){
