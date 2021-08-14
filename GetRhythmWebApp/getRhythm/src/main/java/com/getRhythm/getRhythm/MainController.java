@@ -145,5 +145,21 @@ public class MainController {
 	  return "redirect:/lessons";	  // return to lessons page with updated user progress level
 	  }
 
+  @GetMapping("/exercises")
+  public String exercises(Model model) {
+      model.addAttribute("exerciseActivityDetails", new ExerciseActivityDetails());
+      return "exercises";
+  }
+  
+  
+  @PostMapping("/setupExercise")
+  public String setupExercise(@Valid ExerciseActivityDetails exerciseActivityDetails, Model model, BindingResult result) {
+	  model.addAttribute("exerciseActivityDetails", exerciseActivityDetails);
+	  return "exerciseActivity";	  // go to exerciseActivity page
+	  }
+  
+  
+  
+  
   
   }

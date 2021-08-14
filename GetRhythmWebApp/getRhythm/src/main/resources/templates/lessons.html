@@ -37,11 +37,11 @@
 	<div class="container">
 
 		<!-- Row1 -->
-		<div class="row">
+		<div class="row" th:fragment="performance">
 
 			<div th:replace="layoutElements :: greeting"></div>
-			
-			
+
+
 
 			<!-- Heading and instructions -->
 			<div class="col-6">
@@ -51,57 +51,58 @@
 
 		</div>
 
+		<div th:fragment="Performance">
+			<!-- Row2 -->
+			<div class="row p-3  d-flex align-items-center ">
 
-		<!-- Row2 -->
-		<div class="row p-3  d-flex align-items-center ">
+				<!-- Rhythm Symbols heading -->
+				<div class="d-grid col-4 mx-auto ">
+					<p class="display-6 text-center ">Symbols:</p>
+				</div>
 
-			<!-- Rhythm Symbols heading -->
-			<div class="d-grid col-4 mx-auto ">
-				<p class="display-6 text-center ">Symbols:</p>
+				<!-- Start/Stop Button -->
+				<div class="d-grid col-3 mx-auto ">
+					<button id="startStop" role="switch" aria-checked="false"
+						type="button" class="btn btn-primary text-center ">
+						<span>Start!</span>
+					</button>
+				</div>
+
+				<!-- Rhythm Syllables Heading -->
+				<div class="d-grid col-4 mx-auto ">
+					<p class="display-6 text-center ">Say this:</p>
+				</div>
 			</div>
 
-			<!-- Start/Stop Button -->
-			<div class="d-grid col-3 mx-auto ">
-				<button id="startStop" role="switch" aria-checked="false"
-					type="button" class="btn btn-primary text-center ">
-					<span>Start!</span>
-				</button>
+			<!-- Row3 -->
+			<div class="row p-5 d-flex align-items-center ">
+
+				<!-- Notation Display -->
+				<div class="col-4 mx-auto ">
+					<p id="symbols" class="display-1 text-center">
+						<span id='symbol1' class='invisible notation hideAll'></span> <span
+							id='symbol2' class='invisible notation hideAll'></span> <span
+							id='symbol3' class='invisible notation hideAll'></span> <span
+							id='symbol4' class='invisible notation hideAll'></span>
+					</p>
+				</div>
+
+				<!-- Animation Display -->
+				<div class="d-grid gap-2 col-4 ">
+					<div id="circle" class="mx-auto rounded-circle invisible"></div>
+				</div>
+
+				<!-- Rhythm Syllable Display -->
+				<div class="col-4 mx-auto invisible">
+					<p id="syllables" class="display-5 text-center ">
+						<span id='syllable1' class='invisible hideAll'></span><span
+							id='syllable2' class='invisible hideAll'></span><span
+							id='syllable3' class='invisible hideAll'></span><span
+							id='syllable4' class='invisible hideAll'></span>
+					</p>
+				</div>
+
 			</div>
-
-			<!-- Rhythm Syllables Heading -->
-			<div class="d-grid col-4 mx-auto ">
-				<p class="display-6 text-center ">Say this:</p>
-			</div>
-		</div>
-
-		<!-- Row3 -->
-		<div class="row p-5 d-flex align-items-center ">
-
-			<!-- Notation Display -->
-			<div class="col-4 mx-auto ">
-				<p id="symbols" class="display-1 text-center">
-					<span id='symbol1' class='invisible notation hideAll'></span> 
-					<span id='symbol2' class='invisible notation hideAll'></span>
-					<span id='symbol3' class='invisible notation hideAll'></span>
-					<span id='symbol4' class='invisible notation hideAll'></span>
-				</p>
-			</div>
-
-			<!-- Animation Display -->
-			<div class="d-grid gap-2 col-4 ">
-				<div id="circle" class="mx-auto rounded-circle invisible"></div>
-			</div>
-
-			<!-- Rhythm Syllable Display -->
-			<div class="col-4 mx-auto invisible">
-				<p id="syllables" class="display-5 text-center ">
-					<span id='syllable1' class='invisible hideAll'></span><span
-						id='syllable2' class='invisible hideAll'></span><span
-						id='syllable3' class='invisible hideAll'></span><span
-						id='syllable4' class='invisible hideAll'></span>
-				</p>
-			</div>
-
 		</div>
 
 		<!-- Row4 -->
@@ -112,8 +113,10 @@
 			<div class="col-4"></div>
 
 			<div class="d-grid col-2 mx-auto">
-				<a id="continue" href="/selfAssessment?activity=Performance&next=improvisation" role="button"
-					aria-checked="false" class="btn btn-primary text-center "> <span>Continue</span>
+				<a id="continue"
+					href="/selfAssessment?activity=Performance&next=improvisation"
+					role="button" aria-checked="false"
+					class="btn btn-primary text-center "> <span>Continue</span>
 				</a>
 			</div>
 
@@ -138,8 +141,8 @@
 	<p>
 		Total Number Of Rhythms: <span id="totalNoOfRhythms"></span>
 	</p>
-	
-	
+
+
 
 	<!-- Inline Javascript to enable dynamic changes via thymeleaf -->
 	<script th:inline="javascript">
@@ -468,7 +471,7 @@
 		
 	</script>
 
-	
+
 
 
 

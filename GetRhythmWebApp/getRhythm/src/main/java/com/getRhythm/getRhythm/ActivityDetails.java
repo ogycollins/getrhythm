@@ -1,6 +1,6 @@
 package com.getRhythm.getRhythm;
 
-// A class to pass the details of an activity to the self-assessment page
+// A class to pass the details of an activity to the self-assessment page: previous activity, next activity and score if relevant
 public class ActivityDetails {
 	String activityName;
 	Integer score;
