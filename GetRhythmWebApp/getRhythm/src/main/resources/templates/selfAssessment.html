@@ -80,19 +80,19 @@
 							
 						</div>
 			
-						<div class="col-8 display-3 text-center">
-							<i class="rating_star fa fa-star"></i> <i
-								class="rating_star fa fa-star"></i> <i
-								class="rating_star fa fa-star"></i> <i
-								class="rating_star fa fa-star"></i> <i
-								class="rating_star fa fa-star"></i>
+						<div class="col-8 display-3 text-center" >
+							<i class="rating_star fa fa-star" th:hidden="${message}"></i> <i
+								class="rating_star fa fa-star" th:hidden="${message}"></i> <i
+								class="rating_star fa fa-star" th:hidden="${message}"></i> <i
+								class="rating_star fa fa-star" th:hidden="${message}"></i> <i
+								class="rating_star fa fa-star" th:hidden="${message}"></i>
 						</div>
 					</div>
 					
 					<div class="row">
 						<div class="col-12 text-center">
 							<label for="comment" class="form-label">Comment: </label> 
-							<input th:field="*{comment}" type="text" class="form-control" id="comment" aria-describedby="assessmentHelp">
+							<input th:field="*{comment}" th:disabled="${message}" type="text" class="form-control" id="comment" aria-describedby="assessmentHelp">
 							<div id="assessmentHelp" class="form-text">How did you find	that activity?</div>
 						</div>
 					</div>
@@ -101,13 +101,13 @@
 						<div class="col-12 text-center">
 							<label for=activityType class="form-label">Activity Type: </label>
 							<span th:text="${activityDetails.activityName}"></span>
-							<input type="text" th:name="assessmentType" th:value="${activityDetails.activityName}" />
+							<input type="text" th:name="assessmentType" th:value="${activityDetails.activityName}" th:disabled="${message}"/>
 						</div>
 					</div>
 					
 					<div class="row">
 						<div class="col-12 text-center">
-							<button type="submit" class="btn btn-primary" value="close">Submit</button>
+							<button id="submit" type="submit" class="btn btn-primary" value="close" th:disabled="${message}">Submit</button>
 						</div>
 					</div>
 				</form>
@@ -122,7 +122,7 @@
 				<div th:replace="layoutElements :: signoutButton"></div>
 			</div>
 
-			<div class="d-grid col-6 text-center" th:text="${message}"></div>
+			<div class="d-grid col-6 text-center display-4" th:text="${message}"></div>
 
 			<div class="d-grid col-3 mx-auto">
 
@@ -180,7 +180,8 @@
 		// update debugging output
 		document.getElementById("debug").innerHTML = ratingStars.length;	
 	
-	
+
+		
 	</script>
 	<!-- Bootstrap JavaScript -->
 		<script

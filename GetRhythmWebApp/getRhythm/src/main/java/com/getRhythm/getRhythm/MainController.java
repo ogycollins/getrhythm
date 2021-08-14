@@ -130,7 +130,20 @@ public class MainController {
 	  return "redirect:/selfAssessment?&next=" + next +"&saved=true";	  // return to self assessment page and pass back the name of the next view required
 	  }
   
+  @GetMapping("/updateProgress")
+  public String updateProgress(HttpServletRequest request) {
+	  Principal principal = request.getUserPrincipal(); // get principal user
+	  String name = principal.getName(); //get principal user name
+	  User user = userRepository.findByName(name); // get user from database
+	  Integer userProgress = user.getProgress(); //get user progress
+	  // if userProgress is less than the maximum of 6 increment it by 1 and save update to the database
+	  if (userProgress < 6) {
+		  userProgress += 1;
+		  user.setProgress(userProgress);
+		  userRepository.save(user);
+	  }
+	  return "redirect:/lessons";	  // return to lessons page with updated user progress level
+	  }
 
   
-//  ?activity=" + activityDetails.activityName + "&next=" + activityDetails.nextActivity
   }

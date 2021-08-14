@@ -63,7 +63,8 @@
 
 	<!-- Greeting logged in user -->
 	<div class="col-3 lead" th:inline="text" th:fragment="greeting">
-		Logged in as: <span sec:authentication="principal.name">Name</span>
+		<p>Logged in as: <span sec:authentication="principal.name">Name</span></p>
+		<p>Lesson <span th:text="${progress}"></span></p>
 	</div>
 
 	<!-- Signout Button -->
