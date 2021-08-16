@@ -1,0 +1,1064 @@
+<!-- This template contains the html and javascript fragments for the 4 different activities -->
+
+<!-- Performance Activity -->
+<div th:fragment="Performance">
+
+	<div class="row p-3  d-flex align-items-center ">
+
+		<!-- Rhythm Symbols heading -->
+		<div class="d-grid col-4 mx-auto ">
+			<p class="display-6 text-center text-success">Symbols:</p>
+		</div>
+
+		<!-- Start/Stop Button -->
+		<div class="d-grid col-3 mx-auto ">
+			<button id="startStop" role="switch" aria-checked="false"
+				type="button" class="btn btn-primary text-center ">
+				<span>Start!</span>
+			</button>
+		</div>
+
+		<!-- Rhythm Syllables Heading -->
+		<div class="d-grid col-4 mx-auto ">
+			<p class="display-6 text-center text-success">Say this:</p>
+		</div>
+	</div>
+
+	<!-- Row3 -->
+	<div class="row p-5 d-flex align-items-center ">
+
+		<!-- Notation Display -->
+		<div class="col-4 mx-auto ">
+			<p id="symbols" class="display-1 text-center">
+				<span id='symbol1' class='invisible notation hideAll'></span> <span
+					id='symbol2' class='invisible notation hideAll'></span> <span
+					id='symbol3' class='invisible notation hideAll'></span> <span
+					id='symbol4' class='invisible notation hideAll'></span>
+			</p>
+		</div>
+
+		<!-- Animation Display -->
+		<div class="d-grid gap-2 col-4 ">
+			<div id="circle" class="mx-auto rounded-circle invisible"></div>
+		</div>
+
+		<!-- Rhythm Syllable Display -->
+		<div class="col-4 mx-auto invisible">
+			<p id="syllables" class="display-5 text-center ">
+				<span id='syllable1' class='invisible hideAll'></span><span
+					id='syllable2' class='invisible hideAll'></span><span
+					id='syllable3' class='invisible hideAll'></span><span
+					id='syllable4' class='invisible hideAll'></span>
+			</p>
+		</div>
+
+	</div>
+	<div class="row">
+		<div class="col-3 mx-auto">
+			<div th:replace="layoutElements :: tempoSlider"></div>
+		</div>
+	</div>
+</div>
+<!-- Performance Activity Script -->
+<script th:inline="javascript" th:fragment="PerformanceScript">
+
+	
+		/* variables */
+		var tempo = /*[(${exerciseActivityDetails}? ${exerciseActivityDetails.tempo} : 80)]*/; // default tempo
+		var playing = false; // boolean to track whether transport playing or not. 
+		var noteCounter = 1; // count the notes
+ 		var loopCounter = 1; // count the loops
+ 		var changeRhythmAfter = 4; // a variable to set how often the rhythm changes
+ 		var showSymbols = true;
+ 		var showSyllables = true;
+ 		var lastRhythmIndex;
+		var inTheLoop = "nope!";
+		
+		
+ 		
+		// get array of rhythms to be included from thymeleaf
+ 		var receivedRhythmArray = [[${rhythmsIncluded}]];
+ 		var localRhythmArray = [];
+ 		
+		var slider = document.getElementById("tempoSlider");
+		var output = document.getElementById("tempoValue");
+		output.innerHTML = slider.value; // Display the default slider value
+
+		// Update the current slider value (each time you drag the slider handle)
+		slider.oninput = function() {
+			tempo = this.value;
+			output.innerHTML = this.value;
+			Tone.Transport.bpm.value = tempo;
+		}
+ 		
+		// add the index(+1) of true elements from thymeleaf received array to local rhythm array to get the rhythm numbers to be used in activity
+ 		for (i = 0; i < receivedRhythmArray.length; i++){
+ 			if (receivedRhythmArray[i] == true){
+ 				localRhythmArray.push([i+1]);	
+ 			}
+ 		}
+ 		
+ 		var rhythmTracker = 0;
+ 		
+		/* Listener for start stop button */
+		var startStopButton = document.querySelector("#startStop");
+		
+		startStopButton.addEventListener("click", function() {
+			startTransport(); // Start the transport control
+		})
+		
+		function setRhythm(rhythmNo){
+			var x = parseInt(rhythmNo); // parse int from array value as switch uses strict comparison
+			switch (x){
+				case 1:
+				rhythm1setup();
+				break;
+				case 2:
+				rhythm2setup();
+				break;
+				case 3:
+				rhythm3setup();
+				break;
+				case 4:
+				rhythm4setup();
+				break;
+				case 5:
+				rhythm5setup();
+				break;
+				case 6:
+				rhythm6setup();
+				break;
+				case 7:
+				rhythm7setup();
+				break;
+			} 
+		}
+		
+
+		// Create synth to play sound
+		const synth = new Tone.MembraneSynth().toDestination(); //Membrane drum synthesizer
+		
+		// Function to set up rhythm pattern 1
+		[# th:if="${rhythmsIncluded[0]}"]
+		function rhythm1setup(){
+			document.querySelector("#symbol1").innerHTML = "q";
+			document.querySelector("#symbol2").innerHTML = "q";
+		  	document.querySelector("#symbol3").innerHTML = "";
+		  	document.querySelector("#syllable1").innerHTML = "ta "; 	
+		  	document.querySelector("#syllable2").innerHTML = "ta"; 	
+			document.querySelector("#syllable3").innerHTML = "";
+		  	part.clear();
+	  		part.add("0", "C2");
+  			part.add("4n", "C2");
+		}
+		[/]
+		
+		[# th:if="${rhythmsIncluded[1]}"]
+		function rhythm2setup(){
+			document.querySelector("#symbol1").innerHTML = "q";
+			document.querySelector("#symbol2").innerHTML = "n";
+		  	document.querySelector("#symbol3").innerHTML = "";
+		  	document.querySelector("#syllable1").innerHTML = "ta "; 	
+		  	document.querySelector("#syllable2").innerHTML = "ti-"; 	
+		  	document.querySelector("#syllable3").innerHTML = "ti"; 	
+		  	part.clear();
+	  		part.add("0", "C2");
+  			part.add("4n", "C2");
+  			part.add("4n.", "C2");
+		}
+		[/]
+		
+		[# th:if="${rhythmsIncluded[2]}"]
+
+			function rhythm3setup(){
+				document.querySelector("#symbol1").innerHTML = "n";
+				document.querySelector("#symbol2").innerHTML = "";
+				document.querySelector("#symbol3").innerHTML = "q";
+			  	document.querySelector("#syllable1").innerHTML = "ti-"; 	
+			  	document.querySelector("#syllable2").innerHTML = "ti "; 	
+			  	document.querySelector("#syllable3").innerHTML = "ta"; 	
+			  	part.clear();
+				part.add("0", "C2");
+				part.add("8n", "C2");
+				part.add("4n", "C2");
+			}
+		[/]
+		
+		[# th:if="${rhythmsIncluded[3]}"]
+
+			function rhythm4setup(){
+				document.querySelector("#symbol1").innerHTML = "n";
+			  	document.querySelector("#symbol2").innerHTML = "";
+				document.querySelector("#symbol3").innerHTML = "n";
+			  	document.querySelector("#syllable1").innerHTML = "ti-ti "; 	
+				document.querySelector("#syllable2").innerHTML = "";
+			  	document.querySelector("#syllable3").innerHTML = "ti-ti"; 	
+			  	part.clear();
+				part.add("0", "C2");
+				part.add("8n", "C2");
+				part.add("4n", "C2");
+				part.add("4n.", "C2");
+			}
+		[/]
+
+		[# th:if="${rhythmsIncluded[4]}"]
+
+			function rhythm5setup(){
+				document.querySelector("#symbol1").innerHTML = "h";
+				document.querySelector("#symbol2").innerHTML = "";
+			  	document.querySelector("#symbol3").innerHTML = "";
+			  	document.querySelector("#syllable1").innerHTML = "ta-"; 	
+			  	document.querySelector("#syllable2").innerHTML = "a"; 	
+				document.querySelector("#syllable3").innerHTML = "";
+			  	part.clear();
+				part.add("0", "C2");
+				part.add("4n", null);
+				part.add("4n.", null);
+			}
+		[/]
+
+		[# th:if="${rhythmsIncluded[5]}"]
+
+			function rhythm6setup(){
+				document.querySelector("#symbol1").innerHTML = "j";
+				document.querySelector("#symbol2").innerHTML = "";
+			  	document.querySelector("#symbol3").innerHTML = "e";
+			  	document.querySelector("#syllable1").innerHTML = "ta-"; 	
+			  	document.querySelector("#syllable2").innerHTML = "i "; 	
+				document.querySelector("#syllable3").innerHTML = "ti";
+			  	part.clear();
+				part.add("0", "C2");
+				part.add("4n", null);
+				part.add("4n.", "C2");
+			}
+		[/]
+
+		[# th:if="${rhythmsIncluded[6]}"]
+
+			function rhythm7setup(){
+				document.querySelector("#symbol1").innerHTML = "e";
+				document.querySelector("#symbol2").innerHTML = "q";
+			  	document.querySelector("#symbol3").innerHTML = "e";
+			  	document.querySelector("#syllable1").innerHTML = "syn-"; 	
+			  	document.querySelector("#syllable2").innerHTML = "co-"; 	
+			  	document.querySelector("#syllable3").innerHTML = "pa";
+			  	part.clear();
+			  	part.add("0", "C2"); 
+			  	part.add("8n", "C2"); 
+			  	part.add("4n.", "C2");
+			}
+		[/]
+	
+
+		function hideAll(){
+			var hideElement = document.getElementsByClassName("hideAll"); // select all elements that need to be reset
+			for(var i = 0; i < hideElement.length; i++)
+			{
+				hideElement[i].classList.add("invisible");
+			}
+		}
+		
+		
+		function circleFlash(pitch){
+			if (pitch=="C2"){
+				// Circle Animation
+				circle.classList.add("visible");
+				circle.classList.remove("invisible");
+				
+				setTimeout(() => {
+					circle.classList.add("invisible");
+					circle.classList.remove("visible");
+				}, 50);
+			}
+		}
+		
+		function updatePart(time){
+			noteCounter = 1;
+			loopCounter = 1;
+			hideAll();
+			
+			// if we are on the last rhythm reset the rhythmTracker otherwise increment it to the next rhythm 
+			if (rhythmTracker == localRhythmArray.length-1){
+				rhythmTracker = 0;
+			} else {
+				rhythmTracker ++;
+			}
+			
+			// call the function to switch to the next rhythm
+			setRhythm(localRhythmArray[rhythmTracker]);	
+		}
+
+	 	// Part sets up sound pattern to be played and includes visual sync
+		const part = new Tone.Part(function(time, pitch){	
+			
+			// if we're on the first loop and the first note, schedule a rhythm update in 4 bars
+			var rhythmUpdateTime = ("+"+changeRhythmAfter+"m");
+			if (loopCounter == 1 && noteCounter == 1){
+				Tone.Transport.schedule(updatePart, rhythmUpdateTime);	
+			}
+			// variable that calculates when to remove symbols based on tempo
+			const loopTime = (Tone.Time(part.loopEnd).toMilliseconds())-(600000/(tempo*6.5));
+			
+			// play the note
+			synth.triggerAttackRelease(pitch, "8n", time+("0.1")); // play an 8th note at the pitch and time passed in
+			
+			// select the elements to be animated
+			var syllable = document.getElementById("syllable"+noteCounter);
+			var symbol = document.getElementById("symbol"+noteCounter); 
+			var circle = document.getElementById("circle"); 
+			
+			// Animation sync. Tone.Draw is used to schedule visual changes with the musical timing 
+			if (showSyllables){
+				// Callback to create animation in time with sound
+				Tone.Draw.schedule(() => {		
+					// Rhythm Syllable Animation
+					// Select all elements related to the current note	
+					syllable.classList.remove("invisible");
+					syllable.classList.add("visible");
+				}, time);	
+			}
+		
+			if (showSymbols){
+				Tone.Draw.schedule(() => {					
+					// Rhythm Symbol Animation
+					// Select all elements related to the current note
+					symbol.classList.remove("invisible");
+					symbol.classList.add("visible");
+				}, time);
+			}
+		
+			Tone.Draw.schedule(() => {	
+						
+				// flash the circle if the note is not 'null'
+				circleFlash(pitch);
+				
+				// if we are not on the last note increment the note counter
+				if (noteCounter == part.length){
+					// reset the note counter
+					noteCounter = 1; 
+					
+					// Time out the symbols and syllabes
+				 	setTimeout(() => {
+						hideAll();
+					}, 100); 
+				 	
+				// check increment or reset the loopCounter
+					if (loopCounter >= changeRhythmAfter){
+						loopCounter = 1;	
+					} else {
+						loopCounter += 1;
+					} 
+							
+				} else if (noteCounter < part.length){
+					noteCounter += 1;
+				} 
+						
+			}, time);
+
+		}); // Pass in default note values
+			
+
+		setRhythm(localRhythmArray[rhythmTracker]); // call the function to set up the first rhythm to be played
+
+		// Set the time signature
+		Tone.Transport.set({
+			"timeSignature" : "2", 
+		});
+		
+		//set the part to loop every 2 beats
+ 		part.set({
+			"loop" : true,
+			"loopEnd" : "1m"			
+		}); 
+			
+		// start the part
+		part.start();		
+
+ 		/* Start Transport Function */
+		function startTransport() {
+						
+			/* If transport is not playing, start it, otherwise stop it */
+			if (!playing) {
+				hideAll(); // hide all symbols
+				noteCounter = 1; // reset the note counter
+				loopCounter = 1; // reset the loop counter
+	 			Tone.start(); // Start Tone.js - required by browser before allowing audio to play
+				playing = true; // Set playing boolean to true
+				Tone.Transport.bpm.value = tempo; // Set the bpm to the current tempo
+				Tone.Transport.start("+.3"); // Start the transport 300ms in the future to help with audio latency
+				
+			} else {
+				Tone.Transport.stop(); // Stop the transport
+				Tone.Draw.cancel(); // cancel all transport events
+				Tone.Transport.cancel(); // cancel all transport events
+				playing = false; // Set playing boolean to false
+				hideAll(); // hide all symbols
+				noteCounter = 1; // reset the note counter
+				loopCounter = 1; // reset the loop counter
+				rhythmTracker = 1;// reset rhythm Tracker
+				
+			}
+			
+		}	
+	</script>
+
+<!-- Improvisation Activity -->
+<div th:fragment="Improvisation">
+	<div class="row">
+
+
+
+		<!-- Instructions -->
+		<div class="col">
+			<h1 class="display-6 text-center">Improvise to the beat using
+				rhythms you have learned:</h1>
+		</div>
+
+	</div>
+
+
+	<!-- Row3 -->
+	<div class="row p-3  d-flex align-items-center ">
+
+		<div class="d-grid col-5 mx-auto "></div>
+
+		<!-- Start/Stop Button -->
+		<div class="d-grid col-2 mx-auto ">
+			<button id="startStop" role="switch" aria-checked="false"
+				type="button" class="btn btn-primary text-center ">
+				<span>Start!</span>
+			</button>
+		</div>
+
+		<div class="d-grid col-5 mx-auto "></div>
+	</div>
+
+	<!-- Row3 -->
+	<div class="row p-5 d-flex  ">
+		<!-- Animation Display -->
+		<div class="d-grid gap-2 col-2 ">
+			<div id="circle" class="mx-auto rounded-circle invisible"></div>
+		</div>
+
+		<div class="d-grid col-8 display-2">
+			<div class="container table notation table-bordered compositionTable">
+				<div class="row compositionTableRow">
+					<div id="rhythm1"
+						class="col-sm border d-flex align-items-center justify-content-center"
+						th:if="${rhythmsIncluded[0]}">q q</div>
+					<div id="rhythm2"
+						class="col-sm border d-flex align-items-center justify-content-center"
+						th:if="${rhythmsIncluded[1]}">q n</div>
+					<div id="rhythm3" th:if="${rhythmsIncluded[2]}"
+						class="col-sm border d-flex align-items-center justify-content-center">n
+						q</div>
+					<div id="rhythm4" th:if="${rhythmsIncluded[3]}"
+						class="col-sm border d-flex align-items-center justify-content-center">n
+						n</div>
+				</div>
+				<div class="row compositionTableRow">
+					<div id="rhythm5" th:if="${rhythmsIncluded[4]}"
+						class="col-sm border d-flex align-items-center justify-content-center">h</div>
+					<div id="rhythm6" th:if="${rhythmsIncluded[5]}"
+						class="col-sm border d-flex align-items-center justify-content-center">j
+						e</div>
+					<div id="rhythm7" th:if="${rhythmsIncluded[6]}"
+						class="col-sm border d-flex align-items-center justify-content-center">e
+						q e</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-3 mx-auto">
+			<div th:replace="layoutElements :: tempoSlider"></div>
+		</div>
+	</div>
+</div>
+
+<!-- Improvisation Activity Script -->
+<script th:inline="javascript" th:fragment="ImprovisationScript">
+	
+		/* variables */
+		var tempo = /*[(${exerciseActivityDetails}? ${exerciseActivityDetails.tempo} : 80)]*/; // default tempo
+		var playing = false; // boolean to track whether transport playing or not. 
+
+		/* Listener for start stop button */
+		var startStopButton = document.querySelector("#startStop");
+		
+		startStopButton.addEventListener("click", function() {
+			startTransport(); // Start the transport control
+		})
+
+		// Create synth to play sound
+		const synth = new Tone.MembraneSynth().toDestination(); //Membrane drum synthesizer
+		
+		function circleFlash(pitch){
+			if (pitch=="C2"){
+				// Circle Animation
+				circle.classList.add("visible");
+				circle.classList.remove("invisible");
+				
+				setTimeout(() => {
+					circle.classList.add("invisible");
+					circle.classList.remove("visible");
+				}, 50);
+			}
+		}
+		
+		var slider = document.getElementById("tempoSlider");
+		var output = document.getElementById("tempoValue");
+		output.innerHTML = slider.value; // Display the default slider value
+
+		// Update the current slider value (each time you drag the slider handle)
+		slider.oninput = function() {
+			tempo = this.value;
+			output.innerHTML = this.value;
+			Tone.Transport.bpm.value = tempo;
+
+		}
+
+	 	// Simple Part to keep time
+		const part = new Tone.Part(function(time, pitch){	
+			// play the note
+			synth.triggerAttackRelease(pitch, "8n", time); // play an 8th note at the pitch and time passed in
+
+			var circle = document.getElementById("circle"); 
+		
+			Tone.Draw.schedule(() => {		
+				
+				// flash the circle in time with metronome
+				circleFlash(pitch);
+						
+			}, time);
+		
+		}, [ ["0", "C2"], ["4n", "C2"] ]); // Pass in simple metronome pattern
+		
+		
+		// Set the time signature
+		Tone.Transport.set({
+			"timeSignature" : "2", 
+		});
+		
+		//set the part to loop every 2 beats
+ 		part.set({
+			"loop" : true,
+			"loopEnd" : "1m"			
+		}); 
+			
+		// start the part
+		part.start();		
+
+		
+ 		/* Start Transport Function */
+		function startTransport() {
+			
+			/* If transport is not playing, start it, otherwise stop it */
+			if (!playing) {
+	 			Tone.start(); // Start Tone.js - required by browser before allowing audio to play
+				playing = true; // Set playing boolean to true
+				Tone.Transport.bpm.value = tempo; // Set the bpm to the current tempo
+				Tone.Transport.start("+.3"); // Start the transport 300ms in the future to help with audio latency
+				
+			} else {
+				Tone.Transport.stop(); // Stop the transport
+				playing = false; // Set playing boolean to false			
+			}	
+		}				
+	</script>
+
+
+<!-- Composition Activity -->
+<div th:fragment="Composition">
+	<div class="row">
+
+
+		<!-- Start/Stop Button -->
+		<div class="d-grid col-1 mx-auto ">
+			<button id="startStop" role="switch" aria-checked="false"
+				type="button" class="btn btn-primary text-center ">
+				<span>Play!</span>
+			</button>
+		</div>
+		<div class="col-2"></div>
+		<!-- Instructions -->
+		<div class="col-6">
+			<h1 class="fs-2 text-center">Drag And Drop To Create Your Own
+				Rhythms</h1>
+		</div>
+		<!-- Rhythms Heading -->
+		<div class="col-3">
+			<p class="display-6 text-center ">Rhythms:</p>
+		</div>
+	</div>
+
+
+	<!-- Row3 -->
+	<div class="row p-3 d-flex">
+
+		<!-- Composition Grid -->
+		<div class="d-grid col-8 display-2 ">
+			<div
+				class="container table notation table-bordered text-center compositionTable ">
+				<div class="row compositionTableRow ">
+					<div id="box1" ondrop="drop(event)" ondragover="allowDrop(event)"
+						class="col-sm border d-flex align-items-center justify-content-center"></div>
+					<div id="box2" ondrop="drop(event)" ondragover="allowDrop(event)"
+						class="col-sm border d-flex align-items-center justify-content-center"></div>
+					<div id="box3" ondrop="drop(event)" ondragover="allowDrop(event)"
+						class="col-sm border d-flex align-items-center justify-content-center"></div>
+					<div id="box4" ondrop="drop(event)" ondragover="allowDrop(event)"
+						class="col-sm border d-flex align-items-center justify-content-center"></div>
+				</div>
+				<div class="row compositionTableRow">
+					<div id="box5" ondrop="drop(event)" ondragover="allowDrop(event)"
+						class="col-sm border d-flex align-items-center justify-content-center"></div>
+					<div id="box6" ondrop="drop(event)" ondragover="allowDrop(event)"
+						class="col-sm border d-flex align-items-center justify-content-center"></div>
+					<div id="box7" ondrop="drop(event)" ondragover="allowDrop(event)"
+						class="col-sm border d-flex align-items-center justify-content-center"></div>
+					<div id="box8" ondrop="drop(event)" ondragover="allowDrop(event)"
+						class="col-sm border d-flex align-items-center justify-content-center"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- AvailableRhythms Grid -->
+		<div class="d-grid col-4 mx-auto display-4 noSelect" draggable="false">
+			<div class="container notation" draggable="false">
+				<div class="row" draggable="false">
+					<div
+						class="col-sm border d-flex align-items-center justify-content-center">
+						<span id="rhythm1" draggable="true" ondragstart="drag(event)"
+							th:if="${rhythmsIncluded[0]}">q q</span>
+					</div>
+					<div
+						class="col-sm border d-flex align-items-center justify-content-center">
+						<span id="rhythm2" draggable="true" ondragstart="drag(event)"
+							th:if="${rhythmsIncluded[1]}">q n</span>
+					</div>
+				</div>
+				<div class="row" draggable="false">
+					<div
+						class="col-sm border d-flex align-items-center justify-content-center"
+						th:if="${rhythmsIncluded[2]}">
+						<span id="rhythm3" draggable="true" ondragstart="drag(event)">n
+							q</span>
+					</div>
+					<div
+						class="col-sm border d-flex align-items-center justify-content-center"
+						th:if=${rhythmsIncluded[3]}>
+						<span id="rhythm4" draggable="true" ondragstart="drag(event)">n
+							n</span>
+					</div>
+				</div>
+				<div class="row" draggable="false">
+					<div
+						class="col-sm border d-flex align-items-center justify-content-center"
+						th:if="${rhythmsIncluded[4]}">
+						<span id="rhythm5" draggable="true" ondragstart="drag(event)">h</span>
+					</div>
+					<div
+						class="col-sm border d-flex align-items-center justify-content-center"
+						th:if="${rhythmsIncluded[5]}">
+						<span id="rhythm6" draggable="true" ondragstart="drag(event)">j
+							e</span>
+					</div>
+				</div>
+				<div class="row" draggable="false">
+					<div
+						class="col-sm border d-flex align-items-center justify-content-center"
+						th:if="${rhythmsIncluded[6]}">
+						<span id="rhythm7" colspan="2" draggable="true"
+							ondragstart="drag(event)">e q e</span>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="row">
+		<div class="col-3 mx-auto">
+			<div th:replace="layoutElements :: tempoSlider"></div>
+		</div>
+	</div>
+
+</div>
+
+<script th:inline="javascript" th:fragment="CompositionScript">
+
+			// Allow content to be dropped into elements
+			function allowDrop(ev) {
+				ev.preventDefault();
+			}
+
+			// on drag copy text data 
+			function drag(ev) {
+				ev.dataTransfer.setData("text/plain", ev.target.id);
+				event.dataTransfer.effectAllowed = "copy";
+			}
+
+			// on drop paste data to new node with new id
+			function drop(ev) {
+				ev.preventDefault();
+				var data = ev.dataTransfer.getData("text"); // get Data from drag function
+				var newRhythm = document.getElementById(data).cloneNode(true); // get node by ID, clone it and assign a new variable
+				newRhythm.id = newRhythm.id + "copy"; // create new note name
+				// update debugging output
+				// if statement to handle replacing previously dropped rhythms
+				// if target has nodes remove them and append the new rhythm to the div
+				if (ev.target.hasChildNodes()) {
+					var divName = ev.target.parentNode;
+						ev.target.remove();
+						divName.appendChild(newRhythm);
+				} else{
+					// otherwise just append the rhythm to the div
+					ev.target.appendChild(newRhythm);
+				}
+			}
+			
+			var slider = document.getElementById("tempoSlider");
+			var output = document.getElementById("tempoValue");
+			output.innerHTML = slider.value; // Display the default slider value
+
+			// Update the current slider value (each time you drag the slider handle)
+			slider.oninput = function() {
+				tempo = this.value;
+				output.innerHTML = this.value;
+				Tone.Transport.bpm.value = tempo;
+
+			}
+			// tone.js script to play rhythms
+			/* Listener for start stop button */
+			var startStopButton = document.querySelector("#startStop");
+			startStopButton.addEventListener("click", function() {
+				startTransport(); // Start the transport control
+			})
+			var tempo = /*[(${exerciseActivityDetails}? ${exerciseActivityDetails.tempo} : 80)]*/; // default tempo 
+			var playing = false; // boolean to track whether transport playing or not. 
+			
+			// Create synth to play sound
+			const synth = new Tone.MembraneSynth().toDestination(); //Membrane drum synthesizer
+			
+			// Part sets up sound pattern to be played and includes visual sync
+			const part = new Tone.Part(function(time, pitch){	
+
+						
+				// play the note
+				synth.triggerAttackRelease(pitch, "8n", time+("0.1")); // play an 8th note at the pitch and time passed in
+			
+			}, ); // Default note values
+			
+			// start the part
+			part.start();		
+
+			// function to add the notes to be played to the part based on the composition created by the user
+			function addRhythms(){
+				
+				// loop for each box of the composition page
+				for (var barNo = 0; barNo <=7; barNo++){
+					// get the box to be checked
+					var box = document.getElementById("box"+(barNo+1));
+
+
+					if (box.hasChildNodes()){
+						// get the id of the rhythm inside the box to be checked
+						var boxRhythm = box.firstChild.id;
+						// compare the id against the given strings and append the relevant rhythm patterns
+						if (boxRhythm == "rhythm1copy"){
+							part.add(barNo+":0:0", "C2");
+				  			part.add(barNo+":1:0", "C2");
+						} else if (boxRhythm == "rhythm2copy") {
+							part.add(barNo+":0:0", "C2");
+							part.add(barNo+":1:0", "C2");
+							part.add(barNo+":1:2", "C2");
+						} else if (boxRhythm == "rhythm3copy") {
+							part.add(barNo+":0:0", "C2");
+							part.add(barNo+":0:2", "C2");
+							part.add(barNo+":1:0", "C2");
+						} else if (boxRhythm == "rhythm4copy") {
+							part.add(barNo+":0:0", "C2");
+							part.add(barNo+":0:2", "C2");
+							part.add(barNo+":1:0", "C2");
+							part.add(barNo+":1:2", "C2");
+						} else if (boxRhythm == "rhythm5copy") {
+							part.add(barNo+":0:0", "C2");
+						} else if (boxRhythm == "rhythm6copy") {
+							part.add(barNo+":0:0", "C2");
+							part.add(barNo+":1:2", "C2");
+						} else if (boxRhythm == "rhythm7copy") {
+							part.add(barNo+":0:0", "C2");
+							part.add(barNo+":0:2", "C2");
+							part.add(barNo+":1:2", "C2");
+						}	
+						
+					}
+				
+				}
+			}
+								
+			// Set the time signature
+			Tone.Transport.set({
+				"timeSignature" : "2", 
+			});
+			
+	 		/* Start Transport Function */
+			function startTransport() {
+				
+				/* If transport is not playing, start it, otherwise stop it */
+				if (!playing) {
+ 					part.clear();
+					addRhythms(); 
+		 			Tone.start(); // Start Tone.js - required by browser before allowing audio to play
+					playing = true; // Set playing boolean to true
+					Tone.Transport.bpm.value = tempo; // Set the bpm to the current tempo
+					Tone.Transport.start("+.3"); // Start the transport 300ms in the future to help with audio latency
+	
+				} else {
+					Tone.Transport.stop(); // Stop the transport
+					Tone.Transport.cancel(); // cancel all transport events
+					playing = false; // Set playing boolean to false					
+				}			
+			}	
+		</script>
+
+
+
+
+<!-- Dictation Activity -->
+<div th:fragment="Dictation">
+	<div class="row">
+		<!-- Instructions -->
+
+		<!-- Start/Stop Button -->
+		<div class="d-grid col-3 mx-auto "></div>
+		<!-- Instructions -->
+		<div class="col-6 text-center">
+			<h1 class="fs-2 text-center">Try and identify the rhythms being
+				played.</h1>
+			<button id="startStop" role="switch" aria-checked="false"
+				type="button" class="btn btn-primary  ">
+				<span>Click For A Rhythm</span>
+			</button>
+		</div>
+		<!-- Rhythms Heading -->
+		<div class="col-3">
+			<p class="display-6 text-center ">
+				Score: <span id="score"></span>/<span id="total"></span>
+			</p>
+		</div>
+	</div>
+
+	<!-- Row3 -->
+	<div class="row p-5 d-flex  ">
+		<!-- Animation Display -->
+		<div class="d-grid gap-2 col-2 "></div>
+
+		<div class=" d-grid col-8 display-2  ">
+			<div
+				class="container table notation table-bordered compositionTable ">
+				<div class="row compositionTableRow" ondrop="drop(event)"
+					ondragover="allowDrop(event)">
+					<div id="rhythm1"
+						class="col-sm border d-flex align-items-center justify-content-center">q
+						q</div>
+					<div id="rhythm2"
+						class="col-sm border d-flex align-items-center justify-content-center">q
+						n</div>
+					<div id="rhythm3" th:if="${rhythmsIncluded[2]}"
+						class="col-sm border d-flex align-items-center justify-content-center">n
+						q</div>
+					<div id="rhythm4" th:if="${rhythmsIncluded[3]}"
+						class="col-sm border d-flex align-items-center justify-content-center">n
+						n</div>
+				</div>
+				<div class="row compositionTableRow" ondrop="drop(event)"
+					ondragover="allowDrop(event)" th:if="${rhythmsIncluded[4]}">
+					<div id="rhythm5" th:if="${rhythmsIncluded[4]}"
+						class="col-sm border d-flex align-items-center justify-content-center">h</div>
+					<div id="rhythm6" th:if="${rhythmsIncluded[5]}"
+						class="col-sm border d-flex align-items-center justify-content-center">j
+						e</div>
+					<div id="rhythm7" th:if="${rhythmsIncluded[6]}"
+						class="col-sm border d-flex align-items-center justify-content-center">e
+						q e</div>
+
+				</div>
+			</div>
+		</div>
+
+
+		<div class="d-grid gap-2 col-4 "></div>
+
+	</div>
+	<div class="row">
+		<div class="col-3 mx-auto">
+			<div th:replace="layoutElements :: tempoSlider"></div>
+		</div>
+	</div>
+</div>
+
+<!-- Dictation Activity Script -->
+<script th:inline="javascript" th:fragment="DictationScript">			
+			// tone.js script to play rhythms
+			var tempo = /*[(${exerciseActivityDetails}? ${exerciseActivityDetails.tempo} : 80)]*/; // default tempo
+			var playing = false; // boolean to track whether transport playing or not. 
+	 		var totalNoOfRhythms = 2; // default total number of rhythms if user is on progress level 1
+			var rhythmNo = 1; // Initialise rhythm number
+			var score = 0;
+			var scoreDisplay = document.getElementById("score");
+			var totalDisplay = document.getElementById("total");
+			var total = 0;
+			var scoreInput = document.getElementById("continue");
+			scoreDisplay.innerHTML = score;
+			totalDisplay.innerHTML = total;
+
+			var slider = document.getElementById("tempoSlider");
+			var output = document.getElementById("tempoValue");
+			output.innerHTML = slider.value; // Display the default slider value
+
+			// Update the current slider value (each time you drag the slider handle)
+			slider.oninput = function() {
+				tempo = this.value;
+				output.innerHTML = this.value;
+				Tone.Transport.bpm.value = tempo;
+
+			}
+	 		
+	 		// get array of rhythms to be included from thymeleaf
+ 	 		var receivedRhythmArray = [[${rhythmsIncluded}]];
+ 	 		var localRhythmArray = [];
+ 	 		
+ 			// add the index(+1) of true elements from thymeleaf received array to local rhythm array to get the rhythm numbers to be used in activity
+ 	 		for (i = 0; i < receivedRhythmArray.length; i++){
+ 	 			if (receivedRhythmArray[i] == true){
+ 	 				localRhythmArray.push([i+1]);	
+ 	 			}
+ 	 		}
+ 	 		
+ 	 		var rhythmTracker = 0;
+			
+			
+			/* Listener for start stop button */
+			var startStopButton = document.querySelector("#startStop");
+			startStopButton.addEventListener("click", function() {
+				startTransport(); // Start the transport control
+			})
+			
+
+			// listens to all clicks
+			document.addEventListener('click', function(e){
+				// if the sound is playing check if the answer is correct. 
+				if (playing){
+					
+					var guess = e.target.id;
+					if(/^rhythm/.test(guess)){
+						total++;
+						totalDisplay.innerHTML = total;
+						if (guess==rhythmNo){
+							alert('Correct Answer');
+							score++;
+							scoreDisplay.innerHTML = score;
+							scoreInput.setAttribute("href", "/selfAssessment?activity=Dictation&next=updateProgress&score="+score); //update the url for the self assessment view to include the score
+							startTransport(); // this will stop the sound if it is already playing 
+						} else {
+							alert('Incorrect. Try again.');
+						}
+					  }
+				}
+				
+				})
+
+			
+			// Create synth to play sound
+			const synth = new Tone.MembraneSynth().toDestination(); //Membrane drum synthesizer
+			
+			// Part sets up sound pattern to be played 
+			const part = new Tone.Part(function(time, pitch){	
+				
+				// play the note
+				synth.triggerAttackRelease(pitch, "8n", time+("0.1")); // play an 8th note at the pitch and time passed in
+			
+			}, );
+			
+			// Set the time signature
+			Tone.Transport.set({
+				"timeSignature" : "2", 
+			});
+			
+			
+			//set the part to loop every 2 beats
+	 		part.set({
+				"loop" : true,
+				"loopEnd" : "1m"			
+			}); 
+			// start the part
+			part.start();	
+			
+			
+
+			// function to add the notes to be played to the part based on the composition created by the user
+			function randomRhythm(){
+				rhythmIndex = (Math.floor((Math.random() * localRhythmArray.length-1)+1)); // create a variable called rhythm plus a number between 1 and 7
+				rhythmNo = "rhythm"+(localRhythmArray[rhythmIndex]);
+				// add the correct pattern based on the randomly generated rhythm
+				if (rhythmNo == "rhythm1"){
+			  		part.add("0", "C2");
+		  			part.add("4n", "C2");
+				} else if (rhythmNo == "rhythm2") {
+			  		part.add("0", "C2");
+		  			part.add("4n", "C2");
+		  			part.add("4n.", "C2");
+				} else if (rhythmNo == "rhythm3") {
+					part.add("0", "C2");
+					part.add("8n", "C2");
+					part.add("4n", "C2");
+				} else if (rhythmNo == "rhythm4") {
+					part.add("0", "C2");
+					part.add("8n", "C2");
+					part.add("4n", "C2");
+					part.add("4n.", "C2");
+				} else if (rhythmNo == "rhythm5") {
+					part.add("0", "C2");
+				} else if (rhythmNo == "rhythm6") {
+					part.add("0", "C2");
+					part.add("4n.", "C2");
+				} else if (rhythmNo == "rhythm7") {
+				  	part.add("0", "C2"); 
+				  	part.add("8n", "C2"); 
+				  	part.add("4n.", "C2");
+				}	
+				
+			}
+				
+			// Set the time signature
+			Tone.Transport.set({
+				"timeSignature" : "2", 
+			});
+			
+	 		/* Start Transport Function */
+			function startTransport() {
+				
+				/* If transport is not playing, start it, otherwise stop it */
+				if (!playing) {
+ 					part.clear();
+					randomRhythm(); 
+		 			Tone.start(); // Start Tone.js - required by browser before allowing audio to play
+					playing = true; // Set playing boolean to true
+					Tone.Transport.bpm.value = tempo; // Set the bpm to the current tempo
+					Tone.Transport.start("+.3"); // Start the transport 300ms in the future to help with audio latency
+					
+				
+					
+				} else {
+					Tone.Transport.stop(); // Stop the transport
+					Tone.Transport.cancel(); // cancel all transport events
+					playing = false; // Set playing boolean to false					
+				}
+				
+			}	
+			
+		</script>

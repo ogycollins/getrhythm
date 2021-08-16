@@ -44,7 +44,7 @@
 
 			<!-- Heading and instructions -->
 			<div class="col-6">
-				<h1 class="display-4 text-center">Self-Assessment</h1>
+				<h1 class="display-4 text-center text-success">Self-Assessment</h1>
 			</div>
 
 		</div>
@@ -64,23 +64,25 @@
 		</div>
 
 		<!-- Row3 -->
-		 
+
 
 		<div class="row">
 
 			<div class="col-3"></div>
 
 			<div class="col-6 container">
-			
-				<form th:action="@{/record_assessment?next={record_assessment}(record_assessment = ${activityDetails.nextActivity})}" th:object="${selfAssessment}" method="post">
+
+				<form
+					th:action="@{/record_assessment?next={record_assessment}(record_assessment = ${activityDetails.nextActivity})}"
+					th:object="${selfAssessment}" method="post">
 					<div class="row">
 						<div class="d-grid col-4 rating display-3 text-center">
-							<span id="ratingSpan"></span>
-							<input id="ratingField" type="hidden" th:field="*{rating}"/>
-							
+							<span id="ratingSpan"></span> <input id="ratingField"
+								type="hidden" th:field="*{rating}" />
+
 						</div>
-			
-						<div class="col-8 display-3 text-center" >
+
+						<div class="col-8 display-3 text-center">
 							<i class="rating_star fa fa-star" th:hidden="${message}"></i> <i
 								class="rating_star fa fa-star" th:hidden="${message}"></i> <i
 								class="rating_star fa fa-star" th:hidden="${message}"></i> <i
@@ -88,31 +90,45 @@
 								class="rating_star fa fa-star" th:hidden="${message}"></i>
 						</div>
 					</div>
-					
+
 					<div class="row">
 						<div class="col-12 text-center">
-							<label for="comment" class="form-label">Comment: </label> 
-							<input th:field="*{comment}" th:disabled="${message}" type="text" class="form-control" id="comment" aria-describedby="assessmentHelp">
-							<div id="assessmentHelp" class="form-text">How did you find	that activity?</div>
+							<label for="comment" class="form-label">Comment: </label> <input
+								th:field="*{comment}" th:disabled="${message}" type="text"
+								class="form-control" id="comment"
+								aria-describedby="assessmentHelp">
+							<div id="assessmentHelp" class="form-text">How did you find
+								that activity?</div>
 						</div>
 					</div>
-					
+
 					<div class="row">
-						<div class="col-12 text-center">
-							<label for=activityType class="form-label">Activity Type: </label>
-							<span th:text="${activityDetails.activityName}"></span>
-							<input type="text" th:name="assessmentType" th:value="${activityDetails.activityName}" th:disabled="${message}"/>
+						<div class="col text-center fs-3">
+							<label for=activityType class="form-label">Activity Type:
+							</label> <span th:text="${activityDetails.activityName}"></span> <input
+								type="hidden" th:name="assessmentType"
+								th:value="${activityDetails.activityName}"
+								th:disabled="${message}" />
+						</div>
+						<div class="col text-center fs-3" th:if="${activityDetails.score>0}">
+							<label for=activityType class="form-label">Score:
+							</label> <span th:text="${activityDetails.score}"></span> 
+							<input
+								type="hidden" th:name="score"
+								th:value="${activityDetails.score}"
+								th:disabled="${message}" />
 						</div>
 					</div>
-					
+
 					<div class="row">
 						<div class="col-12 text-center">
-							<button id="submit" type="submit" class="btn btn-primary" value="close" th:disabled="${message}">Submit</button>
+							<button id="submit" type="submit" class="btn btn-primary"
+								value="close" th:disabled="${message}">Submit</button>
 						</div>
 					</div>
 				</form>
 			</div>
-											
+
 			<div class="col-3"></div>
 		</div>
 
@@ -126,8 +142,10 @@
 
 			<div class="d-grid col-3 mx-auto">
 
-				<a id="continue" th:href="@{/{next}(next = ${activityDetails.nextActivity})}" role="button"
-					aria-checked="false" class="btn btn-primary text-center col-4"> <span>Continue</span>
+				<a id="continue"
+					th:href="@{/{next}(next = ${activityDetails.nextActivity})}"
+					role="button" aria-checked="false"
+					class="btn btn-primary text-center col-4"> <span>Continue</span>
 				</a>
 			</div>
 		</div>
@@ -184,7 +202,7 @@
 		
 	</script>
 	<!-- Bootstrap JavaScript -->
-		<script
+	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 		crossorigin="anonymous"></script>

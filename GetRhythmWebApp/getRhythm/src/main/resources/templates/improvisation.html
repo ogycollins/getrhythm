@@ -41,88 +41,21 @@
 		<!-- Row1 -->
 		<div class="row">
 
-			<div th:replace="layoutElements :: greeting"></div>
+			<div class="col-3">
+				<div th:replace="layoutElements :: greeting"></div>
+				<div th:replace="layoutElements :: level"></div>
+			</div>
 
 			<!-- Heading and instructions -->
 			<div class="col-6">
-				<h1 class="display-4 text-center">Improvisation</h1>
+				<h1 class="display-4 text-center text-success">Improvisation</h1>
 			</div>
 
 		</div>
 
 		<!-- Row2 -->
+		<div th:replace="activities :: Improvisation"></div>
 
-		<div class="row">
-
-
-
-			<!-- Instructions -->
-			<div class="col">
-				<h1 class="display-6 text-center">Improvise to the beat using
-					rhythms you have learned:</h1>
-			</div>
-
-		</div>
-
-
-		<!-- Row3 -->
-		<div class="row p-3  d-flex align-items-center ">
-
-			<div class="d-grid col-5 mx-auto "></div>
-
-			<!-- Start/Stop Button -->
-			<div class="d-grid col-2 mx-auto ">
-				<button id="startStop" role="switch" aria-checked="false"
-					type="button" class="btn btn-primary text-center ">
-					<span>Start!</span>
-				</button>
-			</div>
-
-			<div class="d-grid col-5 mx-auto "></div>
-		</div>
-
-		<!-- Row3 -->
-		<div class="row p-5 d-flex  ">
-			<!-- Animation Display -->
-			<div class="d-grid gap-2 col-2 ">
-				<div id="circle" class="mx-auto rounded-circle invisible"></div>
-			</div>
-
-			<div class=" d-grid col-8 display-2  ">
-				<div
-					class="container table notation table-bordered compositionTable ">
-					<div class="row compositionTableRow">
-						<div id="rhythm1"
-							class="col-sm border d-flex align-items-center justify-content-center">q
-							q</div>
-						<div id="rhythm2"
-							class="col-sm border d-flex align-items-center justify-content-center">q
-							n</div>
-						<div id="rhythm3" th:if="${progress}>=2"
-							class="col-sm border d-flex align-items-center justify-content-center">n
-							q</div>
-						<div id="rhythm4" th:if="${progress}>=3"
-							class="col-sm border d-flex align-items-center justify-content-center">n
-							n</div>
-					</div>
-					<div class="row compositionTableRow" th:if="${progress}>=4">
-						<div id="rhythm5" th:if="${progress}>=4"
-							class="col-sm border d-flex align-items-center justify-content-center">h</div>
-						<div id="rhythm6" th:if="${progress}>=5"
-							class="col-sm border d-flex align-items-center justify-content-center">j
-							e</div>
-						<div id="rhythm7" th:if="${progress}>=6"
-							class="col-sm border d-flex align-items-center justify-content-center">e
-							q e</div>
-
-					</div>
-				</div>
-			</div>
-
-
-		
-
-		</div>
 	</div>
 
 
@@ -133,7 +66,9 @@
 			<div th:replace="layoutElements :: signoutButton"></div>
 		</div>
 
-		<div class="d-grid col-4 mx-auto"></div>
+		<div class="d-grid col-4 mx-auto">
+			
+			</div>
 
 		<div class="d-grid col-2 mx-auto">
 			<a id="back" href="/lessons" role="button" aria-checked="false"
@@ -142,8 +77,10 @@
 		</div>
 		<div class="d-grid col-2 mx-auto">
 
-			<a id="continue" href="/selfAssessment?activity=Improvisation&next=composition" role="button"
-				aria-checked="false" class="btn btn-primary text-center "> <span>Continue</span>
+			<a id="continue"
+				href="/selfAssessment?activity=Improvisation&next=composition"
+				role="button" aria-checked="false"
+				class="btn btn-primary text-center "> <span>Continue</span>
 			</a>
 		</div>
 	</div>
@@ -155,89 +92,7 @@
 
 
 	<!-- Javascript -->
-	<script>
-	
-		/* variables */
-		var tempo = 80; // default tempo
-		var playing = false; // boolean to track whether transport playing or not. 
-
-	
-
-		/* Listener for start stop button */
-		var startStopButton = document.querySelector("#startStop");
-		
-		startStopButton.addEventListener("click", function() {
-			startTransport(); // Start the transport control
-		})
-
-		// Create synth to play sound
-		const synth = new Tone.MembraneSynth().toDestination(); //Membrane drum synthesizer
-		
-	
-		
-		
-		function circleFlash(pitch){
-			if (pitch=="C2"){
-				// Circle Animation
-				circle.classList.add("visible");
-				circle.classList.remove("invisible");
-				
-				setTimeout(() => {
-					circle.classList.add("invisible");
-					circle.classList.remove("visible");
-				}, 50);
-			}
-		}
-
-	 	// Simple Part to keep time
-		const part = new Tone.Part(function(time, pitch){	
-			// play the note
-			synth.triggerAttackRelease(pitch, "8n", time); // play an 8th note at the pitch and time passed in
-			
-		
-			var circle = document.getElementById("circle"); 
-		
-			Tone.Draw.schedule(() => {		
-				
-				// flash the circle in time with metronome
-				circleFlash(pitch);
-						
-			}, time);
-		
-		}, [ ["0", "C2"], ["4n", "C2"] ]); // Pass in simple metronome pattern
-		
-		
-		// Set the time signature
-		Tone.Transport.set({
-			"timeSignature" : "2", 
-		});
-		
-		//set the part to loop every 2 beats
- 		part.set({
-			"loop" : true,
-			"loopEnd" : "1m"			
-		}); 
-			
-		// start the part
-		part.start();		
-
-		
- 		/* Start Transport Function */
-		function startTransport() {
-			
-			/* If transport is not playing, start it, otherwise stop it */
-			if (!playing) {
-	 			Tone.start(); // Start Tone.js - required by browser before allowing audio to play
-				playing = true; // Set playing boolean to true
-				Tone.Transport.bpm.value = tempo; // Set the bpm to the current tempo
-				Tone.Transport.start("+.3"); // Start the transport 300ms in the future to help with audio latency
-				
-			} else {
-				Tone.Transport.stop(); // Stop the transport
-				playing = false; // Set playing boolean to false			
-			}	
-		}				
-	</script>
+	<div th:replace="activities :: ImprovisationScript"></div>
 
 	<!-- Bootstrap JavaScript -->
 	<script

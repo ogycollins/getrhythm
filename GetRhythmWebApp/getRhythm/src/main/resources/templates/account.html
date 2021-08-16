@@ -19,15 +19,206 @@
 
 </head>
 <body>
-
 	<div th:replace="layoutElements :: authenticatedNavbar"></div>
-	<div th:replace="layoutElements :: greeting"></div>
 
-	<h1 class="display-4 text-center">My Account</h1>
+	<div class="container">
+		<div class="row">
+			<div class="col-3">
+				<div th:replace="layoutElements :: greeting"></div>
+			</div>
+			<div class="col-6">
+				<h1 class="display-4 text-center text-success">Account</h1>
+			</div>
+			<div class="col-3"></div>
+		</div>
+
+		<div class="row">
+			<div class="col-3"></div>
+			<div class="col-6">
+				<form th:action="@{/updateUser}" th:object="${user}" method="post">
+					<div class="form-group row">
+						<label for="UserID" class="col-sm-2 col-form-label fw-bold">UserID</label>
+						<div class="col-sm-8">
+							<input type="number" class="form-control-plaintext" id="UserID"
+								aria-describedby="UserID" th:field="*{id}" readonly>
+						</div>
+
+					</div>
+					<div class="form-group row">
+						<label for="Username" class="col-sm-2 col-form-label fw-bold">Username</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control-plaintext" id="Username"
+								aria-describedby="Username" th:field="*{username}" readonly>
+						</div>
+						<div class="col-sm-2 col-form-label editButton">
+							<button class="btn btn-light" type="button" id="editUsername">Edit</button>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="password" class="col-sm-2 col-form-label fw-bold">Password</label>
+						<div class="col-sm-8">
+							<input type="password" class="form-control-plaintext"
+								id="password" th:field="*{password}" readonly>
+						</div>
+						<div class="col-sm-2 col-form-label editButton">
+							<button class="btn btn-light" type="button" id="editPassword">Change</button>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="Name" class="col-sm-2 col-form-label fw-bold">Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control-plaintext" id="Name"
+								aria-describedby="Name" th:field="*{name}" readonly>
+						</div>
+						<div class="col-sm-2 col-form-label editButton">
+							<button class="btn btn-light" type="button" id="editName">Edit</button>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="dob" class="col-sm-2 col-form-label fw-bold">Date
+							Of Birth</label>
+						<div class="col-sm-8">
+							<input type="date" class="form-control-plaintext" id="dob"
+								aria-describedby="dob" th:field="*{DOB}" readonly>
+						</div>
+						<div class="col-sm-2 col-form-label editButton">
+							<button class="btn btn-light" type="button" id="editDOB">Edit</button>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="email" class="col-sm-2 col-form-label fw-bold">Email
+							address</label>
+						<div class="col-sm-8">
+							<input type="email" class="form-control-plaintext" id="email"
+								aria-describedby="email" th:field="*{email}" readonly>
+						</div>
+						<div class="col-sm-2 col-form-label editButton">
+							<button class="btn btn-light" type="button" id="editEmail">Edit</button>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="progress" class="col-sm-2 col-form-label fw-bold">Level</label>
+
+						<div class="col-sm-8">
+							<input type="number" class="form-control-plaintext" id="progress"
+								aria-describedby="progress" th:field="*{progress}" readonly>
+						</div>
+						<div class="col-sm-2 col-form-label editButton">
+							<button class="btn btn-light" type="button" id="editProgress">Reset</button>
+						</div>
+					</div>
+
+					<button id="submitButton" type="submit" class="btn btn-primary"
+						hidden>Submit Changes</button>
+					<button id="cancelChanges" class="btn btn-secondary" type="reset"
+						hidden>Cancel Changes</button>
+				</form>
+			</div>
+			<div class="col-3"></div>
+		</div>
+
+		<div class="row">
+
+			<div class="col-2"></div>
+			<div class="col-8">
+
+				<div class="accordion" id="accordionExample">
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="headingOne">
+							<button class="accordion-button collapsed" type="button"
+								data-bs-toggle="collapse" data-bs-target="#collapseOne"
+								aria-expanded="true" aria-controls="collapseOne">View
+								Your Self-Assessments</button>
+						</h2>
+						<div id="collapseOne" class="accordion-collapse collapse"
+							aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+							<div class="accordion-body">
+								<table class="table">
+									<thead class="thead-light">
+										<tr>
+											<th scope="col">Assessment Type</th>
+											<th scope="col">Rating</th>
+											<th scope="col">Comment</th>
+											<th scope="col">Time And Date</th>
+											<th scope="col">Score</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="selfAssessments: ${selfAssessments}">
+											<td th:text="${selfAssessments.assessmentType}"></td>
+											<td th:text="${selfAssessments.rating}"></td>
+											<td th:text="${selfAssessments.comment}"></td>
+											<td th:text="${selfAssessments.timeAndDate}"></td>
+											<td th:text="${selfAssessments.score}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+
+
+			</div>
+			<div class="col-2"></div>
+
+		</div>
+
+
+		<div class="row">
+			<div class="col-3"></div>
+			<div class="col-6"></div>
+			<div class="col-3"></div>
+		</div>
+
+
+	</div>
+
+
+
+
+
 
 
 	<div th:replace="layoutElements :: signoutButton"></div>
 
+	<script>
+		document.addEventListener('click',
+				function(e) {
+					if (e.target.type == "button") {
+						document.getElementById("submitButton")
+								.removeAttribute("hidden");
+						document.getElementById("cancelChanges")
+								.removeAttribute("hidden");
+						var editTarget = e.target.id;
+						var targetID = null;
+						if (editTarget == "editUsername") {
+							targetID = "Username";
+						} else if (editTarget == "editPassword") {
+							targetID = "password";
+						} else if (editTarget == "editName") {
+							targetID = "Name";
+						} else if (editTarget == "editDOB") {
+							targetID = "dob";
+						} else if (editTarget == "editEmail") {
+							targetID = "email";
+						} else if (editTarget == "editProgress") {
+							document.getElementById("progress").value = 1;
+						}
+					}
+					if (targetID !== null) {
+						document.getElementById(targetID).removeAttribute(
+								"readonly");
+						document.getElementById(targetID).classList
+								.remove("form-control-plaintext");
+						document.getElementById(targetID).classList
+								.add("form-control");
+					}
+
+				})
+	</script>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
