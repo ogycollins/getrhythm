@@ -3,11 +3,13 @@ package com.getRhythm.getRhythm;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,11 +32,8 @@ public class MainController {
 	private UserRepository userRepository;
 
 	@Autowired
-	private RhythmPatternsRepository rhythmsRepository;
-
-	@Autowired
 	private SelfAssessmentRepository selfAssessmentRepository;
-	
+
 	@Autowired
 	private ResourceRepository resourceRepository;
 
@@ -43,29 +42,35 @@ public class MainController {
 		// This returns a JSON or XML with the users
 		return userRepository.findAll();
 	}
-	
+
 	@GetMapping("/manageUsers")
 	public String manageAccounts(Model model) {
-		// This returns a JSON or XML with the users
 		List<User> users = userRepository.findAll();
 		model.addAttribute("users", users);
 		return "manageUsers";
 	}
-	
+
+	@GetMapping("/deleteAccount")
+	public String deleteAccount(Model model, @RequestParam(value = "id", required = false) Integer id) {
+		User user = userRepository.findByID(id);
+		CustomUserDetails userDetails = new CustomUserDetails(user);
+		if (userDetails != null
+				&& userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
+			String cantdelete = "Cannot delete admin account";
+			model.addAttribute("cantdelete", cantdelete);
+			model.addAttribute("user", user);
+			return "account";
+		} else {
+			userRepository.delete(user);
+			return "login";
+		}
+	}
+
 	@GetMapping("/editUser")
 	public String editUser(Model model, @RequestParam(value = "id", required = false) Integer id) {
-		// This returns a JSON or XML with the users
 		User user = userRepository.findByID(id);
 		model.addAttribute("user", user);
 		return "account";
-	}
-
-	@GetMapping(path = "/lessons/{id}")
-	public String getRhythmSyllables(@PathVariable("id") Integer id, Model model) {
-		RhythmPatterns rhythm = rhythmsRepository.findById(id).get();
-		String rhythmSyllables = rhythm.getRhythmSyllables();
-		model.addAttribute("rhythmSyllables", rhythmSyllables);
-		return "lessons";
 	}
 
 	@GetMapping("/createAccount")
@@ -82,7 +87,7 @@ public class MainController {
 		} else {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); // BCryptPasswordEncoder so only a hash
 																					// of the password is stored in
-																				// database
+																					// database
 			String encodedPassword = passwordEncoder.encode(user.getPassword());
 			user.setPassword(encodedPassword);
 			userRepository.save(user);
@@ -190,7 +195,7 @@ public class MainController {
 			rhythmsIncluded[6] = true;
 		}
 		model.addAttribute("rhythmsIncluded", rhythmsIncluded);
-		model.addAttribute("progress", progress);	
+		model.addAttribute("progress", progress);
 		return "dictation";
 	}
 
@@ -255,14 +260,14 @@ public class MainController {
 		model.addAttribute("exerciseActivityDetails", exerciseActivityDetails);
 		return "exerciseActivity"; // go to exerciseActivity page
 	}
-	
+
 	@GetMapping("/resources")
 	public String resources(Model model) {
 		List<Resource> resources = resourceRepository.findAll();
 		model.addAttribute("resources", resources);
 		return "resources";
 	}
-	
+
 	@GetMapping("/account")
 	public String account(Model model, HttpServletRequest request) {
 		Principal principal = request.getUserPrincipal(); // get principal user
@@ -273,16 +278,16 @@ public class MainController {
 		model.addAttribute("user", user);
 		return "account";
 	}
-	
+
 	@PostMapping("/updateUser")
 	public String updateUser(@Valid User user, BindingResult result) {
-		String oldPassword = userRepository.findByID(user.getId()).getPassword(); // get user password from database	
+		String oldPassword = userRepository.findByID(user.getId()).getPassword(); // get user password from database
 		System.out.println("New Password: " + user.getPassword());
 		if (user.getPassword().isEmpty()) {
 			user.setPassword(oldPassword);
 			System.out.println("Password not changed");
 		} else {
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); 
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			String newPassword = passwordEncoder.encode(user.getPassword());
 			user.setPassword(newPassword);
 			System.out.println("Password changed");
@@ -290,13 +295,12 @@ public class MainController {
 		userRepository.save(user); // update changes
 		return "account";
 	}
-	
-	@GetMapping({"/",  "/home"})
+
+	@GetMapping({ "/", "/home" })
 	public String home(Model model, HttpServletRequest request) {
 		boolean[] rhythmsIncluded = { true, true, false, false, false, false, false };
 		model.addAttribute("rhythmsIncluded", rhythmsIncluded);
 		return "home";
 	}
-	
 
 }

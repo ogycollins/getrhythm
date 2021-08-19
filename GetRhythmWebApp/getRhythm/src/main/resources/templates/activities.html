@@ -71,11 +71,7 @@
  		var changeRhythmAfter = 4; // a variable to set how often the rhythm changes
  		var showSymbols = true;
  		var showSyllables = true;
- 		var lastRhythmIndex;
-		var inTheLoop = "nope!";
-		
-		
- 		
+		var rhythmTracker = 0; // to count which rhythm is currently playing
 		// get array of rhythms to be included from thymeleaf
  		var receivedRhythmArray = [[${rhythmsIncluded}]];
  		var localRhythmArray = [];
@@ -88,7 +84,7 @@
 		slider.oninput = function() {
 			tempo = this.value;
 			output.innerHTML = this.value;
-			Tone.Transport.bpm.value = tempo;
+			Tone.Transport.bpm.rampTo(tempo,1);
 		}
  		
 		// add the index(+1) of true elements from thymeleaf received array to local rhythm array to get the rhythm numbers to be used in activity
@@ -97,8 +93,6 @@
  				localRhythmArray.push([i+1]);	
  			}
  		}
- 		
- 		var rhythmTracker = 0;
  		
 		/* Listener for start stop button */
 		var startStopButton = document.querySelector("#startStop");
@@ -133,11 +127,9 @@
 				break;
 			} 
 		}
-		
-
 		// Create synth to play sound
-		const synth = new Tone.MembraneSynth().toDestination(); //Membrane drum synthesizer
-		
+		const synth = new Tone.PolySynth(Tone.MembraneSynth).toDestination();
+	
 		// Function to set up rhythm pattern 1
 		[# th:if="${rhythmsIncluded[0]}"]
 		function rhythm1setup(){
@@ -272,35 +264,32 @@
 			}
 		}
 		
-		function updatePart(time){
-			noteCounter = 1;
-			loopCounter = 1;
-			hideAll();
-			
+		function updatePart(time){			
 			// if we are on the last rhythm reset the rhythmTracker otherwise increment it to the next rhythm 
 			if (rhythmTracker == localRhythmArray.length-1){
 				rhythmTracker = 0;
 			} else {
 				rhythmTracker ++;
 			}
-			
+			Tone.Draw.cancel(); // cancel all draw events
 			// call the function to switch to the next rhythm
 			setRhythm(localRhythmArray[rhythmTracker]);	
 		}
-
+		
+		
 	 	// Part sets up sound pattern to be played and includes visual sync
 		const part = new Tone.Part(function(time, pitch){	
+			// play the note
+			synth.triggerAttackRelease(pitch, "8n", time); // play an 8th note at the pitch and time passed in
 			
 			// if we're on the first loop and the first note, schedule a rhythm update in 4 bars
-			var rhythmUpdateTime = ("+"+changeRhythmAfter+"m");
+			var rhythmUpdateTime = ("+"+changeRhythmAfter+"m");  
 			if (loopCounter == 1 && noteCounter == 1){
 				Tone.Transport.schedule(updatePart, rhythmUpdateTime);	
 			}
-			// variable that calculates when to remove symbols based on tempo
-			const loopTime = (Tone.Time(part.loopEnd).toMilliseconds())-(600000/(tempo*6.5));
+						
+
 			
-			// play the note
-			synth.triggerAttackRelease(pitch, "8n", time+("0.1")); // play an 8th note at the pitch and time passed in
 			
 			// select the elements to be animated
 			var syllable = document.getElementById("syllable"+noteCounter);
@@ -375,8 +364,7 @@
 		part.start();		
 
  		/* Start Transport Function */
-		function startTransport() {
-						
+		function startTransport() {				
 			/* If transport is not playing, start it, otherwise stop it */
 			if (!playing) {
 				hideAll(); // hide all symbols
@@ -390,15 +378,12 @@
 			} else {
 				Tone.Transport.stop(); // Stop the transport
 				Tone.Draw.cancel(); // cancel all transport events
-				Tone.Transport.cancel(); // cancel all transport events
 				playing = false; // Set playing boolean to false
 				hideAll(); // hide all symbols
 				noteCounter = 1; // reset the note counter
 				loopCounter = 1; // reset the loop counter
-				rhythmTracker = 1;// reset rhythm Tracker
-				
+				rhythmTracker = 1;// reset rhythm Tracker	
 			}
-			
 		}	
 	</script>
 
@@ -434,7 +419,7 @@
 	</div>
 
 	<!-- Row3 -->
-	<div class="row p-5 d-flex  ">
+	<div class="row d-flex  ">
 		<!-- Animation Display -->
 		<div class="d-grid gap-2 col-2 ">
 			<div id="circle" class="mx-auto rounded-circle invisible"></div>
@@ -456,7 +441,7 @@
 						class="col-sm border d-flex align-items-center justify-content-center">n
 						n</div>
 				</div>
-				<div class="row compositionTableRow">
+				<div class="row compositionTableRow" th:if="${rhythmsIncluded[4] or rhythmsIncluded[5] or rhythmsIncluded[6]}">
 					<div id="rhythm5" th:if="${rhythmsIncluded[4]}"
 						class="col-sm border d-flex align-items-center justify-content-center">h</div>
 					<div id="rhythm6" th:if="${rhythmsIncluded[5]}"
@@ -470,6 +455,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<div class="row">
 		<div class="col-3 mx-auto">
 			<div th:replace="layoutElements :: tempoSlider"></div>
@@ -492,7 +478,7 @@
 		})
 
 		// Create synth to play sound
-		const synth = new Tone.MembraneSynth().toDestination(); //Membrane drum synthesizer
+		const synth = new Tone.PolySynth(Tone.MembraneSynth).toDestination();
 		
 		function circleFlash(pitch){
 			if (pitch=="C2"){
@@ -707,7 +693,6 @@
 				var data = ev.dataTransfer.getData("text"); // get Data from drag function
 				var newRhythm = document.getElementById(data).cloneNode(true); // get node by ID, clone it and assign a new variable
 				newRhythm.id = newRhythm.id + "copy"; // create new note name
-				// update debugging output
 				// if statement to handle replacing previously dropped rhythms
 				// if target has nodes remove them and append the new rhythm to the div
 				if (ev.target.hasChildNodes()) {
@@ -741,7 +726,7 @@
 			var playing = false; // boolean to track whether transport playing or not. 
 			
 			// Create synth to play sound
-			const synth = new Tone.MembraneSynth().toDestination(); //Membrane drum synthesizer
+			const synth = new Tone.PolySynth(Tone.MembraneSynth).toDestination();
 			
 			// Part sets up sound pattern to be played and includes visual sync
 			const part = new Tone.Part(function(time, pitch){	
@@ -974,7 +959,7 @@
 
 			
 			// Create synth to play sound
-			const synth = new Tone.MembraneSynth().toDestination(); //Membrane drum synthesizer
+			const synth = new Tone.PolySynth(Tone.MembraneSynth).toDestination();
 			
 			// Part sets up sound pattern to be played 
 			const part = new Tone.Part(function(time, pitch){	

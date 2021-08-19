@@ -107,14 +107,34 @@
 							<button class="btn btn-light" type="button" id="editProgress">Reset</button>
 						</div>
 					</div>
-
-					<button id="submitButton" type="submit" class="btn btn-primary"
-						hidden>Submit Changes</button>
-					<button id="cancelChanges" class="btn btn-secondary" type="reset"
-						hidden>Cancel Changes</button>
+					<div class="row mx-auto">
+						<div class="col">
+							<button id="submitButton" type="submit" class="btn btn-primary"
+								hidden>Submit Changes</button>
+						</div>
+						<div class="col">
+							<button id="cancelChanges" class="btn btn-secondary" type="reset"
+								hidden>Cancel Changes</button>
+						</div>
+					</div>
 				</form>
+				<div class="row mx-auto p-3">
+					<div class="col-3"></div>
+					<div class="col-6">
+						<a type="button" class="warning  text-center" th:href="@{/deleteAccount?id={id} (id=${user.id})}"><button
+								class="btn btn-danger">Delete Account</button></a>
+					</div>
+					<div class="col-3"></div>
+				</div>
+					<div class="row mx-auto p-3">
+					<div class="col-3"></div>
+					<div class="col-6">
+						<p class="text-warning" th:text=${cantdelete}></p>
+					</div>
+					<div class="col-3"></div>
+				</div>
 			</div>
-			<div class="col-3"></div>
+
 		</div>
 
 		<div class="row">
