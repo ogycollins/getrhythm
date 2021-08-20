@@ -43,6 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.authenticationProvider(authenticationProvider());
 	}
 
+	// Set permissions, login procedure and custom error view
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http

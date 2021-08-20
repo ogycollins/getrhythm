@@ -42,7 +42,8 @@ public class MainController {
 		// This returns a JSON or XML with the users
 		return userRepository.findAll();
 	}
-
+	
+	// Adds list of all users to model before rendering manageUsers page (Admin only)
 	@GetMapping("/manageUsers")
 	public String manageAccounts(Model model) {
 		List<User> users = userRepository.findAll();
@@ -50,6 +51,7 @@ public class MainController {
 		return "manageUsers";
 	}
 
+	// Checks if user is admin before deleting
 	@GetMapping("/deleteAccount")
 	public String deleteAccount(Model model, @RequestParam(value = "id", required = false) Integer id) {
 		User user = userRepository.findByID(id);
@@ -66,6 +68,7 @@ public class MainController {
 		}
 	}
 
+	// Gets user details from database for edit account screen
 	@GetMapping("/editUser")
 	public String editUser(Model model, @RequestParam(value = "id", required = false) Integer id) {
 		User user = userRepository.findByID(id);
@@ -73,12 +76,14 @@ public class MainController {
 		return "account";
 	}
 
+	// Adds a new user object to model before trying to create an account
 	@GetMapping("/createAccount")
 	public String showRegistrationForm(Model model) {
 		model.addAttribute("user", new User());
 		return "createAccount";
 	}
 
+	// Persists new user to database. Hashes password. Checks if username or email already exist. 
 	@PostMapping("/process_register")
 	public String processRegister(@Valid User user, BindingResult result) {
 		if (userRepository.existsUserByUsername(user.getUsername())
@@ -95,6 +100,8 @@ public class MainController {
 		}
 	}
 
+	// Adds a boolean array to model to represent required rhythm patterns. 
+	// Adds user progress
 	@GetMapping("/lessons")
 	String getUserProgress(Model model, HttpServletRequest request) {
 		Integer progress = getProgress(model, request);
@@ -119,6 +126,7 @@ public class MainController {
 		return "lessons";
 	}
 
+	// Returns user progress
 	@ResponseBody
 	Integer getProgress(Model model, HttpServletRequest request) {
 		Principal user = request.getUserPrincipal();
@@ -199,6 +207,7 @@ public class MainController {
 		return "dictation";
 	}
 
+	// Adds activityDetails object to model so that score, activity name, next activity to link to etc. are passed to view
 	@GetMapping("/selfAssessment")
 	public String greeting(@RequestParam(value = "activity", required = false) String activity,
 			@RequestParam(value = "next") String next, @RequestParam(value = "score", required = false) Integer score,
@@ -216,6 +225,7 @@ public class MainController {
 		return "selfAssessment";
 	}
 
+	// Persist assessment to the database. 
 	@PostMapping("/record_assessment")
 	public String recordAssessment(@Valid SelfAssessment selfAssessment, @RequestParam(value = "next") String next,
 			BindingResult result, HttpServletRequest request, String savedMessage) {
@@ -230,6 +240,7 @@ public class MainController {
 																			// the name of the next view required
 	}
 
+	// Increment user progress when they complete a lesson cycle
 	@GetMapping("/updateProgress")
 	public String updateProgress(HttpServletRequest request) {
 		Principal principal = request.getUserPrincipal(); // get principal user
@@ -246,12 +257,14 @@ public class MainController {
 		return "redirect:/lessons"; // return to lessons page with updated user progress level
 	}
 
+	// Add exerciseActivityDetails object to model to record for input
 	@GetMapping("/exercises")
 	public String exercises(Model model) {
 		model.addAttribute("exerciseActivityDetails", new ExerciseActivityDetails());
 		return "exercises";
 	}
 
+	// Pass exerciseActivityDetails object to set up activty as required
 	@PostMapping("/setupExercise")
 	public String setupExercise(@Valid ExerciseActivityDetails exerciseActivityDetails, Model model,
 			BindingResult result) {
@@ -261,6 +274,7 @@ public class MainController {
 		return "exerciseActivity"; // go to exerciseActivity page
 	}
 
+	// Pass list of resources to model from database
 	@GetMapping("/resources")
 	public String resources(Model model) {
 		List<Resource> resources = resourceRepository.findAll();
@@ -268,6 +282,7 @@ public class MainController {
 		return "resources";
 	}
 
+	// Add objects to pass user details and previous assessments to user account view
 	@GetMapping("/account")
 	public String account(Model model, HttpServletRequest request) {
 		Principal principal = request.getUserPrincipal(); // get principal user
@@ -279,6 +294,7 @@ public class MainController {
 		return "account";
 	}
 
+	// update user details
 	@PostMapping("/updateUser")
 	public String updateUser(@Valid User user, BindingResult result) {
 		String oldPassword = userRepository.findByID(user.getId()).getPassword(); // get user password from database
@@ -296,6 +312,7 @@ public class MainController {
 		return "account";
 	}
 
+	// Set required rhythms for unauthenticated users
 	@GetMapping({ "/", "/home" })
 	public String home(Model model, HttpServletRequest request) {
 		boolean[] rhythmsIncluded = { true, true, false, false, false, false, false };

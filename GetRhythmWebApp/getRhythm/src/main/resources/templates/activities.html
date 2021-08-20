@@ -27,7 +27,7 @@
 	<!-- Row3 -->
 	<div class="row p-5 d-flex align-items-center ">
 
-		<!-- Notation Display -->
+		<!-- Notation Display: Notation gets inserted here -->
 		<div class="col-4 mx-auto ">
 			<p id="symbols" class="display-1 text-center">
 				<span id='symbol1' class='invisible notation hideAll'></span> <span
@@ -42,7 +42,7 @@
 			<div id="circle" class="mx-auto rounded-circle invisible"></div>
 		</div>
 
-		<!-- Rhythm Syllable Display -->
+		<!-- Rhythm Syllable Display: Syllables get inserted here -->
 		<div class="col-4 mx-auto invisible">
 			<p id="syllables" class="display-5 text-center ">
 				<span id='syllable1' class='invisible hideAll'></span><span
@@ -53,6 +53,7 @@
 		</div>
 
 	</div>
+	<!-- Tempo Slider to control tempo -->
 	<div class="row">
 		<div class="col-3 mx-auto">
 			<div th:replace="layoutElements :: tempoSlider"></div>
@@ -96,11 +97,11 @@
  		
 		/* Listener for start stop button */
 		var startStopButton = document.querySelector("#startStop");
-		
 		startStopButton.addEventListener("click", function() {
 			startTransport(); // Start the transport control
 		})
 		
+		// Call the function to set up the next rhythm based on the rhythm number reequired (from localRhythmArray)
 		function setRhythm(rhythmNo){
 			var x = parseInt(rhythmNo); // parse int from array value as switch uses strict comparison
 			switch (x){
@@ -127,10 +128,10 @@
 				break;
 			} 
 		}
-		// Create synth to play sound
+		// Create synth to play sound. Membrane synth wrapped in Poly to avoid clicking. 
 		const synth = new Tone.PolySynth(Tone.MembraneSynth).toDestination();
 	
-		// Function to set up rhythm pattern 1
+		// Functions to set up rhythms. Insert condtionally by Thymeleaf
 		[# th:if="${rhythmsIncluded[0]}"]
 		function rhythm1setup(){
 			document.querySelector("#symbol1").innerHTML = "q";
@@ -242,6 +243,7 @@
 		[/]
 	
 
+		// a function to clear all visible elements when needed
 		function hideAll(){
 			var hideElement = document.getElementsByClassName("hideAll"); // select all elements that need to be reset
 			for(var i = 0; i < hideElement.length; i++)
@@ -250,7 +252,7 @@
 			}
 		}
 		
-		
+		// function to flash the circle
 		function circleFlash(pitch){
 			if (pitch=="C2"){
 				// Circle Animation
@@ -264,6 +266,7 @@
 			}
 		}
 		
+		// This function finds the number of the next required rhythm from the array and calls the setRhythm function
 		function updatePart(time){			
 			// if we are on the last rhythm reset the rhythmTracker otherwise increment it to the next rhythm 
 			if (rhythmTracker == localRhythmArray.length-1){
@@ -277,7 +280,7 @@
 		}
 		
 		
-	 	// Part sets up sound pattern to be played and includes visual sync
+	 	// Tone.Part sets up rhythm pattern to be played and includes visual sync
 		const part = new Tone.Part(function(time, pitch){	
 			// play the note
 			synth.triggerAttackRelease(pitch, "8n", time); // play an 8th note at the pitch and time passed in
@@ -288,15 +291,13 @@
 				Tone.Transport.schedule(updatePart, rhythmUpdateTime);	
 			}
 						
-
-			
-			
 			// select the elements to be animated
 			var syllable = document.getElementById("syllable"+noteCounter);
 			var symbol = document.getElementById("symbol"+noteCounter); 
 			var circle = document.getElementById("circle"); 
 			
 			// Animation sync. Tone.Draw is used to schedule visual changes with the musical timing 
+			// At the moment syllables and symbols are always visible. In future iterations they may be turned on or off at varios points. 
 			if (showSyllables){
 				// Callback to create animation in time with sound
 				Tone.Draw.schedule(() => {		
@@ -316,6 +317,7 @@
 				}, time);
 			}
 		
+			
 			Tone.Draw.schedule(() => {	
 						
 				// flash the circle if the note is not 'null'
@@ -346,10 +348,10 @@
 
 		}); // Pass in default note values
 			
+		// call the function to set up the first rhythm to be played on page load
+		setRhythm(localRhythmArray[rhythmTracker]); 
 
-		setRhythm(localRhythmArray[rhythmTracker]); // call the function to set up the first rhythm to be played
-
-		// Set the time signature
+		// Set the time signature. 2/4 time
 		Tone.Transport.set({
 			"timeSignature" : "2", 
 		});
@@ -425,6 +427,7 @@
 			<div id="circle" class="mx-auto rounded-circle invisible"></div>
 		</div>
 
+		<!-- Thymeleaf inserts the required rhythms based on the array received from the controller -->
 		<div class="d-grid col-8 display-2">
 			<div class="container table notation table-bordered compositionTable">
 				<div class="row compositionTableRow">
@@ -493,6 +496,7 @@
 			}
 		}
 		
+		/* Tempo Slider Functionality */
 		var slider = document.getElementById("tempoSlider");
 		var output = document.getElementById("tempoValue");
 		output.innerHTML = slider.value; // Display the default slider value
@@ -584,6 +588,7 @@
 	<div class="row p-3 d-flex">
 
 		<!-- Composition Grid -->
+		<!-- Dragged elements can be dropped into the divs -->
 		<div class="d-grid col-8 display-2 ">
 			<div
 				class="container table notation table-bordered text-center compositionTable ">
@@ -611,6 +616,7 @@
 		</div>
 
 		<!-- AvailableRhythms Grid -->
+		<!-- Rhythms are draggagle -->
 		<div class="d-grid col-4 mx-auto display-4 noSelect" draggable="false">
 			<div class="container notation" draggable="false">
 				<div class="row" draggable="false">
@@ -842,6 +848,7 @@
 		<!-- Animation Display -->
 		<div class="d-grid gap-2 col-2 "></div>
 
+		<!-- Required rhythms shown in a grid.  Javascript listeners check when clicked-->
 		<div class=" d-grid col-8 display-2  ">
 			<div
 				class="container table notation table-bordered compositionTable ">
@@ -893,9 +900,10 @@
 			var playing = false; // boolean to track whether transport playing or not. 
 	 		var totalNoOfRhythms = 2; // default total number of rhythms if user is on progress level 1
 			var rhythmNo = 1; // Initialise rhythm number
-			var score = 0;
-			var scoreDisplay = document.getElementById("score");
-			var totalDisplay = document.getElementById("total");
+			var rhythmTracker = 0; // variable to keep track of rhythms
+			var score = 0; // keep score
+			var scoreDisplay = document.getElementById("score"); // element to insert score
+			var totalDisplay = document.getElementById("total"); // element to insert total number of questions
 			var total = 0;
 			var scoreInput = document.getElementById("continue");
 			scoreDisplay.innerHTML = score;
@@ -924,7 +932,7 @@
  	 			}
  	 		}
  	 		
- 	 		var rhythmTracker = 0;
+ 	 		
 			
 			
 			/* Listener for start stop button */
@@ -934,7 +942,7 @@
 			})
 			
 
-			// listens to all clicks
+			// Event bubbling. listens to all clicks
 			document.addEventListener('click', function(e){
 				// if the sound is playing check if the answer is correct. 
 				if (playing){
@@ -947,7 +955,8 @@
 							alert('Correct Answer');
 							score++;
 							scoreDisplay.innerHTML = score;
-							scoreInput.setAttribute("href", "/selfAssessment?activity=Dictation&next=updateProgress&score="+score); //update the url for the self assessment view to include the score
+							//update the url for the self assessment view to include the score
+							scoreInput.setAttribute("href", "/selfAssessment?activity=Dictation&next=updateProgress&score="+score); 
 							startTransport(); // this will stop the sound if it is already playing 
 						} else {
 							alert('Incorrect. Try again.');
@@ -1036,8 +1045,7 @@
 					Tone.Transport.bpm.value = tempo; // Set the bpm to the current tempo
 					Tone.Transport.start("+.3"); // Start the transport 300ms in the future to help with audio latency
 					
-				
-					
+		
 				} else {
 					Tone.Transport.stop(); // Stop the transport
 					Tone.Transport.cancel(); // cancel all transport events

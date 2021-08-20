@@ -60,6 +60,7 @@
 						</tr>
 					</thead>
 					<tbody>
+					<!-- Thymeleaf Dynamically Creates Table Based On NUmber Of Users In List Received From Controller -->
 						<tr th:each="users: ${users}">
 							<td th:text="${users.id}"></td>
 							<td th:text="${users.username}"></td>

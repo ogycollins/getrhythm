@@ -52,6 +52,7 @@
 						</tr>
 					</thead>
 					<tbody>
+					<!-- Thymeleaf Dynamically Creates Table Based On Number Of Resources In List Received From Controller -->
 						<tr th:each="resources: ${resources}">
 						<td th:text="${resources.name}"></td>
 						<td th:text="${resources.description}"></td>

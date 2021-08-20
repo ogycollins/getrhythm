@@ -1,5 +1,6 @@
 package com.getRhythm.getRhythm;
 
+// Object to pass required details to activities from exercise menu
 public class ExerciseActivityDetails {
 	String activityName;
 	boolean[] rhythmsIncluded= new boolean[7];
